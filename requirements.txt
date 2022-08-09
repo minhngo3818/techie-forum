@@ -1,0 +1,11 @@
+asgiref==3.5.2
+dj-rest-auth==2.2.5
+Django==4.1
+django-ckeditor==6.4.2
+django-cors-headers==3.13.0
+django-js-asset==2.0.0
+djangorestframework==3.13.1
+Pillow==9.2.0
+pytz==2022.1
+sqlparse==0.4.2
+whitenoise==6.2.0
