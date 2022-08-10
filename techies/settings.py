@@ -64,6 +64,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "techies.urls"
 
+#  set token once setup restframework
+REST_AUTH_TOKEN_MODEL = None
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",

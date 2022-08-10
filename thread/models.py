@@ -1,5 +1,5 @@
 from django.db import models
-from ..user.models import Profile
+from user.models import Profile
 import uuid
 
 CATEGORIES = {
