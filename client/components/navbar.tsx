@@ -83,7 +83,7 @@ const Navigation = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name}>
-                  <Link href={`/forum${page.field}`}>
+                  <Link href={`/forum${page.path}`}>
                     <Typography component="a" textAlign="center">
                       {page.name}
                     </Typography>
@@ -120,7 +120,7 @@ const Navigation = () => {
             }}
           >
             {pages.map((page) => (
-              <Link key={page.name} href={{ pathname: `/forum/${page.field}` }}>
+              <Link key={page.name} href={{ pathname: `/forum${page.path}` }}>
                 <Button
                   onClick={handleCloseNavMenu}
                   sx={{

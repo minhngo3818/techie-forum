@@ -1,31 +1,31 @@
 type ForumPage = {
   name: string;
-  field: string;
+  path: string;
 };
 
 export const forumLinks: ForumPage[] = [
   {
     name: "Web Design",
-    field: "web-design",
+    path: "/web-design",
   },
   {
     name: "Server",
-    field: "server",
+    path: "/server",
   },
   {
     name: "Cybersecurity",
-    field: "cybersecurity",
+    path: "/cybersecurity",
   },
   {
     name: "Game Dev",
-    field: "game-dev",
+    path: "/game-dev",
   },
   {
     name: "OS",
-    field: "os",
+    path: "/os",
   },
   {
     name: "Languages",
-    field: "languages",
+    path: "/languages",
   },
 ];
