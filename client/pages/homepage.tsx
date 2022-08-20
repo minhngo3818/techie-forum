@@ -1,7 +1,8 @@
 import { Box, Container } from "@mui/material";
+import PageHeader from "../components/pageHeader";
 
 const Home = () => {
-  return <h1>This is homepage</h1>;
+  return <PageHeader pageName="Homepage" />;
 };
 
 export default Home;

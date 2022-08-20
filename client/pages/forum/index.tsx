@@ -1,5 +1,7 @@
+import PageHeader from "../../components/pageHeader";
+
 const Forum = () => {
-  return <h1>This is Forum Page</h1>;
+  return <PageHeader pageName="Forum" />;
 };
 
 export default Forum;
