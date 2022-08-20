@@ -15,11 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 
 # API Router
-routers = routers.DefaultRouter()
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    paht("forum/", include("thread.urls"))
 ]

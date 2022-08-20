@@ -2,25 +2,36 @@ import { Box, Container } from "@mui/material";
 
 // styling
 const containerStyle = {
-  display: { sx: "flex", md: "none" },
-  margin: "2rem",
-  backgroundColor: "green",
-  color: "black",
-  border: "2px",
+  display: { xs: "none", md: "flex"},
+  maxWidth: "100px",
+  margin: "3rem auto",
+  backgroundColor: "#373f4a",
 };
+
+const boxStyle = {
+  width: "100%",
+  padding: "20px",
+  color: "white"
+}
 
 // Props
 interface ThreadType {
-  username: string;
-  thread: string;
+  author: string;
+  content: string;
+  created: string;
+  likes: number;
+  category: string;
 }
 
 const Thread = (props: ThreadType) => {
   return (
     <Container sx={containerStyle}>
-      <Box>
-        <h1>{props.username}</h1>
-        <p>{props.thread}</p>
+      <Box sx={boxStyle}>
+        <h1>{props.author}</h1>
+        <p>Created on {props.created}</p>
+        <p>{props.content}</p>
+        <p>Likes: {props.likes}</p>
+        <p>Forum: {props.category}</p>
       </Box>
     </Container>
   );

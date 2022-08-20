@@ -1,14 +1,13 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Navigation from "../components/navbar";
-import Footer from "../components/footer";
+import Layout from "../components/layout"
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Navigation />
-      <Component {...pageProps} />
-      <Footer />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </>
   );
 }

@@ -5,14 +5,14 @@ const headerStyle = {
   display: "flex",
   justifyContent: "center",
   margin: "2rem",
-  color: "green",
+  color: "#ff6c33",
 };
 
-interface PageHeader {
-  pageName: string;
+interface PageHeaderType {
+  pageName: string|any;
 }
 
-const PageHeader = (props: PageHeader) => {
+const PageHeader = (props: PageHeaderType) => {
   const pageName = props.pageName;
   return (
     <Container>

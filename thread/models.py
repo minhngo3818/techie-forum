@@ -45,7 +45,7 @@ class Comments(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
 
     class Meta:
-        ordering = ['created', '-updated']
+        ordering = ['-created', '-updated']
 
     def __str__(self):
         return "{}, comment created on {}".format(self.author.name, self.content)
