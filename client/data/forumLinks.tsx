@@ -6,26 +6,26 @@ type ForumPage = {
 export const forumLinks: ForumPage[] = [
   {
     name: "Web Design",
-    path: "/web-design",
+    path: "web-design",
   },
   {
     name: "Server",
-    path: "/server",
+    path: "server",
   },
   {
     name: "Cybersecurity",
-    path: "/cybersecurity",
+    path: "cybersecurity",
   },
   {
     name: "Game Dev",
-    path: "/game-dev",
+    path: "game-dev",
   },
   {
     name: "OS",
-    path: "/os",
+    path: "os",
   },
   {
     name: "Languages",
-    path: "/languages",
+    path: "languages",
   },
 ];

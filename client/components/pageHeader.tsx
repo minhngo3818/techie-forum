@@ -4,7 +4,8 @@ import { Box, Container } from "@mui/material";
 const headerStyle = {
   display: "flex",
   justifyContent: "center",
-  padding: "2rem",
+  margin: "2rem",
+  color: "green",
 };
 
 interface PageHeader {

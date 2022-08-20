@@ -34,7 +34,7 @@ const iconStyle = {
 
 const Footer = () => {
   return (
-    <Box bgcolor="primary.main" sx={footerStyle}>
+    <Box bgcolor="#21262d" sx={footerStyle}>
       <Container maxWidth="lg">
         <Box component="span" sx={boxStyle}>
           <Link href={`/homepage`} sx={linkStyle}>

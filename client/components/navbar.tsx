@@ -40,7 +40,7 @@ const Navigation = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#21262d" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Icon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
@@ -82,13 +82,22 @@ const Navigation = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.name}>
-                  <Link href={`/forum${page.path}`}>
+                <Link
+                  key={page.name}
+                  href={{
+                    pathname: `/forum/${page.path}`,
+                    query: {
+                      name: page.name,
+                    },
+                  }}
+                  as={`/forum/${page.path}`}
+                >
+                  <MenuItem>
                     <Typography component="a" textAlign="center">
                       {page.name}
                     </Typography>
-                  </Link>
-                </MenuItem>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -120,9 +129,17 @@ const Navigation = () => {
             }}
           >
             {pages.map((page) => (
-              <Link key={page.name} href={{ pathname: `/forum${page.path}` }}>
+              <Link
+                key={page.name}
+                href={{
+                  pathname: `/forum/${page.path}`,
+                  query: {
+                    name: page.name,
+                  },
+                }}
+                as={`/forum/${page.path}`}
+              >
                 <Button
-                  onClick={handleCloseNavMenu}
                   sx={{
                     display: "block",
                     color: "white",
