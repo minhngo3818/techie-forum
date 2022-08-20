@@ -2,13 +2,13 @@ from django.db import models
 from user.models import Profile
 import uuid
 
-CATEGORIES = {
-    "operating_system": "operating system",
-    "game_making": "game making",
-    "server": "server",
-    "cybersecurity": "cybersecurity",
-    "programming_languages": "programming_languages",
-}
+CATEGORIES = [
+    ("operating_system","OS"),
+    ("game_dev", "Game Dev"),
+    ("server", "Server"),
+    ("cybersecurity", "Cybersecurity"),
+    ("programming_languages", "Languages")
+]
 
 
 class Threads(models.Model):
@@ -17,6 +17,7 @@ class Threads(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     liked = models.ManyToManyField(Profile, default=None, blank=True, related_name='liked')
+    category = models.CharField(max_length=100, choices=CATEGORIES, null=True, blank=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
 
     class Meta:
