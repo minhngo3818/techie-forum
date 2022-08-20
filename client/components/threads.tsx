@@ -2,7 +2,7 @@ import { Box, Container } from "@mui/material";
 
 // styling
 const containerStyle = {
-  display: { xs: "none", md: "flex"},
+  display: { xs: "none", md: "flex" },
   maxWidth: "100px",
   margin: "3rem auto",
   backgroundColor: "#373f4a",
@@ -11,8 +11,8 @@ const containerStyle = {
 const boxStyle = {
   width: "100%",
   padding: "20px",
-  color: "white"
-}
+  color: "white",
+};
 
 // Props
 interface ThreadType {

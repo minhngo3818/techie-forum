@@ -9,7 +9,7 @@ const headerStyle = {
 };
 
 interface PageHeaderType {
-  pageName: string|any;
+  pageName: string | any;
 }
 
 const PageHeader = (props: PageHeaderType) => {

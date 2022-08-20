@@ -40,8 +40,11 @@ const Navigation = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "transparent", height: "80px", boxShadow: "none" }}>
-      <Container maxWidth="xl" sx={{ margin: "auto"}}>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: "transparent", height: "80px", boxShadow: "none" }}
+    >
+      <Container maxWidth="xl" sx={{ margin: "auto" }}>
         <Toolbar disableGutters>
           <Icon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
             <Image src="/explosion.png" width="60px" height="60px"></Image>
@@ -70,7 +73,7 @@ const Navigation = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
             >
-              <MenuIcon sx={{color: "white"}}/>
+              <MenuIcon sx={{ color: "white" }} />
             </IconButton>
             <Menu
               anchorEl={navElState}
