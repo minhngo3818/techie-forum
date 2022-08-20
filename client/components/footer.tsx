@@ -1,5 +1,5 @@
 import styles from "../styles/Home.module.css";
-import { Container, Box, Grid, Link } from "@mui/material";
+import { Container, Box, Link } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -11,6 +11,8 @@ const footerStyle = {
   position: "fixed",
   bottom: 0,
   width: "100%",
+  flexGrow: 0,
+  display: { xs: "flex", md: "flex" },
 };
 
 const linkStyle = {
@@ -35,12 +37,15 @@ const Footer = () => {
     <Box bgcolor="primary.main" sx={footerStyle}>
       <Container maxWidth="lg">
         <Box component="span" sx={boxStyle}>
-          <Link sx={linkStyle}>WebDesign</Link>
-          <Link sx={linkStyle}>OS</Link>
-          <Link sx={linkStyle}>GameDev</Link>
-          <Link sx={linkStyle}>CyberSecurity</Link>
-          <Link sx={linkStyle}>Server</Link>
-          <Link sx={linkStyle}>Languages</Link>
+          <Link href={`/homepage`} sx={linkStyle}>
+            Home
+          </Link>
+          <Link href={`/about`} sx={linkStyle}>
+            About
+          </Link>
+          <Link href={`/forum`} sx={linkStyle}>
+            Forum
+          </Link>
         </Box>
         <Box component="span" sx={boxStyle}>
           <IconButton href="#" target="_blank">

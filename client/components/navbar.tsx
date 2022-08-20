@@ -1,4 +1,4 @@
-import React, { useState, useEffect, MouseEvent } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,8 +13,9 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Icon } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
+import { forumLinks as pages } from "../data/forumLinks";
 
-const pages = ["Cybersecurity", "OS", "Server", "Game Dev", "Languages"];
 const userPages = ["Dashboard", "Profile", "Account", "Logout"];
 
 // TODO: break downs Navigation into sub functions
@@ -65,8 +66,7 @@ const Navigation = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
-              aria-label="current user account"
-              aria-control="menu-appbar"
+              aria-label="current-user"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
             >
@@ -82,8 +82,12 @@ const Navigation = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.name}>
+                  <Link href={`/forum${page.field}`}>
+                    <Typography component="a" textAlign="center">
+                      {page.name}
+                    </Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -116,16 +120,19 @@ const Navigation = () => {
             }}
           >
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  display: "block",
-                  color: "white",
-                }}
-              >
-                {page}
-              </Button>
+              <Link key={page.name} href={{ pathname: `/forum/${page.field}` }}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    display: "block",
+                    color: "white",
+                  }}
+                >
+                  <Typography component="a" textAlign="center">
+                    {page.name}
+                  </Typography>
+                </Button>
+              </Link>
             ))}
           </Box>
 
@@ -143,7 +150,9 @@ const Navigation = () => {
             >
               {userPages.map((userPage) => (
                 <MenuItem key={userPage} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{userPage}</Typography>
+                  <Typography component="a" textAlign="center">
+                    {userPage}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
