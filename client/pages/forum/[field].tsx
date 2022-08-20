@@ -8,9 +8,6 @@ const Field = () => {
   const router: NextRouter = useRouter();
   const name: any = router.query.name;
 
-  // TODO:
-  // Find the reason Threads does not render
-  // Fix bug content disappear after refreshing
   return (
     <>
       <PageHeader pageName={name} />
