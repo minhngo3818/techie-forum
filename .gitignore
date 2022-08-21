@@ -41,3 +41,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pycache
+user/__pycache__/
+thread/__pycache__/
+
+# migrations
+user/migrations/
+thread/migrations
