@@ -1,14 +1,7 @@
 from django.db import models
 from user.models import Profile
 import uuid
-
-CATEGORIES = [
-    ("operating_system","OS"),
-    ("game_dev", "Game Dev"),
-    ("server", "Server"),
-    ("cybersecurity", "Cybersecurity"),
-    ("programming_languages", "Languages")
-]
+from .choices import CATEGORIES
 
 
 class Threads(models.Model):
