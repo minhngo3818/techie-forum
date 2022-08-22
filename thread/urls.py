@@ -2,13 +2,14 @@ from django.urls import include, path, re_path
 from rest_framework.routers import DefaultRouter
 from rest_framework.permissions import AllowAny
 from django.conf import settings
-from .views import ThreadViews, CommentViews
+from .views import ThreadViews, CommentViews, LikeViews, LikeCommentViews
 
 router = DefaultRouter()
 # Register url here
 router.register(r"thread", ThreadViews)
 router.register(r"comment", CommentViews)
-
+router.register(r"like", LikeViews)
+router.register(r"like-comment", LikeCommentViews, basename="like-comment")
 
 urlpatterns = [
     path("forum/", include(router.urls))

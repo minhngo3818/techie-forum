@@ -19,6 +19,10 @@ class ThreadViews(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
 
+    def get_queryset(self):
+        user = self.request.user
+        return Thread.objects.filter(created_by=user)
+
 
 class CommentViews(viewsets.ModelViewSet):
     serializer_class = CommentSerializers
@@ -30,6 +34,25 @@ class CommentViews(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
 
+    def get_queryset(self):
+        user = self.request.user
+        return Comment.objects.filter(created_by=user)
 
 
+class LikeViews(viewsets.ModelViewSet):
+    serializer_class = LikeSerializers
+    queryset = Like.objects.all()
+
+    def get_queryset(self):
+        thread = self.request.thread
+        return Like.objects.filter(thread=thread)
+
+
+class LikeCommentViews(viewsets.ModelViewSet):
+    serializer_class = LikeCommentSerializers
+    query_set = LikeComment.objects.all()
+
+    def get_queryset(self):
+        comment = self.request.comment
+        return LikeComment.objects.filter(comment=comment)
 
