@@ -4,7 +4,7 @@ import uuid
 from .choices import CATEGORIES
 
 
-class Threads(models.Model):
+class Thread(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True, related_name='Threads')
     content = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -27,9 +27,9 @@ class Threads(models.Model):
         return num_likes
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
-    tweet = models.ForeignKey(Threads, on_delete=models.CASCADE, null=True, blank=True, related_name='comments_set')
+    tweet = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True, blank=True, related_name='comments_set')
     content = models.TextField(null=True, blank=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     liked = models.ManyToManyField(Profile, default=None, blank=True, related_name='comment_like')
@@ -58,7 +58,7 @@ class Like(models.Model):
     )
 
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    tweet = models.ForeignKey(Threads, on_delete=models.CASCADE)
+    tweet = models.ForeignKey(Thread, on_delete=models.CASCADE)
     value = models.CharField(choices=LIKE_CHOICES, default='Like', max_length=10)
 
     def __str__(self):
@@ -72,7 +72,7 @@ class LikeComment(models.Model):
     )
 
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     value = models.CharField(choices=LIKE_CHOICES, default='Like', max_length=10)
 
     def __str__(self):
