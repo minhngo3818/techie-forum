@@ -2,16 +2,17 @@ import { Box, Container } from "@mui/material";
 
 // styling
 const containerStyle = {
-  display: { xs: "none", md: "flex" },
-  maxWidth: "100px",
+  display: "block",
   margin: "3rem auto",
-  backgroundColor: "#373f4a",
 };
 
 const boxStyle = {
+  margin: "auto",
+  maxWidth: "1000px",
   width: "100%",
-  padding: "20px",
+  padding: "20px 50px",
   color: "white",
+  backgroundColor: "#373f4a",
 };
 
 // Props

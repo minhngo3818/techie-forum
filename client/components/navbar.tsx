@@ -46,8 +46,8 @@ const Navigation = () => {
     >
       <Container maxWidth="xl" sx={{ margin: "auto" }}>
         <Toolbar disableGutters>
-          <Icon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-            <Image src="/explosion.png" width="60px" height="60px"></Image>
+          <Icon sx={{ display: { xs: "none", md: "flex" }, mr: 1, width: "60px", height: "60px" }}>
+            <Image src="/ai.png" width="60px" height="60px"></Image>
           </Icon>
 
           <Typography

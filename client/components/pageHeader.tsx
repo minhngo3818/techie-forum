@@ -5,7 +5,7 @@ const headerStyle = {
   display: "flex",
   justifyContent: "center",
   margin: "2rem",
-  color: "#ff6c33",
+  color: "#4cb6b9",
 };
 
 interface PageHeaderType {
