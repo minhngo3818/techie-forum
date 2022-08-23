@@ -1,7 +1,7 @@
 # ide
 .idea/
 .vscode/
-
+.env
 # django
 /techies/__pycache__
 /venv

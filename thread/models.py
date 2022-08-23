@@ -5,7 +5,7 @@ from .choices import CATEGORIES
 
 
 class Thread(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True, related_name='Threads')
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True, related_name='Threads')
     content = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -28,7 +28,7 @@ class Thread(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
     tweet = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True, blank=True, related_name='comments_set')
     content = models.TextField(null=True, blank=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')

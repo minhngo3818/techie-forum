@@ -14,14 +14,14 @@ class ThreadViews(viewsets.ModelViewSet):
     queryset = Thread.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+        serializer.save(owner=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+        serializer.save(owner=self.request.user)
 
     def get_queryset(self):
         user = self.request.user
-        return Thread.objects.filter(created_by=user)
+        return Thread.objects.filter(owner=user)
 
 
 class CommentViews(viewsets.ModelViewSet):
@@ -29,14 +29,14 @@ class CommentViews(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+        serializer.save(owner=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+        serializer.save(owner=self.request.user)
 
     def get_queryset(self):
         user = self.request.user
-        return Comment.objects.filter(created_by=user)
+        return Comment.objects.filter(owner=user)
 
 
 class LikeViews(viewsets.ModelViewSet):
