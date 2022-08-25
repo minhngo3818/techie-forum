@@ -1,4 +1,8 @@
 .container {
+  margin-top: 10vh;
+}
+
+.formContainer {
   display: block;
   margin: auto;
   max-width: 500px;
@@ -9,8 +13,17 @@
 }
 
 .label {
-  font-size: 16px;
+  font-size: 20px;
   color: white;
+}
+
+.formControl {
+  border: none;
+}
+
+.formControl:focus {
+  outline: none;
+  box-shadow: 0 0 5px 5px gray;
 }
 
 .btnContainer {

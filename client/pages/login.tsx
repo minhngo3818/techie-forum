@@ -5,16 +5,21 @@ import styles from "../styles/Login.module.css";
 
 const Login = () => {
   return (
-    <>
+    <div className={styles.container}>
       <PageHeader pageName="Login Page" />
-      <Form className={styles.container}>
+      <Form className={styles.formContainer}>
         <Form.Group className={styles.group}>
           <Form.Label className={styles.label}>Username</Form.Label>
-          <Form.Control type="text" placeholder="Enter username"></Form.Control>
+          <Form.Control
+            className={styles.formControl}
+            type="text"
+            placeholder="Enter username"
+          ></Form.Control>
         </Form.Group>
         <Form.Group className={styles.group}>
           <Form.Label className={styles.label}>Password</Form.Label>
           <Form.Control
+            className={styles.formControl}
             type="password"
             placeholder="Enter password"
           ></Form.Control>
@@ -33,7 +38,7 @@ const Login = () => {
           </Link>
         </Form.Group>
       </Form>
-    </>
+    </div>
   );
 };
 
