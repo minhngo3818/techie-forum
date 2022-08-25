@@ -1,6 +1,14 @@
-.nav-underline .nav-link {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  font-size: 0.875rem;
-  color: #6c757d;
+.brand {
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.navLink {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.navLink:hover {
+  text-decoration: underline;
 }

@@ -5,7 +5,7 @@ const headerStyle = {
   display: "flex",
   justifyContent: "center",
   margin: "2rem",
-  color: "#4cb6b9",
+  color: "white",
 };
 
 interface PageHeaderType {
@@ -17,7 +17,7 @@ const PageHeader = (props: PageHeaderType) => {
   return (
     <Container>
       <Box sx={headerStyle}>
-        <h1>{pageName}</h1>
+        <h3>{pageName}</h3>
       </Box>
     </Container>
   );

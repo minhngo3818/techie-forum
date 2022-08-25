@@ -1,10 +1,10 @@
 import styles from "../styles/Home.module.css";
-import { Container, Box, Link } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { Icon } from "@mui/material";
+import Link from "next/link";
 
 // Styling
 const footerStyle = {
@@ -15,37 +15,23 @@ const footerStyle = {
   display: { xs: "flex", md: "flex" },
 };
 
-const linkStyle = {
-  padding: "20px",
-  cursor: "pointer",
-  textDecoration: "none",
-  color: "white",
-};
-
 const boxStyle = {
   display: "flex",
   justifyContent: "center",
-  color: "white",
+  color: "black",
+  margin: "10px auto",
 };
 
 const iconStyle = {
-  color: "white",
+  color: "black",
 };
 
 const Footer = () => {
   return (
-    <Box bgcolor="transparent" sx={footerStyle}>
+    <Box bgcolor="white" sx={footerStyle}>
       <Container maxWidth="lg">
-        <Box component="span" sx={boxStyle}>
-          <Link href={`/homepage`} sx={linkStyle}>
-            Home
-          </Link>
-          <Link href={`/about`} sx={linkStyle}>
-            About
-          </Link>
-          <Link href={`/forum`} sx={linkStyle}>
-            Forum
-          </Link>
+        <Box sx={boxStyle}>
+          <Box>Devloped by Minh Tuyen Ngo</Box>
         </Box>
         <Box component="span" sx={boxStyle}>
           <IconButton href="#" target="_blank">
@@ -59,7 +45,7 @@ const Footer = () => {
           </IconButton>
         </Box>
         <Box component="span" sx={boxStyle}>
-          <p>&lt; &copy; Power By Django and Next.js &gt;</p>
+          <p> &copy; Power By Django and Next.js </p>
         </Box>
       </Container>
     </Box>
