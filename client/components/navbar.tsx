@@ -19,6 +19,9 @@ const Navigation = () => {
                 Home
               </Nav.Link>
             </Link>
+            <Nav.Link className={styles.navLink} as="a" type="button">
+              About
+            </Nav.Link>
             <NavDropdown
               className={styles.navLink}
               title="Forums"

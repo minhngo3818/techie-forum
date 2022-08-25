@@ -1,14 +1,14 @@
 .brand {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 28px !important;
+  font-weight: bold !important;
   cursor: pointer;
 }
 
 .navLink {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 18px !important;
+  font-weight: 500 !important;
 }
 
 .navLink:hover {
-  text-decoration: underline;
+  text-decoration: underline 3px;
 }
