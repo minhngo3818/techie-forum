@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     # dev-apps
     "user",
-    "thread",
+    "forum",
 
     # dependencies
     "rest_framework",
@@ -94,7 +94,7 @@ WSGI_APPLICATION = "techies.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite.3",
     }
 }
 
@@ -156,9 +156,11 @@ REST_USE_JWT = True
 REST_AUTH_TOKEN_MODEL = None
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),     # increase time before deploying
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),     # increase time before deploying
     "REFRESH_TOKEN_LIFETIME": timedelta(hours=1),
-
+    "ROTATE_TOKEN_LIFETIME": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,  # Move to env before deploying
     'VERIFYING_KEY': None,
@@ -186,6 +188,4 @@ SIMPLE_JWT = {
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
 }

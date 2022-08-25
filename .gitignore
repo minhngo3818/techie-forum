@@ -44,8 +44,8 @@ next-env.d.ts
 
 # pycache
 user/__pycache__/
-thread/__pycache__/
+forum/__pycache__/
 
 # migrations
 user/migrations/
-thread/migrations
+forum/migrations
