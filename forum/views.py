@@ -6,11 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 
 from .models import Thread, Comment, Like, LikeComment
-from .serializers import ThreadSerializers, CommentSerializers, LikeSerializers, LikeCommentSerializers
+from .serializers import ThreadSerializer, CommentSerializer, LikeSerializer, LikeCommentSerializer
 
 
 class ThreadViews(viewsets.ModelViewSet):
-    serializer_class = ThreadSerializers
+    serializer_class = ThreadSerializer
     queryset = Thread.objects.all()
 
     def perform_create(self, serializer):
@@ -25,7 +25,7 @@ class ThreadViews(viewsets.ModelViewSet):
 
 
 class CommentViews(viewsets.ModelViewSet):
-    serializer_class = CommentSerializers
+    serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
     def perform_create(self, serializer):
@@ -40,7 +40,7 @@ class CommentViews(viewsets.ModelViewSet):
 
 
 class LikeViews(viewsets.ModelViewSet):
-    serializer_class = LikeSerializers
+    serializer_class = LikeSerializer
     queryset = Like.objects.all()
 
     def get_queryset(self):
@@ -49,7 +49,7 @@ class LikeViews(viewsets.ModelViewSet):
 
 
 class LikeCommentViews(viewsets.ModelViewSet):
-    serializer_class = LikeCommentSerializers
+    serializer_class = LikeCommentSerializer
     query_set = LikeComment.objects.all()
 
     def get_queryset(self):

@@ -1,32 +1,32 @@
 from rest_framework import serializers
 from .models import Thread, Comment, Like, LikeComment
-from user.serializers import ProfileSerializers
+from user.serializers import ProfileSerializer
 
 
-class ThreadSerializers(serializers.HyperlinkedModelSerializer):
-    owner = ProfileSerializers(many=False)
+class ThreadSerializer(serializers.HyperlinkedModelSerializer):
+    owner = ProfileSerializer(many=False)
 
     class Meta:
         model = Thread
         fields = "__all__"
 
 
-class CommentSerializers(serializers.HyperlinkedModelSerializer):
-    owner = ProfileSerializers(many=False)
-    thread = ThreadSerializers(many=False)
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    owner = ProfileSerializer(many=False)
+    thread = ThreadSerializer(many=False)
 
     class Meta:
         model = Comment
         fields = "__all__"
 
 
-class LikeSerializers(serializers.HyperlinkedModelSerializer):
+class LikeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Like
         fields = "__all__"
 
 
-class LikeCommentSerializers(serializers.HyperlinkedModelSerializer):
+class LikeCommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LikeComment
         fields = "__all__"
