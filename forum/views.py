@@ -4,9 +4,20 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
-
-from .models import Thread, Comment, Like, LikeComment
-from .serializers import ThreadSerializer, CommentSerializer, LikeSerializer, LikeCommentSerializer
+from .models import (
+    Thread,
+    Comment,
+    Like,
+    LikeComment,
+    Tag
+)
+from .serializers import (
+    ThreadSerializer,
+    CommentSerializer,
+    LikeSerializer,
+    LikeCommentSerializer,
+    TagSerializer
+)
 
 
 class ThreadViews(viewsets.ModelViewSet):
@@ -56,3 +67,11 @@ class LikeCommentViews(viewsets.ModelViewSet):
         comment = self.request.comment
         return LikeComment.objects.filter(comment=comment)
 
+
+class TagViews(viewsets.ModelViewSet):
+    serializer_class = TagSerializer
+    query_set = Tag.objects.all()
+
+    def get_queryset(self):
+        thread = self.request.thread
+        return Tag.objects.filter(thread=thread)
