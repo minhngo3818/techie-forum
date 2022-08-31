@@ -1,10 +1,8 @@
-import styles from "../styles/Home.module.css";
 import { Container, Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import Link from "next/link";
 
 // Styling
 const footerStyle = {

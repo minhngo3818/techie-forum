@@ -1,9 +1,4 @@
-type ForumPage = {
-  name: string;
-  path: string;
-};
-
-export const forumLinks: ForumPage[] = [
+export const forumLinks = [
   {
     name: "Web Design",
     path: "web-design",

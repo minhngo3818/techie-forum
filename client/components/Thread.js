@@ -16,15 +16,8 @@ const boxStyle = {
 };
 
 // Props
-interface ThreadType {
-  author: string;
-  content: string;
-  created: string;
-  likes: number;
-  category: string;
-}
 
-const Thread = (props: ThreadType) => {
+const Thread = (props) => {
   return (
     <Container sx={containerStyle}>
       <Box sx={boxStyle}>

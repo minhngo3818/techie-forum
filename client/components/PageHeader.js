@@ -8,11 +8,7 @@ const headerStyle = {
   color: "white",
 };
 
-interface PageHeaderType {
-  pageName: string | any;
-}
-
-const PageHeader = (props: PageHeaderType) => {
+const PageHeader = (props) => {
   const pageName = props.pageName;
   return (
     <Container>

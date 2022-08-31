@@ -7,51 +7,38 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check-types": "tsc --pretty --noEmit",
-    "check-lint": "eslint . --ext ts --ext tsx --ext js",
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@babel/core": "^7.18.10",
-    "@babel/eslint-parser": "^7.18.9",
-    "@emotion/react": "^11.10.0",
-    "@emotion/styled": "^11.10.0",
-    "@faker-js/faker": "^7.4.0",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.10.0",
-    "@mui/styled-engine-sc": "^5.10.0",
+    "@babel/core": "^7.18.13",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@faker-js/faker": "^7.5.0",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.3",
+    "@mui/styled-engine-sc": "^5.10.3",
+    "@popperjs/core": "^2.11.6",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
-    "cypress": "^10.4.0",
     "jwt-decode": "^3.1.2",
-    "next": "12.2.4",
+    "next": "12.2.5",
     "react": "18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "18.2.0",
     "react-is": "^18.2.0",
-    "styled-components": "^5.3.5",
-    "webpack": "^5.74.0"
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
-    "@types/node": "18.6.5",
-    "@types/react": "18.0.17",
-    "@types/react-dom": "18.0.6",
-    "@typescript-eslint/eslint-plugin": "^5.33.0",
-    "@typescript-eslint/parser": "^5.33.0",
-    "eslint": "7.32.0",
+    "eslint": "8.23.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-next": "12.2.4",
+    "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-next": "^0.0.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "file-loader": "^6.2.0",
-    "prettier": "^2.7.1",
-    "typescript": "4.7.4"
+    "prettier": "^2.7.1"
   },
-  "include": [
-    "index.d.ts"
-  ]
+  "main": "index.js",
+  "license": "MIT"
 }

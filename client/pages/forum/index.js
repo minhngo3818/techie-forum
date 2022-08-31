@@ -1,4 +1,4 @@
-import PageHeader from "../../components/pageHeader";
+import PageHeader from "../../components/PageHeader";
 import { Box } from "@mui/material";
 
 // Styling

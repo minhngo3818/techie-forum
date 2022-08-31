@@ -1,5 +1,5 @@
 import { Form, Button } from "react-bootstrap";
-import PageHeader from "../components/pageHeader";
+import PageHeader from "../components/PageHeader";
 import Link from "next/link";
 import styles from "../styles/Register.module.css";
 
@@ -7,7 +7,7 @@ const Register = () => {
   return (
     <div className={styles.container}>
       <PageHeader pageName={"User Register"} />
-      <Form className={styles.formContainer}>
+      <Form className={styles.formContainer} name="login">
         <Form.Group className={styles.group}>
           <Form.Label className={styles.label}>Username</Form.Label>
           <Form.Control

@@ -1,7 +1,8 @@
 import { Form, Button } from "react-bootstrap";
 import Link from "next/link";
-import PageHeader from "../components/pageHeader";
+import PageHeader from "../components/PageHeader";
 import styles from "../styles/Login.module.css";
+
 
 const Login = () => {
   return (
@@ -12,16 +13,20 @@ const Login = () => {
           <Form.Label className={styles.label}>Username</Form.Label>
           <Form.Control
             className={styles.formControl}
+            name="username"
             type="text"
             placeholder="Enter username"
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group className={styles.group}>
           <Form.Label className={styles.label}>Password</Form.Label>
           <Form.Control
             className={styles.formControl}
+            name="password"
             type="password"
             placeholder="Enter password"
+            required
           ></Form.Control>
         </Form.Group>
         <Form.Group className={styles.group}>
