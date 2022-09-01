@@ -30,7 +30,7 @@ const Register = () => {
           ></Form.Control>
         </Form.Group>
         <Form.Group className={styles.group}>
-          <Form.Label className={styles.label}>Re-enter Password</Form.Label>
+          <Form.Label className={styles.label}>Confirm Password</Form.Label>
           <Form.Control
             className={styles.formControl}
             type="password"
