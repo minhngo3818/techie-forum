@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from "react";
-import axiosInstance from "axios";
+import axiosInstance from "../axios/index";
 import { useRouter } from "next/router";
 
 const AuthContext = createContext();
@@ -9,13 +9,14 @@ export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
 
   const login = async (userInput) => {
-    let response = await axiosInstance
-      .post("http://127.0.0.1:8000/api/user/auth/login/", JSON.stringify(userInput), {
-        headers: { "Content-Type": "application/json" },
-      })
+    const response = await axiosInstance
+      .post(
+        "http://127.0.0.1:8000/api/user/auth/login/",
+        JSON.stringify(userInput)
+      )
       .catch((error) => console.log(error));
-
-    if (response.status === 200) {
+      
+    if (response.data) {
       setIsAuth(true);
       console.log(response.data);
       localStorage.setItem("user", JSON.stringify(response.data));
@@ -31,13 +32,11 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userInput) => {
     let response = await axiosInstance
-      .post("http://127.0.0.1:8000/api/user/register", JSON.stringify(userInput), {
-        headers: { "Content-Type": "application/json" },
-      })
+      .post(`/user/register`, JSON.stringify(userInput))
       .catch((error) => console.log(error));
 
     if (response.status === 200) {
-      router.push("/homepage")
+      router.push("/homepage");
     }
   };
 
