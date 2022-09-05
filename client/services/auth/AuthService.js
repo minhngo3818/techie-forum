@@ -10,12 +10,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (userInput) => {
     const response = await axiosInstance
-      .post(
-        "http://127.0.0.1:8000/api/user/auth/login/",
-        JSON.stringify(userInput)
-      )
+      .post("user/auth/login/", JSON.stringify(userInput))
       .catch((error) => console.log(error));
-      
+
     if (response.data) {
       setIsAuth(true);
       console.log(response.data);
@@ -32,12 +29,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userInput) => {
     let response = await axiosInstance
-      .post(`/user/register`, JSON.stringify(userInput))
+      .post(`user/register/`, JSON.stringify(userInput))
       .catch((error) => console.log(error));
-
-    if (response.status === 200) {
-      router.push("/homepage");
-    }
   };
 
   const authService = {
