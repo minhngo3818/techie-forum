@@ -15,15 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from rest_framework.routers import DefaultRouter
 # API Router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/forum/", include("forum.urls")),
-    path("api/user/", include("user.urls"))
+    # path("api/", include("forum.urls")),
+    path("api/", include("user.urls"))
 ]
 
-urlpatterns += [
-    path("api-auth/", include("rest_framework.urls"))
-]
+router = DefaultRouter()
+
+urlpatterns += router.urls

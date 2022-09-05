@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.utils import timezone
 from rest_framework import viewsets, generics
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import User, Profile
@@ -28,7 +29,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
         Provide ready-only api view user information for admin
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
     queryset = User.objects.all().order_by("-id")
     serializer_class = UserSerializer
 
@@ -44,7 +45,7 @@ class UserRegisterView(generics.CreateAPIView):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     """
-        Fetch database to read, create and update
+        Fetch database to read, create, update, and delete profile
     """
     permission_classes = [IsAuthenticated, IsAdminUser]
     serializer_class = ProfileSerializer

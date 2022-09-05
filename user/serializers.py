@@ -18,7 +18,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"
+        # NOTES: non-exist field will result hyperlinked relationship
+        fields = ["id", "username", "email", "first_name", "last_name"]
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -65,7 +66,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    user = UserSerializer(many=False)
+    user = UserSerializer()
 
     class Meta:
         model = Profile

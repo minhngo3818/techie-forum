@@ -19,5 +19,5 @@ router.register(r"like-comment", LikeCommentViews, basename="like-comment")
 router.register(r"tag", TagViews, basename="tag")
 
 urlpatterns = [
-    path("", include(router.urls))
+    path("forum/", include(router.urls))
 ]
