@@ -3,7 +3,7 @@
 }
 
 .group {
-  margin: 1.5rem auto;
+  margin: 0.75rem auto;
 }
 
 .formContainer {
@@ -69,4 +69,25 @@
 .btn:focus {
   outline: none;
   box-shadow: none;
+}
+
+/* Valid icons */
+.valid {
+  margin-left: 0.5rem;
+  color: limegreen;
+}
+
+.invalid {
+  margin-left: 0.5rem;
+  color: red;
+}
+
+.hide {
+  display: none;
+}
+
+.invalidNote {
+  margin: 1rem 0;
+  font-size: 14px;
+  color: red;
 }
