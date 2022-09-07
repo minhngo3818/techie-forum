@@ -1,6 +1,6 @@
 import { Router, useRouter } from "next/router";
 import PageHeader from "../../components/PageHeader";
-import Thread from "../../components/Thread";
+import Thread from "../../components/forum/Thread";
 
 const Field = () => {
   const router = useRouter();

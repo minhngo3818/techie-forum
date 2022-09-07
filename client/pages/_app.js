@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import "bootstrap/dist/css/bootstrap.css";
 import SSRProvider from "react-bootstrap/SSRProvider";
 import { AuthProvider } from "../services/auth/AuthService";
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -14,6 +15,7 @@ function MyApp({ Component, pageProps }) {
           </Layout>
         </SSRProvider>
       </AuthProvider>
+      <ToastContainer />
     </>
   );
 }

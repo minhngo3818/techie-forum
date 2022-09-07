@@ -23,9 +23,11 @@ const AvatarDropdown = () => {
       <NavDropdown title={Avatar}>
         {userDropdowns.map((dropdown) => {
           return (
-            <NavDropdown.Item key={dropdown.name} as="a" type="button">
-              {dropdown.name}
-            </NavDropdown.Item>
+            <Link href={`${dropdown.path}`}>
+              <NavDropdown.Item key={dropdown.name} as="a" type="button">
+                {dropdown.name}
+              </NavDropdown.Item>
+            </Link>
           );
         })}
         <NavDropdown.Divider />

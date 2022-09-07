@@ -17,37 +17,11 @@
   color: white;
 }
 
-.formControl {
-  border: none;
-}
-
-.formControl:focus {
-  outline: none;
-  box-shadow: 0 0 5px 5px gray;
-}
-
-.btnContainer {
-  display: flex;
-  padding: 10px;
-}
-
-.btn {
-  margin-right: 1rem;
-  background-color: white;
-  color: black;
-  border: none;
-}
-
-.btn:hover {
-  background-color: gray;
-}
-
-.btn:focus {
-  outline: none;
-  box-shadow: none;
-}
-
 .link {
   padding: 5px;
   color: white;
+}
+
+.input:-internal-autofill-selected {
+  background-color: black;
 }

@@ -1,13 +1,14 @@
 import { useState, useEffect, useReducer, useContext } from "react";
 import AuthContext from "../services/auth/AuthService";
 import PageHeader from "../components/PageHeader";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, FormSelect } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
 import styles from "../styles/Register.module.css";
+import customBS from "../styles/CustomBootstrap.module.css";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PASSWORD_REGEX =
@@ -81,10 +82,11 @@ const Register = () => {
             />
           </Form.Label>
           <Form.Control
-            className={styles.formControl}
+            className={customBS.formControl}
             name="username"
             type="text"
             onChange={(e) => setSignUp({ ...signUp, username: e.target.value })}
+            placeholder="Enter username"
             required
           ></Form.Control>
           <p
@@ -103,10 +105,11 @@ const Register = () => {
         <Form.Group className={styles.group}>
           <Form.Label className={styles.label}>Email</Form.Label>
           <Form.Control
-            className={styles.formControl}
+            className={customBS.formControl}
             name="email"
             type="text"
             onChange={(e) => setSignUp({ ...signUp, email: e.target.value })}
+            placeholder="Enter email"
             required
           ></Form.Control>
         </Form.Group>
@@ -128,10 +131,11 @@ const Register = () => {
             />
           </Form.Label>
           <Form.Control
-            className={styles.formControl}
+            className={customBS.formControl}
             name="password"
             type="password"
             onChange={(e) => setSignUp({ ...signUp, password: e.target.value })}
+            placeholder="Enter password"
             required
           ></Form.Control>
           <p
@@ -173,12 +177,13 @@ const Register = () => {
             />
           </Form.Label>
           <Form.Control
-            className={styles.formControl}
+            className={customBS.formControl}
             name="confirmPassword"
             type="password"
             onChange={(e) =>
               setSignUp({ ...signUp, password2: e.target.value })
             }
+            placeholder="Re-enter password"
             required
           ></Form.Control>
           <p
@@ -192,8 +197,8 @@ const Register = () => {
           </p>
         </Form.Group>
 
-        <Form.Group className={styles.btnContainer}>
-          <Button className={styles.btn} type="submit">
+        <Form.Group className={customBS.btnContainerMid}>
+          <Button className={customBS.btnMid} type="submit">
             Sign-Up
           </Button>
         </Form.Group>

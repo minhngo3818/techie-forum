@@ -8,7 +8,7 @@ const containerStyle = {
 
 const boxStyle = {
   margin: "auto",
-  maxWidth: "1000px",
+  maxWidth: "800px",
   width: "100%",
   padding: "20px 50px",
   color: "white",
@@ -16,7 +16,6 @@ const boxStyle = {
 };
 
 // Props
-
 const Thread = (props) => {
   return (
     <Container sx={containerStyle}>
@@ -26,6 +25,7 @@ const Thread = (props) => {
         <p>{props.content}</p>
         <p>Likes: {props.likes}</p>
         <p>Forum: {props.category}</p>
+        <p>Tags: {props.tag}</p>
       </Box>
     </Container>
   );

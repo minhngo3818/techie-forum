@@ -2,6 +2,7 @@ import { Form, Button } from "react-bootstrap";
 import Link from "next/link";
 import PageHeader from "../components/PageHeader";
 import styles from "../styles/Login.module.css";
+import customBS from "../styles/CustomBootstrap.module.css";
 import AuthContext from "../services/auth/AuthService";
 import { useState, useContext } from "react";
 
@@ -17,12 +18,12 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      <PageHeader pageName="Login Page" />
+      <PageHeader pageName="Login" />
       <Form className={styles.formContainer} onSubmit={handleLogin}>
         <Form.Group className={styles.group}>
           <Form.Label className={styles.label}>Username</Form.Label>
           <Form.Control
-            className={styles.formControl}
+            className={customBS.formControl}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
             type="text"
@@ -33,7 +34,7 @@ const Login = () => {
         <Form.Group className={styles.group}>
           <Form.Label className={styles.label}>Password</Form.Label>
           <Form.Control
-            className={styles.formControl}
+            className={customBS.formControl}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             type="password"
@@ -42,11 +43,11 @@ const Login = () => {
           ></Form.Control>
         </Form.Group>
         <Form.Group className={styles.group}>
-          <Button className={styles.btn} type="submit">
-            Login
+          <Button className={customBS.btn} type="submit">
+            Sign-in
           </Button>
           <Link href={`/register`}>
-            <Button className={styles.btn} as="a">
+            <Button className={customBS.btn} as="a">
               Register
             </Button>
           </Link>

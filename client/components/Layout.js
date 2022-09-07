@@ -7,7 +7,6 @@ const Layout = ({ children }) => {
     <Box sx={{ backgroundColor: "#000", minHeight: "1200px", width: "100%" }}>
       <Navigation />
       <main>{children}</main>
-      <Footer />
     </Box>
   );
 };

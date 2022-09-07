@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import axiosInstance from "../axios/index";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -13,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       .post("user/auth/login/", JSON.stringify(userInput))
       .catch((error) => console.log(error));
 
-    if (response.data) {
+    if (response?.data) {
       setIsAuth(true);
       console.log(response.data);
       localStorage.setItem("user", JSON.stringify(response.data));
@@ -29,8 +30,19 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userInput) => {
     let response = await axiosInstance
-      .post(`user/register/`, JSON.stringify(userInput))
+      .post("user/register/", JSON.stringify(userInput))
       .catch((error) => console.log(error));
+
+    if (response?.status === 201) {
+      // TODO
+      // Add time out message to redirect
+      toast.success("Your account was created successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      // Proceed user login
+      // Redirect to profile page
+      router.push("/homepage");
+    }
   };
 
   const authService = {

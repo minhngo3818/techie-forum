@@ -1,0 +1,61 @@
+.profile {
+  margin: auto;
+  display: grid;
+  grid-template-columns: auto;
+  grid-row-gap: 2rem;
+  max-width: 960px;
+  width: 100%;
+  color: #fff;
+}
+
+.profile .header {
+  max-width: inherit;
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray;
+  z-index: 3;
+}
+
+/*  Display user links */
+.headerUrls {
+  display: flex;
+  margin: auto;
+}
+
+/* Display avatar section */
+.headerAvatar {
+  display: block;
+  margin: auto;
+}
+
+/* Display stat section */
+.headerStats {
+  display: inline-block;
+  margin: auto;
+}
+
+/* General widget styling */
+.profile .widget {
+  max-width: inherit;
+  width: inherit;
+}
+
+.widgetHeader {
+  max-width: 200px;
+  width: 100%;
+  height: 40px;
+  display: block;
+  text-align: center;
+  line-height: 2.25rem;
+  border: 1px solid gray;
+}
+
+.widgetContent {
+  max-width: inherit;
+  width: inherit;
+  display: block;
+  margin: 0;
+  padding: 1.5rem;
+  border: 1px solid gray;
+}
