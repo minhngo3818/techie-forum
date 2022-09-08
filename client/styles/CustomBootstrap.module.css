@@ -47,7 +47,8 @@
   margin: 1rem 0;
 }
 
-.btn:hover, .btnMid:hover {
+.btn:hover,
+.btnMid:hover {
   background-color: gray;
 }
 
