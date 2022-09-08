@@ -1,5 +1,6 @@
 import { Form, Button, Carousel } from "react-bootstrap";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../../components/PageHeader";
+import AuthGuard from "../../services/auth/AuthGuard";
 
 // This page for new user to create their profile
 
@@ -15,4 +16,4 @@ const ProfileCreate = () => {
   );
 };
 
-export default ProfileCreate;
+export default AuthGuard(ProfileCreate);
