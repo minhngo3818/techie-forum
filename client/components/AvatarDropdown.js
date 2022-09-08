@@ -3,7 +3,7 @@ import Link from "next/link";
 import AuthContext from "../services/auth/AuthService";
 import { useContext } from "react";
 import { useRouter } from "next/router";
-import userDropdowns from "../data/user-links";
+import userDropdowns from "../page-path/user-links";
 
 const AvatarDropdown = () => {
   const { logout } = useContext(AuthContext);
@@ -23,7 +23,7 @@ const AvatarDropdown = () => {
       <NavDropdown title={Avatar}>
         {userDropdowns.map((dropdown) => {
           return (
-            <Link href={`${dropdown.path}`}>
+            <Link key={dropdown.name} href={`/user/${dropdown.path}`}>
               <NavDropdown.Item key={dropdown.name} as="a" type="button">
                 {dropdown.name}
               </NavDropdown.Item>

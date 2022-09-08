@@ -1,5 +1,5 @@
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
-import { forumLinks as forums } from "../data/forum-links";
+import forumLinks from "../page-path/forum-links";
 import Link from "next/link";
 import AuthContext from "../services/auth/AuthService";
 import { useContext } from "react";
@@ -7,37 +7,32 @@ import { useRouter } from "next/router";
 import AvatarDropdown from "./AvatarDropdown";
 import styles from "../styles/Navbar.module.css";
 
-const userPages = ["Dashboard", "Profile", "Account", "Logout"];
-
 // TODO: break downs Navigation into sub functions
 const Navigation = () => {
   const router = useRouter();
-  let { isAuth } = useContext(AuthContext);
+  let { auth } = useContext(AuthContext);
 
   return (
     <Navbar bg="light" variant="light" expand="lg" sticky="top">
       <Container>
-        <Navbar.Brand className={styles.brand}>Techies</Navbar.Brand>
+        <Link href={"/"}>
+          <Navbar.Brand className={styles.brand}>Techies</Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Link href={`/homepage`}>
-              <Nav.Link className={styles.navLink} as="a" type="button">
-                Home
-              </Nav.Link>
-            </Link>
             <Link href={`/about`}>
               <Nav.Link className={styles.navLink} as="a" type="button">
                 About
               </Nav.Link>
             </Link>
-            {isAuth && (
+            {auth && (
               <NavDropdown
                 className={styles.navLink}
                 title="Forums"
                 id="basic-nav-dropdown"
               >
-                {forums.map((forum) => {
+                {forumLinks.map((forum) => {
                   return (
                     <Link href={`/forum/${forum.path}`} key={forum.name}>
                       <NavDropdown.Item as="a" type="button">
@@ -51,7 +46,7 @@ const Navigation = () => {
           </Nav>
 
           <Nav className="justify-content-end">
-            {isAuth ? (
+            {auth ? (
               <AvatarDropdown />
             ) : (
               <Link href="/login">

@@ -1,4 +1,4 @@
-export const forumLinks = [
+const forumLinks = [
   {
     name: "Web Design",
     path: "web-design",
@@ -24,3 +24,5 @@ export const forumLinks = [
     path: "languages",
   },
 ];
+
+export default forumLinks;
