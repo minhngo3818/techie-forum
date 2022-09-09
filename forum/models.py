@@ -7,6 +7,7 @@ from .choices import CATEGORIES
 class Thread(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True, related_name='Threads')
     content = models.TextField(null=True, blank=True)
+    tags = models.ManyToManyField("Tag", blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     liked = models.ManyToManyField(Profile, default=None, blank=True, related_name='liked')
