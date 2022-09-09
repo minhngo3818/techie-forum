@@ -10,7 +10,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        token['id'] = user.id
+        token['id'] = str(user.id)  # uuid has it own type, must convert to str in order for json serializing
 
         return token
 
@@ -19,7 +19,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         # NOTES: non-exist field will result hyperlinked relationship
-        fields = ["id", "username", "email", "first_name", "last_name"]
+        fields = ["id","username", "email", "first_name", "last_name"]
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

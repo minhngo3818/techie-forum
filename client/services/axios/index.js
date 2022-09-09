@@ -1,4 +1,3 @@
-import { SettingsApplications } from "@mui/icons-material";
 import axios from "axios";
 
 const DEV_URL = "http://127.0.0.1:8000/api/";

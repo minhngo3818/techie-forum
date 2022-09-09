@@ -5,9 +5,9 @@ import { Box } from "@mui/material";
 
 const Forum = () => {
   return (
-    <Box>
+    <>
       <PageHeader pageName="Forum" />;
-    </Box>
+    </>
   );
 };
 

@@ -1,0 +1,11 @@
+.postFormOpen {
+  display: block;
+  width: 100%;
+  height: 200px;
+  margin: 2rem 0;
+  border: 1px solid gray;
+}
+
+.postFormClose {
+  display: none;
+}
