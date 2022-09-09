@@ -18,7 +18,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        # NOTES: non-exist field will result hyperlinked relationship
+        # NOTES: non-exist field will result hyperlinked relationship error
         fields = ["id","username", "email", "first_name", "last_name"]
 
 
@@ -51,7 +51,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Password didn't match!"})
 
         # add all fields to create an instance
-        # result error if add password2
         return attrs
 
     def create(self, validate_data):
