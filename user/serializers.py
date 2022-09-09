@@ -48,7 +48,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"email": "This email is already existed!"})
         # Check matching password
         if attrs["password"] != attrs["password2"]:
-            raise serializers.ValidationError({"password": "Password didn't matched!"})
+            raise serializers.ValidationError({"password": "Password didn't match!"})
 
         # add all fields to create an instance
         # result error if add password2
