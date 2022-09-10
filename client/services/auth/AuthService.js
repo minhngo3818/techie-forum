@@ -7,12 +7,15 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const router = useRouter();
+
+  // default state null will logout user when refresh despite
+  // auth in local storage
   const [auth, setAuth] = useState(null);
 
   const login = async (userInput) => {
     try {
       let response = await axiosInstance.post(
-        "user/auth/login/",
+        "user/auth/",
         JSON.stringify(userInput)
       );
 
