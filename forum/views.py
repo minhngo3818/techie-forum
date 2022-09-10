@@ -4,19 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
-from .models import (
-    Thread,
-    Comment,
-    Like,
-    LikeComment,
-    Tag
-)
+from .models import Thread, Comment, Like, LikeComment, Tag
 from .serializers import (
     ThreadSerializer,
     CommentSerializer,
     LikeSerializer,
     LikeCommentSerializer,
-    TagSerializer
+    TagSerializer,
 )
 
 

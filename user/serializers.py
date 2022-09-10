@@ -11,7 +11,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        token['id'] = str(user.id)  # uuid has it own type, must convert to str in order for json serializing
+        token["id"] = str(
+            user.id
+        )  # uuid has it own type, must convert to str in order for json serializing
 
         return token
 
@@ -20,20 +22,21 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         # NOTES: non-exist field will result hyperlinked relationship error
-        fields = ["id","username", "email", "first_name", "last_name"]
+        fields = ["id", "username", "email", "first_name", "last_name"]
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
     )
     username = serializers.CharField(
         max_length=100,
         required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        validators=[UniqueValidator(queryset=User.objects.all())],
     )
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(
+        write_only=True, required=True, validators=[validate_password]
+    )
     password2 = serializers.CharField(write_only=True, required=True)
 
     """
@@ -50,10 +53,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         # Validate username
         if User.objects.filter(username=attrs["username"]).exists():
-            raise serializers.ValidationError({"username": "This username is already existed!"})
+            raise serializers.ValidationError(
+                {"username": "This username is already existed!"}
+            )
         # Validate email
         if User.objects.filter(username=attrs["email"]).exists():
-            raise serializers.ValidationError({"email": "This email is already existed!"})
+            raise serializers.ValidationError(
+                {"email": "This email is already existed!"}
+            )
         # Check matching password
         if attrs["password"] != attrs["password2"]:
             raise serializers.ValidationError({"password": "Password didn't match!"})
@@ -64,6 +71,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     """
         Return a token pair in response when calling serializer
     """
+
     def get_tokens(self, user):
         token = RefreshToken.for_user(user=user)
         refresh = str(token)
@@ -75,7 +83,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             username=validate_data["username"],
             email=validate_data["email"],
         )
-        
+
         user.set_password(validate_data["password"])
         user.save()
 
@@ -84,29 +92,26 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True, required=True)
-    new_password1 = serializers.CharField(write_only=True, required=True)
+    new_password = serializers.CharField(write_only=True, required=True)
     new_password2 = serializers.CharField(write_only=True, required=True)
 
-    def validate_old_password(self, attrs):
-        user = self.context["request"].user
-
-        if not user.check_password(attrs["old_password"]):
-            raise serializers.ValidationError({"old_password": "Your old password is incorrect"})
-
-        return attrs
-
     def validate(self, attrs):
-        if attrs["new_password1"] != attrs["new_password2"]:
-            raise serializers.ValidationError({"new_password1": "Your new password didn't match"})
+        if not self.context["request"].user.check_password(attrs["old_password"]):
+            raise serializers.ValidationError(
+                {"old_password": "Your input old password is incorrect"}
+            )
+
+        if attrs["new_password"] != attrs["new_password2"]:
+            raise serializers.ValidationError(
+                {"new_password": "New password did not match"}
+            )
+
         return attrs
 
-    def save(self, attrs):
-        password = self.validated_data["new_password1"]
-        user = self.context["request"].user
-        user.set_password(password)
-        user.save()
-
-        return user
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data["new_password"])
+        instance.save()
+        return instance
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):

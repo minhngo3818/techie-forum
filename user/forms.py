@@ -19,4 +19,11 @@ class CustomUserChangeForm(UserChangeForm):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ["firstName", "lastName", "bio", "avatar", "createdDate", "updatedDate"]
+        fields = [
+            "firstName",
+            "lastName",
+            "bio",
+            "avatar",
+            "createdDate",
+            "updatedDate",
+        ]

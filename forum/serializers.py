@@ -1,12 +1,6 @@
 from rest_framework import serializers
 from user.serializers import ProfileSerializer
-from .models import (
-    Thread,
-    Comment,
-    Like,
-    LikeComment,
-    Tag
-)
+from .models import Thread, Comment, Like, LikeComment, Tag
 
 
 class ThreadSerializer(serializers.HyperlinkedModelSerializer):

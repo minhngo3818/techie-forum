@@ -21,6 +21,12 @@ migrations:
 migrate:
 	python3 manage.py migrate
 
+collect-static:
+	python3 manage.py collectstatic
+
+format:
+	black **/*.py
+
 clean:
 	rm -rf $(VENV)
 	find . -type f -name '*.pyc' -delete
