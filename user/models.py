@@ -27,8 +27,6 @@ class Profile(models.Model):
     display_name_id = models.IntegerField(
         default=1000, null=True, blank=True, unique=True
     )  # use in put request
-    first_name = models.CharField(max_length=100, null=True, blank=True)
-    last_last = models.CharField(max_length=100, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     avatar = models.ImageField(
         default=os.path.join("media", "avatar", "default-avatar.png"),
