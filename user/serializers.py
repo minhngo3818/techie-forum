@@ -115,8 +115,17 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    user = UserSerializer()
-
     class Meta:
         model = Profile
-        fields = "__all__"
+        fields = [
+            "display_name",
+            "bio",
+            "avatar",
+            "twitter_url",
+            "reddit_url",
+            "github_url",
+            "stackoverflow_url",
+            "linkedin_url",
+            "indeed_url",
+            "id",
+        ]

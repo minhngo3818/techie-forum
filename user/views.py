@@ -44,7 +44,7 @@ class UserRegisterView(generics.CreateAPIView):
 
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 class ChangePasswordView(generics.UpdateAPIView):
@@ -61,7 +61,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """
     Fetch database to read, create, update, and delete profile
     """
+
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_date=timezone.now(), owner=self.request.user)

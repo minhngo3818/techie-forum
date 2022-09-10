@@ -54,7 +54,7 @@ class Profile(models.Model):
         ordering = ["-created_date"]
 
     def __str__(self) -> str:
-        return str(self.owner.name)
+        return str(self.owner.username)
 
     @property
     def image_url(self) -> str:
