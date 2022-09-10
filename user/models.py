@@ -32,7 +32,7 @@ class Profile(models.Model):
     bio = models.TextField(null=True, blank=True)
     avatar = models.ImageField(
         default=os.path.join("media", "avatar", "default-avatar.png"),
-        upload_to="images",
+        upload_to=os.path.join("media", "avatar"),
         null=True,
         blank=True,
     )  # add default avatar
