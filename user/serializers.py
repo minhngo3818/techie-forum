@@ -1,9 +1,8 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Profile
 
 
@@ -37,9 +36,16 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 
+    """
+        Read-only tokens field
+        Use for adding a custom function to return 
+        tokens pair in UserRegister createAPIView
+    """
+    tokens = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["email", "username", "password", "password2"]
+        fields = ["email", "username", "password", "password2", "tokens"]
 
     def validate(self, attrs):
         # Validate username
@@ -55,6 +61,15 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         # add all fields to create an instance
         return attrs
 
+    """
+        Return a token pair in response when calling serializer
+    """
+    def get_tokens(self, user):
+        token = RefreshToken.for_user(user=user)
+        refresh = str(token)
+        access = str(token.access_token)
+        return {"refresh": refresh, "access": access}
+
     def create(self, validate_data):
         user = User.objects.create_user(
             username=validate_data["username"],
@@ -63,9 +78,33 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         
         user.set_password(validate_data["password"])
         user.save()
-        
-        token = RefreshToken.for_user(user)        
-        response = { "refresh": str(token),, "access": str(token.access_token) }
+
+        return user
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(write_only=True, required=True)
+    new_password1 = serializers.CharField(write_only=True, required=True)
+    new_password2 = serializers.CharField(write_only=True, required=True)
+
+    def validate_old_password(self, attrs):
+        user = self.context["request"].user
+
+        if not user.check_password(attrs["old_password"]):
+            raise serializers.ValidationError({"old_password": "Your old password is incorrect"})
+
+        return attrs
+
+    def validate(self, attrs):
+        if attrs["new_password1"] != attrs["new_password2"]:
+            raise serializers.ValidationError({"new_password1": "Your new password didn't match"})
+        return attrs
+
+    def save(self, attrs):
+        password = self.validated_data["new_password1"]
+        user = self.context["request"].user
+        user.set_password(password)
+        user.save()
 
         return user
 
