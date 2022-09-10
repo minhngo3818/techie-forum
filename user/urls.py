@@ -7,8 +7,8 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 router = DefaultRouter()
-router.register(r"user-list", views.UserViewSet)
-router.register(r"profile-list", views.ProfileViewSet, basename="profile_view_set")
+router.register(r"user-view", views.UserViewSet)
+router.register(r"profile-view", views.ProfileViewSet, basename="profile_view")
 
 schema_view = get_schema_view(
     openapi.Info(

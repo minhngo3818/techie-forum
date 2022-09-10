@@ -61,18 +61,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """
     Fetch database to read, create, update, and delete profile
     """
-
-    permission_classes = [IsAuthenticated]
+    queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return self.request.profiles.all()
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(owner=self.request.user)
-
-    def perform_destroy(self, instance):
-        instance.delete(owner=self.request.user)
