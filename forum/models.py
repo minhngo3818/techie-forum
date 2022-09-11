@@ -98,7 +98,7 @@ class LikeComment(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True, unique=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     id = models.UUIDField(

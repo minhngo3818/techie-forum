@@ -68,8 +68,7 @@ class TagViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        thread = self.request.thread
-        return Tag.objects.filter(thread=thread)
+        return Tag.objects.all()
 
     def perform_create(self, serializer):
         serializer.save()
