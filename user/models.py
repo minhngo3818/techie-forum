@@ -29,8 +29,8 @@ class Profile(models.Model):
     )  # use in put request
     bio = models.TextField(null=True, blank=True)
     avatar = models.ImageField(
-        default=os.path.join("media", "avatar", "default-avatar.png"),
-        upload_to=os.path.join("media", "avatar"),
+        default=os.path.join("avatar", "default-avatar.png"),
+        upload_to="avatar",
         null=True,
         blank=True,
     )  # add default avatar
