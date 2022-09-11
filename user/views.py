@@ -31,7 +31,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     Provide ready-only api view user information for admin
     """
 
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     queryset = User.objects.all().order_by("-id")
     serializer_class = UserSerializer
 
@@ -44,7 +44,6 @@ class UserRegisterView(generics.CreateAPIView):
 
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class ChangePasswordView(generics.UpdateAPIView):
