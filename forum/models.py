@@ -8,6 +8,7 @@ class Thread(models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.CASCADE, null=True, blank=True, related_name="Threads"
     )
+    title = models.CharField(max_length=200, null=True, blank=True)
     content = models.TextField(null=True, blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -26,7 +27,7 @@ class Thread(models.Model):
         ordering = ["-created_date"]
 
     def __str__(self) -> str:
-        return str(self.author.name)
+        return str(self.owner.name)
 
     @property
     def numLikes(self) -> int:
@@ -64,7 +65,7 @@ class Comment(models.Model):
         ordering = ["-created_date", "-updated_date"]
 
     def __str__(self) -> str:
-        return "{}, comment created on {}".format(self.author.name, self.content)
+        return "{}, comment created on {}".format(self.owner.name, self.content)
 
     @property
     def numLikes(self) -> int:

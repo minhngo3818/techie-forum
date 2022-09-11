@@ -4,17 +4,12 @@ from .models import Thread, Comment, Like, LikeComment, Tag
 
 
 class ThreadSerializer(serializers.HyperlinkedModelSerializer):
-    owner = ProfileSerializer(many=False)
-
     class Meta:
         model = Thread
         fields = "__all__"
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
-    owner = ProfileSerializer(many=False)
-    thread = ThreadSerializer(many=False)
-
     class Meta:
         model = Comment
         fields = "__all__"
