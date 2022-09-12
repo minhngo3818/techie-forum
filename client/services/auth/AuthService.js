@@ -71,12 +71,35 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const changePassword = async (accessToken, passwords) => {
+    try {
+      let response = await axiosInstance.patch(
+        "user/auth/change-password/",
+        JSON.stringify(passwords),
+        {
+          headers: {
+            Authorization: Bearer`${accessToken}`
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("Your new password was set!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const authService = {
     auth: auth,
     login: login,
     logout: logout,
     register: register,
     verifyToken: verifyToken,
+    changePassword: changePassword
   };
 
   return (
