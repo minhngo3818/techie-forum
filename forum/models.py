@@ -41,11 +41,10 @@ class Comment(models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="comments"
     )
-    tweet = models.ForeignKey(
+    thread = models.ForeignKey(
         Thread,
         on_delete=models.CASCADE,
         null=True,
-        blank=True,
         related_name="comments_set",
     )
     content = models.TextField(null=True, blank=True)
@@ -79,7 +78,7 @@ class Like(models.Model):
     LIKE_CHOICES = (("Like", "Like"), ("Unlike", "Unlike"))
 
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    tweet = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     value = models.CharField(choices=LIKE_CHOICES, default="Like", max_length=10)
 
     def __str__(self) -> str:

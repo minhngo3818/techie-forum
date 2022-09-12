@@ -118,6 +118,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
         fields = [
+            "url",
             "display_name",
             "bio",
             "avatar",
@@ -127,5 +128,4 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             "stackoverflow_url",
             "linkedin_url",
             "indeed_url",
-            "id",
         ]
