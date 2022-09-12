@@ -9,25 +9,7 @@ const axiosInstance = axios.create({
   },
 });
 
-axiosInstance.interceptors.response.use(
-  function (response) {
-    return response;
-  },
-  function (error) {
-    if (error?.message) {
-      toast.error(error?.message);
-      return;
-    }
-    if (error?.response?.status === 401) {
-      toast.error("Unauthorized request!");
-      window.location = "/login";
-      return;
-    }
-
-    return Promise.reject(error);
-  }
-);
-
+// - Use interceptor to catch errors
 // - Use interceptor to add refresh authentication
 
 export default axiosInstance;
