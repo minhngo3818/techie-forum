@@ -1,9 +1,5 @@
-import { useRouter } from "next/router";
 import axiosInstance from "../axios";
-import { createContext } from "react";
 import jwtDecode from "jwt-decode";
-
-const UserContext = createContext();
 
 const getUser = async (accessToken) => {
   let response = await axiosInstance.get(
