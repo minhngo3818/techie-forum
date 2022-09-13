@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 import userDropdowns from "../page-path/user-links";
 
 const AvatarDropdown = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout, profile } = useContext(AuthContext);
 
   const Avatar = (
     <Image
-      src="../public/johnny.png"
+      src={profile.avatar}
       width="40px"
       height="40px"
       alt="user-avatar"

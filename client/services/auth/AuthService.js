@@ -19,6 +19,12 @@ export const AuthProvider = ({ children }) => {
     if (localStorage.getItem("tf_auth")) {
       setAuth(JSON.parse(localStorage.getItem("tf_auth")));
     }
+    if (localStorage.getItem("tf_user")) {
+      setUser(JSON.parse(localStorage.getItem("tf_user")));
+    }
+    if (localStorage.getItem("tf_profile")) {
+      setProfile(JSON.parse(localStorage.getItem("tf_profile")));
+    }
   }, []);
 
   const login = async (userInput) => {
@@ -28,20 +34,22 @@ export const AuthProvider = ({ children }) => {
     );
 
     if (authResponse?.data) {
-      setAuth(authResponse?.data);
       let userResponse = await UserServices.getUser(authResponse?.data?.access);
-      console.log(authResponse?.data?.access);
-      console.log(userResponse?.data);
-
       let profileResponse = await UserServices.getProfile(
         userResponse?.data?.id,
         authResponse?.data?.access
       );
       console.log(profileResponse?.data);
 
+      // Set context data
+      setAuth(authResponse?.data);
+      setUser(userResponse?.data);
+      setProfile(profileResponse?.data);
+
       // TODO: hash sensitive data before store in localStorage
       localStorage.setItem("tf_auth", JSON.stringify(authResponse?.data));
       localStorage.setItem("tf_user", JSON.stringify(userResponse?.data));
+      localStorage.setItem("tf_profile", JSON.stringify(profileResponse?.data));
       router.push("/");
     }
   };
