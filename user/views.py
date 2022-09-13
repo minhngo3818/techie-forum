@@ -31,7 +31,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     Provide ready-only api view user information for admin
     """
 
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all().order_by("-id")
     serializer_class = UserSerializer
 
@@ -64,6 +64,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = "owner"
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

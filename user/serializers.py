@@ -115,10 +115,13 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
     class Meta:
         model = Profile
         fields = [
-            "url",
+            "owner",
+            "id",
             "display_name",
             "bio",
             "avatar",
