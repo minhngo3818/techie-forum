@@ -9,7 +9,7 @@ const AuthGuard = (AuthComponent) => {
     const { verifyToken } = useContext(AuthContext);
 
     useEffect(() => {
-      let auth = JSON.parse(localStorage.getItem("auth"));
+      let auth = JSON.parse(localStorage.getItem("tf_auth"));
       let accessToken = auth?.access;
 
       if (!auth || !accessToken) {
@@ -20,7 +20,7 @@ const AuthGuard = (AuthComponent) => {
         if (isValidToken) {
           setIsVerified(true);
         } else {
-          localStorage.removeItem("auth");
+          localStorage.removeItem("tf_auth");
           setIsVerified(false);
           router.replace("/login");
         }
