@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 
 const getUser = async (accessToken) => {
   let response = await axiosInstance.get(
-    `user-view/${jwtDecode(accessToken)}/`,
+    `user-view/${jwtDecode(accessToken).id}/`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -11,25 +11,22 @@ const getUser = async (accessToken) => {
     }
   );
 
-  return response.data;
+  return response;
 };
 
-const getProfile = async (accessToken) => {
-  let response = await axiosInstance.get(
-    `profile-view/${jwtDecode(accessToken)}/`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+const getProfile = async (pk, accessToken) => {
+  let response = await axiosInstance.get(`profile-view/${pk}/`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-  return response.data;
+  return response;
 };
 
-const UserService = {
-  getUser,
-  getProfile,
+const UserServices = {
+  getUser: getUser,
+  getProfile: getProfile,
 };
 
-export default UserService;
+export default UserServices;
