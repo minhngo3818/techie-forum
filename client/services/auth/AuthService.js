@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from "react";
 import axiosInstance from "../axios/index";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import UserServices from "../user/UserServices";
 
 const AuthContext = createContext();
 
@@ -11,27 +12,47 @@ export const AuthProvider = ({ children }) => {
   // default state null will logout user when refresh despite
   // auth in local storage
   const [auth, setAuth] = useState(null);
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    if (localStorage.getItem("tf_auth")) {
+      setAuth(JSON.parse(localStorage.getItem("tf_auth")));
+    }
+  }, []);
 
   const login = async (userInput) => {
-    try {
-      let response = await axiosInstance.post(
-        "user/auth/",
-        JSON.stringify(userInput)
-      );
+    let authResponse = await axiosInstance.post(
+      "user/auth/",
+      JSON.stringify(userInput)
+    );
 
-      if (response?.data) {
-        setAuth(response?.data);
-        localStorage.setItem("auth", JSON.stringify(response?.data));
-        router.push("/");
-      }
-    } catch (error) {
-      console.log(error);
+    if (authResponse?.data) {
+      setAuth(authResponse?.data);
+      let userResponse = await UserServices.getUser(authResponse?.data?.access);
+      console.log(authResponse?.data?.access);
+      console.log(userResponse?.data);
+
+      let profileResponse = await UserServices.getProfile(
+        userResponse?.data?.id,
+        authResponse?.data?.access
+      );
+      console.log(profileResponse?.data);
+
+      // TODO: hash sensitive data before store in localStorage
+      localStorage.setItem("tf_auth", JSON.stringify(authResponse?.data));
+      localStorage.setItem("tf_user", JSON.stringify(userResponse?.data));
+      router.push("/");
     }
   };
 
   const logout = () => {
     setAuth(null);
-    localStorage.removeItem("user");
+    setUser(null);
+    setProfile(null);
+    localStorage.removeItem("tf_auth");
+    localStorage.removeItem("tf_user");
+    localStorage.removeItem("tf_profile");
     router.push("/login");
   };
 
@@ -50,7 +71,7 @@ export const AuthProvider = ({ children }) => {
         });
         // Proceed user login
         // Redirect to profile page
-        router.push("/user/profile-create");
+        router.push("/user/profile-create/");
       }
     } catch (error) {
       console.log(error);
@@ -78,7 +99,7 @@ export const AuthProvider = ({ children }) => {
         JSON.stringify(passwords),
         {
           headers: {
-            Authorization: Bearer`${accessToken}`
+            Authorization: Bearer`${accessToken}`,
           },
         }
       );
@@ -94,12 +115,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const authService = {
+    // Context data
     auth: auth,
+    user: user,
+    profile: profile,
+
+    // Context functions
     login: login,
     logout: logout,
     register: register,
     verifyToken: verifyToken,
-    changePassword: changePassword
+    changePassword: changePassword,
   };
 
   return (
