@@ -10,7 +10,7 @@ const AvatarDropdown = () => {
 
   const Avatar = (
     <Image
-      src={profile.avatar}
+      src={profile?.avatar}
       width="40px"
       height="40px"
       alt="user-avatar"

@@ -9,7 +9,7 @@ const ProfileBio = () => {
     <div className={styles.widget}>
       <div className={styles.widgetHeader}>Bio</div>
       <div className={styles.widgetContent}>
-        <p>{profile.bio}</p>
+        <p>{profile?.bio}</p>
       </div>
     </div>
   );

@@ -63,3 +63,19 @@
 .dropdownToggle::after {
   content: none !important;
 }
+
+.modalContent .modal-content {
+  background: transparent;
+  border: none;
+  border-radius: none;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.modalTitle {
+  color: white;
+}

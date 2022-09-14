@@ -1,5 +1,5 @@
 .profile {
-  margin: auto;
+  margin: 40px auto;
   display: grid;
   grid-template-columns: auto;
   grid-row-gap: 2rem;
@@ -10,6 +10,7 @@
 
 .profile .header {
   max-width: inherit;
+  padding: 20px;
   width: inherit;
   display: flex;
   flex-direction: column;
@@ -21,12 +22,38 @@
 .headerUrls {
   display: flex;
   margin: auto;
+  padding: 10px;
 }
 
 /* Display avatar section */
 .headerAvatar {
   display: block;
+  margin: 20px auto;
+  justify-content: center;
+}
+
+.avatarButton {
+  display: block;
   margin: auto;
+  background-color: transparent;
+  border: none;
+}
+
+.headerAvatar img {
+  display: block;
+  margin: auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid gray;
+  box-shadow: 0 0 5px 2px white;
+  object-fit: fill;
+}
+
+.headerAvatar h3 {
+  text-align: center;
+  margin: 0;
+  padding: 10px;
 }
 
 /* Display stat section */
@@ -59,3 +86,5 @@
   padding: 1.5rem;
   border: 1px solid gray;
 }
+
+/* Profile custom bootstrap */
