@@ -20,9 +20,32 @@
 
 /*  Display user links */
 .headerUrls {
-  display: flex;
+  display: block;
   margin: auto;
-  padding: 10px;
+  max-width: 920px;
+  width: 95%;
+  height: auto;
+  position: absolute;
+  z-index: 2;
+}
+
+.headerUrls .urlsGrid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin: 20px auto;
+  z-index: 3;
+}
+
+.headerUrls .urlsGrid a {
+  width: 100%;
+  height: 50px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.headerUrls .urlsGrid #right {
+  text-align: end;
+  display: none;
 }
 
 /* Display avatar section */
@@ -30,6 +53,19 @@
   display: block;
   margin: 20px auto;
   justify-content: center;
+}
+
+.avatarRowEdit {
+  margin: 10px auto;
+}
+
+.avatarEdit {
+  line-height: 38px;
+  padding-right: 0;
+}
+
+.avatarEdit p {
+  margin: 0;
 }
 
 .avatarButton {
@@ -41,6 +77,7 @@
 
 .headerAvatar img {
   display: block;
+  position: relative;
   margin: auto;
   width: 150px;
   height: 150px;
@@ -48,6 +85,7 @@
   border: 2px solid gray;
   box-shadow: 0 0 5px 2px white;
   object-fit: fill;
+  z-index: 30;
 }
 
 .headerAvatar h3 {
@@ -60,6 +98,28 @@
 .headerStats {
   display: inline-block;
   margin: auto;
+}
+
+.rangeField {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
+  width: 100%;
+}
+
+.rangeField input {
+  margin: auto;
+  width: 250px;
+}
+
+.rangeField .rangeAmount {
+  position: absolute;
+  font-size: 18px;
+  font-weight: 600px;
+  color: black;
+  top: 1rem;
 }
 
 /* General widget styling */

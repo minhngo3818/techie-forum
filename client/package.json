@@ -32,6 +32,7 @@
     "react": "18.2.0",
     "react-avatar-editor": "^13.0.0",
     "react-bootstrap": "^2.5.0",
+    "react-bootstrap-range-slider": "^3.0.8",
     "react-dom": "18.2.0",
     "react-is": "^18.2.0",
     "react-toastify": "^9.0.8",
