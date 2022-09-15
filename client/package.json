@@ -11,8 +11,6 @@
   },
   "dependencies": {
     "@babel/core": "^7.18.13",
-    "@ckeditor/ckeditor5-build-classic": "^35.1.0",
-    "@ckeditor/ckeditor5-react": "^5.0.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@faker-js/faker": "^7.5.0",
