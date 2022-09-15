@@ -1,11 +1,57 @@
 .postFormOpen {
   display: block;
   width: 100%;
-  height: 200px;
+  height: auto;
   margin: 2rem 0;
   border: 1px solid gray;
 }
 
 .postFormClose {
   display: none;
+}
+
+.Form {
+  display: block;
+  padding: 20px;
+  color: white;
+}
+
+/* Top Button List */
+.FormButtons {
+  display: flex;
+  padding-bottom: 10px;
+  border-bottom: 1px solid gray;
+}
+
+.IconButton {
+  display: block;
+  margin-right: 20px;
+  border: 1px solid gray;
+  border-radius: 0;
+  background-color: black;
+}
+
+.IconButton:hover {
+  background-color: black;
+  border: 1px solid gray;
+  box-shadow: 0 0 1px 2px gray;
+}
+
+.IconButton .Icon {
+  color: white;
+}
+
+.IconButton:focus {
+  background-color: black;
+  border: 1px solid gray;
+  box-shadow: 0 0 1px 2px gray;
+}
+
+.IconButton:active {
+  border: 1px solid gray;
+  box-shadow: none !important;
+}
+
+.OverlayTrigger {
+  margin-right: 20px;
 }
