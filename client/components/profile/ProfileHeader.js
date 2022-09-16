@@ -1,14 +1,15 @@
 import { useState, useRef, useContext, useEffect } from "react";
 import AuthContext from "../../services/auth/AuthService";
+import RefLink from "./sub/links/ref-link";
 import { Modal, Button, Col, Row } from "react-bootstrap";
 import RangeSlider from "react-bootstrap-range-slider";
 import AvatarEditor from "react-avatar-editor";
 import customBS from "../../styles/CustomBootstrap.module.css";
 import styles from "../../styles/Profile.module.css";
-import { style } from "@mui/system";
 
 const ProfileHeader = () => {
   const { profile } = useContext(AuthContext);
+  const [isProfile, setIsProfile] = useState(false);
   const [editAvatar, setEditAvatar] = useState(false);
 
   // Edit avatar handlers
@@ -16,80 +17,64 @@ const ProfileHeader = () => {
   const [rotate, setRotate] = useState(parseInt(0));
   const showEditAvatar = () => setEditAvatar(true);
   const closeEditAvatar = () => setEditAvatar(false);
-  const handleValue = (e) => {
-    scaleRef.current = e.target.value;
-  };
+
+  useEffect(() => {
+    if (profile !== null) {
+      setIsProfile(true);
+    } else {
+      setIsProfile(false);
+    }
+  }, [profile]);
 
   return (
     <div className={styles.header}>
       <div className={styles.headerUrls}>
         <div className={styles.urlsGrid}>
           <div className={styles.urlsHalf}>
-            <div className={styles.urlsLeftLink} id={styles.top}>
-              <p>
-                {profile !== null && profile.twitter_url !== null && (
-                  <a href={profile.twitter_url}>Twitter</a>
-                )}
-              </p>
-            </div>
-            <div className={styles.urlsLeftLink} id={styles.mid}>
-              <p>
-                {profile !== null && profile.reddit_url !== null && (
-                  <a href={profile.reddit_url}>Reddit</a>
-                )}
-              </p>
-            </div>
-            <div className={styles.urlsLeftLink} id={styles.bottom}>
-              <p>
-                {profile !== null && profile.stackoverflow_url !== null && (
-                  <a href={profile.stackoverflow_url}>Stackoverflow</a>
-                )}
-              </p>
-            </div>
+            <RefLink
+              name="Twitter"
+              urls={profile?.twitter_url}
+              profile={isProfile}
+              cssClass={styles.urlsLeftLink}
+              cssID={styles.top}
+            />
+            <RefLink
+              name="Reddit"
+              urls={profile?.reddit_url}
+              profile={isProfile}
+              cssClass={styles.urlsLeftLink}
+              cssID={styles.mid}
+            />
+            <RefLink
+              name="StackoverFlow"
+              urls={profile?.stackoverflow_url}
+              profile={isProfile}
+              cssClass={styles.urlsLeftLink}
+              cssID={styles.bottom}
+            />
           </div>
           <div className={styles.urlsHalf} id={styles.rightHalf}>
-            <div
-              className={
-                profile !== null && profile.linkedin_url !== null
-                  ? styles.urlsRightLink
-                  : null
-              }
-              id={styles.top}
-            >
-              <p>
-                {profile !== null && profile.linkedin_url !== null && (
-                  <a href={profile.linkedin_url}>Linkedin</a>
-                )}
-              </p>
-            </div>
-            <div
-              className={
-                profile !== null && profile.indeed_url !== null
-                  ? styles.urlsRightLink
-                  : null
-              }
-              id={styles.mid}
-            >
-              <p>
-                {profile !== null && profile.indeed_url !== null && (
-                  <a href={profile.indeed_url}>Indeed</a>
-                )}
-              </p>
-            </div>
-            <div
-              className={
-                profile !== null && profile.github_url !== null
-                  ? styles.urlsRightLink
-                  : null
-              }
-              id={styles.bottom}
-            >
-              <p>
-                {profile !== null && profile.github_url !== null && (
-                  <a href={profile.github_url}>Github</a>
-                )}
-              </p>
-            </div>
+            <RefLink
+              name="Linkedin"
+              urls={profile?.linkedin_url}
+              profile={isProfile}
+              cssClass={styles.urlsRightLink}
+              cssID={styles.top}
+            />
+            <RefLink
+              name="Indeed"
+              urls={profile?.indeed_url}
+              profile={isProfile}
+              cssClass={styles.urlsRightLink}
+              cssID={styles.mid}
+            />
+            <RefLink
+              name="Github"
+              urls={profile?.github_url}
+              profile={isProfile}
+              cssClass={styles.urlsRightLink}
+              cssID={styles.bottom}
+            />
           </div>
         </div>
       </div>
@@ -155,7 +140,6 @@ const ProfileHeader = () => {
             <Button variant="dark">Save Changes</Button>
           </Modal.Footer>
         </Modal>
-
         <h3>{profile?.display_name}</h3>
       </div>
       <div className={styles.headerStats}>
