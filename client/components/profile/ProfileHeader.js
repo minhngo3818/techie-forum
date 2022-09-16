@@ -5,6 +5,7 @@ import RangeSlider from "react-bootstrap-range-slider";
 import AvatarEditor from "react-avatar-editor";
 import customBS from "../../styles/CustomBootstrap.module.css";
 import styles from "../../styles/Profile.module.css";
+import { style } from "@mui/system";
 
 const ProfileHeader = () => {
   const { profile } = useContext(AuthContext);
@@ -23,33 +24,75 @@ const ProfileHeader = () => {
     <div className={styles.header}>
       <div className={styles.headerUrls}>
         <div className={styles.urlsGrid}>
-          {profile !== null && profile.twitter_url !== null && (
-            <a href={profile.twitter_url}>Twitter</a>
-          )}
-          {profile !== null && profile.reddit_url !== null && (
-            <a id={styles.right} href={profile.reddit_url}>
-              Reddit
-            </a>
-          )}
-          {profile !== null && profile.stackoverflow_url !== null && (
-            <a href={profile.stackoverflow_url}>Stack Overflow</a>
-          )}
-          {profile !== null && profile.linkedin_url !== null && (
-            <a id={styles.right} href={profile.linkedin_url}>
-              Linkedin
-            </a>
-          )}
-          {profile !== null && profile.indeed_url !== null && (
-            <a href={profile.indeed_url}>Indeed</a>
-          )}
-          {profile?.github_url !== null && (
-            <a id={styles.right} href={profile?.github_url}>
-              Github
-            </a>
-          )}
+          <div className={styles.urlsHalf}>
+            <div className={styles.urlsLeftLink} id={styles.top}>
+              <p>
+                {profile !== null && profile.twitter_url !== null && (
+                  <a href={profile.twitter_url}>Twitter</a>
+                )}
+              </p>
+            </div>
+            <div className={styles.urlsLeftLink} id={styles.mid}>
+              <p>
+                {profile !== null && profile.reddit_url !== null && (
+                  <a href={profile.reddit_url}>Reddit</a>
+                )}
+              </p>
+            </div>
+            <div className={styles.urlsLeftLink} id={styles.bottom}>
+              <p>
+                {profile !== null && profile.stackoverflow_url !== null && (
+                  <a href={profile.stackoverflow_url}>Stackoverflow</a>
+                )}
+              </p>
+            </div>
+          </div>
+          <div className={styles.urlsHalf} id={styles.rightHalf}>
+            <div
+              className={
+                profile !== null && profile.linkedin_url !== null
+                  ? styles.urlsRightLink
+                  : null
+              }
+              id={styles.top}
+            >
+              <p>
+                {profile !== null && profile.linkedin_url !== null && (
+                  <a href={profile.linkedin_url}>Linkedin</a>
+                )}
+              </p>
+            </div>
+            <div
+              className={
+                profile !== null && profile.indeed_url !== null
+                  ? styles.urlsRightLink
+                  : null
+              }
+              id={styles.mid}
+            >
+              <p>
+                {profile !== null && profile.indeed_url !== null && (
+                  <a href={profile.indeed_url}>Indeed</a>
+                )}
+              </p>
+            </div>
+            <div
+              className={
+                profile !== null && profile.github_url !== null
+                  ? styles.urlsRightLink
+                  : null
+              }
+              id={styles.bottom}
+            >
+              <p>
+                {profile !== null && profile.github_url !== null && (
+                  <a href={profile.github_url}>Github</a>
+                )}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      2
       <div className={styles.headerAvatar}>
         <img
           src={profile?.avatar}

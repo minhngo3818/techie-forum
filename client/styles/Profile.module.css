@@ -31,27 +31,113 @@
 
 .headerUrls .urlsGrid {
   display: grid;
+  max-width: inherit;
+  width: inherit;
   grid-template-columns: 50% 50%;
-  margin: 20px auto;
+  margin: 1.5rem auto;
+  height: 190px;
   z-index: 3;
 }
 
-.headerUrls .urlsGrid a {
-  width: 100%;
-  height: 50px;
-  background-color: white;
-  border: 1px solid black;
+.headerUrls .urlsGrid .urlsHalf {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 50px;
+  row-gap: 20px;
+  height: inherit;
 }
 
-.headerUrls .urlsGrid #right {
-  text-align: end;
-  display: none;
+.urlsHalf#rightHalf {
+  text-align: right;
+}
+
+.urlsLeftLink,
+.urlsRightLink {
+  display: flex;
+  height: 50px;
+}
+
+.urlsLeftLink p {
+  display: block;
+  margin: 0;
+  line-height: 50px;
+}
+
+.urlsLeftLink:after {
+  content: "";
+  display: block;
+  position: relative;
+  top: 0;
+  left: 20px;
+  width: 60%;
+  height: 30px;
+  margin: 0;
+}
+
+.urlsLeftLink#top:after {
+  top: 25px;
+  left: 25px;
+  width: 70%;
+  border-top: 1px solid gray;
+  border-right: 1px solid gray;
+  transform: skew(45deg);
+}
+
+.urlsLeftLink#mid:after {
+  width: 100%;
+  border-bottom: 1px solid gray;
+}
+
+.urlsLeftLink#bottom:after {
+  left: 30px;
+  width: 55%;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+  transform: skew(-45deg);
+}
+
+.urlsRightLink p {
+  display: block;
+  margin: 0;
+  line-height: 50px;
+  text-align: right;
+}
+
+.urlsRightLink:before {
+  content: "";
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 30px;
+  margin: 0;
+}
+
+.urlsRightLink#top:before {
+  top: 25px;
+  left: 50px;
+  right: -50px;
+  width: 100%;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  transform: skew(45deg);
+}
+
+.urlsRightLink#mid:before {
+  width: 100%;
+  border-bottom: 1px solid gray;
+}
+
+.urlsRightLink#bottom:before {
+  right: 0;
+  border-left: 1px solid gray;
+  border-bottom: 1px solid gray;
+  transform: skew(-45deg);
 }
 
 /* Display avatar section */
 .headerAvatar {
   display: block;
-  margin: 20px auto;
+  margin: 3rem auto;
   justify-content: center;
 }
 
@@ -90,7 +176,7 @@
 
 .headerAvatar h3 {
   text-align: center;
-  margin: 0;
+  margin: 1rem 0;
   padding: 10px;
 }
 
