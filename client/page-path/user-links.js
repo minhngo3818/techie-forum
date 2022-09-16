@@ -11,10 +11,6 @@ const userDropdowns = [
     name: "Account",
     path: "account",
   },
-  {
-    name: "Settings",
-    path: "settings",
-  },
 ];
 
 export default userDropdowns;
