@@ -1,14 +1,26 @@
 import { useState, useRef, useContext, useEffect } from "react";
-import AuthContext from "../../services/auth/AuthService";
-import RefLink from "./sub/links/ref-link";
-import { Modal, Button, Col, Row } from "react-bootstrap";
+import AuthContext from "../../../services/auth/AuthService";
+import RefLink from "./links/reference-links";
+import HeaderButtons from "./button/header-buttons";
+import {
+  OverlayTrigger,
+  Tooltip,
+  Modal,
+  Button,
+  Col,
+  Row,
+} from "react-bootstrap";
 import RangeSlider from "react-bootstrap-range-slider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import AvatarEditor from "react-avatar-editor";
-import customBS from "../../styles/CustomBootstrap.module.css";
-import styles from "../../styles/Profile.module.css";
+import customBS from "../../../styles/CustomBootstrap.module.css";
+import styles from "../../../styles/Profile.module.css";
 
 const ProfileHeader = () => {
   const { profile } = useContext(AuthContext);
+  const [isEdit, setIsEdit] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [editAvatar, setEditAvatar] = useState(false);
 
@@ -17,6 +29,16 @@ const ProfileHeader = () => {
   const [rotate, setRotate] = useState(parseInt(0));
   const showEditAvatar = () => setEditAvatar(true);
   const closeEditAvatar = () => setEditAvatar(false);
+
+  const handleEditButton = () => {
+    if (isEdit) {
+      setIsEdit(false);
+      console.log(isEdit);
+    } else {
+      setIsEdit(true);
+      console.log(isEdit);
+    }
+  };
 
   useEffect(() => {
     if (profile !== null) {
@@ -28,6 +50,8 @@ const ProfileHeader = () => {
 
   return (
     <div className={styles.header}>
+      <HeaderButtons isEdit={isEdit} setIsEdit={handleEditButton} />
+      <div className={styles.headerContent}></div>
       <div className={styles.headerUrls}>
         <div className={styles.urlsGrid}>
           <div className={styles.urlsHalf}>
