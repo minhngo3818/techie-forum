@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 import ImageButton from "./buttons/ImageButton";
 import { Form, Button } from "react-bootstrap";
 import styles from "./ThreadForm.module.css";
@@ -48,3 +49,7 @@ const ThreadForm = (props) => {
 };
 
 export default ThreadForm;
+
+ThreadForm.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+};
