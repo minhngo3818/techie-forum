@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import Layout from "../components/Layout";
+import Layout from "../components/layout/Layout";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import SSRProvider from "react-bootstrap/SSRProvider";

@@ -1,5 +1,5 @@
-import Navigation from "./Navbar";
-import Footer from "./Footer";
+import Navigation from "../navbar/Navbar";
+import Footer from "../footer/Footer";
 import { Box } from "@mui/material";
 
 const Layout = ({ children }) => {

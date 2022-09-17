@@ -1,11 +1,11 @@
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
-import forumLinks from "../page-path/forum-links";
+import forumLinks from "../../page-path/forum-links";
 import Link from "next/link";
-import AuthContext from "../services/auth/AuthService";
+import AuthContext from "../../services/auth/AuthService";
 import { useContext } from "react";
 import { useRouter } from "next/router";
-import AvatarDropdown from "./avatar-dropdown/AvatarDropdown";
-import styles from "../styles/Navbar.module.css";
+import AvatarDropdown from "../avatar-dropdown/AvatarDropdown";
+import styles from "./Navbar.module.css";
 
 // TODO: break downs Navigation into sub functions
 const Navigation = () => {
