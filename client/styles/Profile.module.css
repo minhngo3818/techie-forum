@@ -24,9 +24,9 @@
   margin: auto;
   max-width: 920px;
   width: 85%;
-  height: auto;
+  height: 200px;
   position: absolute;
-  z-index: 2;
+  z-index: 1;
 }
 
 .headerUrls .urlsGrid {
@@ -34,7 +34,7 @@
   max-width: inherit;
   width: inherit;
   grid-template-columns: 50% 50%;
-  margin: 1.5rem auto;
+  margin: 4rem auto;
   height: 190px;
   z-index: 3;
 }
@@ -240,5 +240,3 @@
   padding: 1.5rem;
   border: 1px solid gray;
 }
-
-/* Profile custom bootstrap */
