@@ -2,7 +2,7 @@ import { Router, useRouter } from "next/router";
 import PageHeader from "../../components/PageHeader";
 import { useState } from "react";
 import Thread from "../../components/forum/Thread";
-import ThreadForm from "../../components/forum/ThreadForm";
+import ThreadForm from "../../components/forum/thread-form/ThreadForm";
 import styles from "../../styles/Forum.module.css";
 
 const Field = () => {
