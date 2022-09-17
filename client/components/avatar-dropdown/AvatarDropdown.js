@@ -4,7 +4,7 @@ import AuthContext from "../../services/auth/AuthService";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import userDropdowns from "../../page-path/user-links";
-import styles from "./AvatarDropdown.module.css"
+import styles from "./AvatarDropdown.module.css";
 
 const AvatarDropdown = () => {
   const { logout, profile } = useContext(AuthContext);
