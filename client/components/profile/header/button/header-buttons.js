@@ -52,6 +52,6 @@ const HeaderButtons = (props) => {
 export default HeaderButtons;
 
 HeaderButtons.propTypes = {
-  isEdit: PropTypes.func.isRequired,
+  isEdit: PropTypes.bool.isRequired,
   setIsEdit: PropTypes.func,
 };
