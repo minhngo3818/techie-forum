@@ -1,0 +1,133 @@
+.postForm {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  border: 1px solid gray;
+}
+
+.postForm#formOpen {
+  min-height: 400px;
+}
+
+.postForm#formClose {
+  display: none;
+}
+
+.postForm .Form {
+  display: block;
+  padding: 20px;
+  color: white;
+}
+
+.postForm .formContent {
+  display: block;
+  margin: 1.5rem 2rem;
+  max-height: inherit;
+  height: inherit;
+}
+
+/* Top Button List */
+.postForm .formButtons {
+  display: flex;
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid gray;
+}
+
+.IconButton {
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  border: 1px solid gray;
+  border-radius: 0;
+  background-color: black;
+}
+
+.IconButton:hover {
+  background-color: black;
+  border: 1px solid gray;
+  box-shadow: 0 0 1px 2px gray !important;
+}
+
+.IconButton .Icon {
+  color: white;
+}
+
+.IconButton:focus {
+  background-color: black;
+  border: 1px solid gray;
+  box-shadow: 0 0 1px 2px gray !important;
+}
+
+.IconButton:active {
+  border: 1px solid gray;
+  box-shadow: none !important;
+}
+
+.overlayTrigger {
+  margin-right: 20px;
+  width: 40px;
+  height: 40px;
+}
+
+/* Forms */
+.label {
+  font-size: 24px;
+  font-weight: 500px;
+  margin: 10px 0;
+  color: white;
+}
+
+.threadContent {
+  width: 100%;
+  min-height: 100px;
+  height: auto;
+  background-color: black;
+  color: white;
+  border-radius: 0;
+  padding: 10px;
+  outline: 0;
+  transition: focus 0.3s ease-in-out;
+}
+
+.threadContent:focus {
+  box-shadow: 0 0 3px 1px white;
+  transition: 0.3s ease-in-out;
+}
+
+.submitBtnContainer {
+  display: block;
+  width: 100%;
+  margin: 1rem 0;
+  align-items: flex-end;
+}
+
+#postButton {
+  display: block;
+  width: 100px;
+  margin-right: 0;
+  margin-left: auto;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  border: 2px solid black;
+}
+
+#postButton:hover {
+  color: white;
+  box-shadow: 0 0 1px 2px white;
+}
+
+#postButton:focus {
+  color: white;
+  box-shadow: 0 0 1px 2px white !important;
+  border: 2px solid black !important;
+}
+
+#postButton:active {
+  color: white;
+  box-shadow: 0 0 1px 2px white !important;
+  border: 2px solid black !important;
+}
