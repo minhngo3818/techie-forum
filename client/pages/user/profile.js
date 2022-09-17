@@ -1,9 +1,9 @@
 import { useState } from "react";
 import AuthGuard from "../../services/auth/AuthGuard";
 import PageHeader from "../../components/PageHeader";
-import ProfileHeader from "../../components/profile/ProfileHeader";
-import ProfileBio from "../../components/profile/ProfileBio";
-import ProfilePorfolio from "../../components/profile/ProfilePorfolio";
+import ProfileHeader from "../../components/profile/header/ProfileHeader";
+import ProfileBio from "../../components/profile/bio/ProfileBio";
+import ProfilePorfolio from "../../components/profile/porfolio/ProfilePorfolio";
 import styles from "../../styles/Profile.module.css";
 
 const Profile = () => {
