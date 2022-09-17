@@ -41,11 +41,7 @@ const HeaderButtons = (props) => {
         placement="top"
         overlay={<Tooltip>Unused</Tooltip>}
       >
-        <Button
-          type="button"
-          className={styles.button}
-          onClick={props.setIsEdit}
-        >
+        <Button type="button" className={styles.button}>
           <FontAwesomeIcon icon={faXmark} />
         </Button>
       </OverlayTrigger>
