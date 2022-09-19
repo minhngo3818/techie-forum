@@ -4,9 +4,9 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
-// Styling
+// TODO: Replace MUI ui with bootstrap
 const footerStyle = {
-  position: "fixed",
+  position: "relative",
   bottom: 0,
   width: "100%",
   flexGrow: 0,
