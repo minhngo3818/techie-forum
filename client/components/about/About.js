@@ -1,6 +1,6 @@
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../PageHeader";
 import Image from "next/image";
-import styles from "../styles/About.module.css";
+import styles from "./About.module.css";
 
 const About = () => {
   // Large about page title margin left 0
@@ -65,7 +65,9 @@ const About = () => {
             </ul>
           </span>
         </div>
-        <div className={styles.aboutEnd}><h3>Glad for Joining Lair 4 Techies!</h3></div>
+        <div className={styles.aboutEnd}>
+          <h3>Glad for Joining Techies!</h3>
+        </div>
       </div>
     </div>
   );
