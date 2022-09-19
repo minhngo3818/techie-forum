@@ -1,12 +1,36 @@
 import { Router, useRouter } from "next/router";
 import PageHeader from "../../components/PageHeader";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Thread from "../../components/forum/Thread";
 import ThreadForm from "../../components/forum/thread-form/ThreadForm";
 import styles from "../../styles/Forum.module.css";
+import { ConstructionOutlined } from "@mui/icons-material";
 
+// TODO: Add loading effect
 const Field = () => {
+  // Page section
   const router = useRouter();
+  let pageName = "";
+  switch (router.query.field) {
+    case "web-design":
+      pageName = "Web Design";
+      break;
+    case "server":
+      pageName = "Server";
+      break;
+    case "cybersecurity":
+      pageName = "Cybersecurity";
+      break;
+    case "game-dev":
+      pageName = "Game Development";
+      break;
+    case "os":
+      pageName = "Operating System";
+      break;
+    case "languages":
+      pageName = "Programming Languages";
+      break;
+  }
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -30,7 +54,7 @@ const Field = () => {
   const likes = 200;
   return (
     <>
-      <PageHeader pageName="Forum" />
+      <PageHeader pageName={pageName} />
       <div className={styles.container}>
         <div className={styles.toggleButton}>
           <button onClick={handleOpenForm}>Start a Thread</button>
