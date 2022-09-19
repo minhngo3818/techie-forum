@@ -1,4 +1,5 @@
 .brand {
+  width: auto;
   font-size: 28px !important;
   font-weight: bold !important;
   cursor: pointer;
@@ -11,4 +12,16 @@
 
 .navLink:hover {
   text-decoration: underline 3px;
+}
+
+.forumLink {
+  margin: 0 1rem;
+  width: 120px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: border 0.2s ease-in-out;
+}
+
+.forumLink:hover {
+  border: 2px solid black;
 }

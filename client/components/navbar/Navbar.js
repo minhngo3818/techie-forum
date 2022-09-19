@@ -8,6 +8,7 @@ import AvatarDropdown from "../avatar-dropdown/AvatarDropdown";
 import styles from "./Navbar.module.css";
 
 // TODO: break downs Navigation into sub functions
+// Show forums in icon in navbar
 const Navigation = () => {
   const router = useRouter();
   let { auth } = useContext(AuthContext);
@@ -20,29 +21,17 @@ const Navigation = () => {
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Link href={`/about`}>
-              <Nav.Link className={styles.navLink} as="a" type="button">
-                About
-              </Nav.Link>
-            </Link>
-            {auth && (
-              <NavDropdown
-                className={styles.navLink}
-                title="Forums"
-                id="basic-nav-dropdown"
-              >
-                {forumLinks.map((forum) => {
-                  return (
-                    <Link href={`/forum/${forum.path}`} key={forum.name}>
-                      <NavDropdown.Item as="a" type="button">
-                        {forum.name}
-                      </NavDropdown.Item>
-                    </Link>
-                  );
-                })}
-              </NavDropdown>
-            )}
+          <Nav className="mx-auto">
+            {auth &&
+              forumLinks.map((forum) => {
+                return (
+                  <Link href={`/forum/${forum.path}`} key={forum.name}>
+                    <Nav.Link className={styles.forumLink} as="a" type="button">
+                      {forum.name}
+                    </Nav.Link>
+                  </Link>
+                );
+              })}
           </Nav>
 
           <Nav className="justify-content-end">
