@@ -3,6 +3,8 @@ import PageHeader from "../components/PageHeader";
 import AuthContext from "../services/auth/AuthService";
 import { useContext } from "react";
 import styles from "../styles/Home.module.css";
+import About from "../components/about/About";
+import Footer from "../components/footer/Footer";
 
 const Home = () => {
   let { auth } = useContext(AuthContext);
@@ -20,6 +22,8 @@ const Home = () => {
           <h1 className={styles.notAuthorized}>Not Authorized</h1>
         )}
       </div>
+      <About />
+      <Footer />
     </div>
   );
 };
