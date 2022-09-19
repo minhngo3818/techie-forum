@@ -1,0 +1,25 @@
+.aboutContainer {
+  max-width: 1000px;
+  width: 100%;
+  margin: 2rem auto;
+  color: white;
+}
+
+.aboutTitle h1 {
+  border-bottom: 2px solid white;
+}
+
+.aboutDeveloper {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  column-gap: 2rem;
+  margin: 2rem 0;
+}
+
+.devContacts li {
+  list-style-type: none;
+}
+
+.aboutEnd {
+    text-align: center;
+}
