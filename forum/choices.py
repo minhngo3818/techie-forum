@@ -1,4 +1,5 @@
 CATEGORIES = [
+    ("web_design", "web Design"),
     ("operating_system", "OS"),
     ("game_dev", "Game Dev"),
     ("server", "Server"),
