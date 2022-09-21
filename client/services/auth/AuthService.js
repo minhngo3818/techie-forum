@@ -39,18 +39,25 @@ export const AuthProvider = ({ children }) => {
         userResponse?.data?.id,
         authResponse?.data?.access
       );
-      console.log(profileResponse?.data);
 
-      // Set context data
+      // Set user context data
       setAuth(authResponse?.data);
       setUser(userResponse?.data);
-      setProfile(profileResponse?.data);
 
       // TODO: hash sensitive data before store in localStorage
       localStorage.setItem("tf_auth", JSON.stringify(authResponse?.data));
       localStorage.setItem("tf_user", JSON.stringify(userResponse?.data));
-      localStorage.setItem("tf_profile", JSON.stringify(profileResponse?.data));
-      router.push("/");
+
+      if (profileResponse.status === 404) {
+        router.push("/user/profile-create");
+      } else {
+        setProfile(profileResponse?.data);
+        localStorage.setItem(
+          "tf_profile",
+          JSON.stringify(profileResponse?.data)
+        );
+        router.push("/");
+      }
     }
   };
 
@@ -79,7 +86,7 @@ export const AuthProvider = ({ children }) => {
         });
         // Proceed user login
         // Redirect to profile page
-        router.push("/user/profile-create/");
+        router.push("/user/profile-create");
       }
     } catch (error) {
       console.log(error);
