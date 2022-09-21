@@ -25,8 +25,8 @@ const ProfileHeader = () => {
   const [editAvatar, setEditAvatar] = useState(false);
 
   // Edit avatar handlers
-  const [scale, setScale] = useState(parseFloat(1.0).toFixed(2));
-  const [rotate, setRotate] = useState(parseInt(0));
+  const [scale, setScale] = useState(1.0);
+  const [rotate, setRotate] = useState(0);
   const showEditAvatar = () => setEditAvatar(true);
   const closeEditAvatar = () => setEditAvatar(false);
 
@@ -104,6 +104,7 @@ const ProfileHeader = () => {
       </div>
       <div className={styles.headerAvatar}>
         <img
+          className={styles.image}
           src={profile?.avatar}
           alt="avatar"
           type="button"
@@ -135,7 +136,7 @@ const ProfileHeader = () => {
                   max={2.5}
                   min={1.0}
                   step={0.05}
-                  onChange={(e) => setScale(e.target.value)}
+                  onChange={(e) => setScale(e.target.valueAsNumber)}
                   tooltip="off"
                 />
               </Col>
@@ -151,7 +152,7 @@ const ProfileHeader = () => {
                   max={360}
                   min={0}
                   step={1}
-                  onChange={(e) => setRotate(e.target.value)}
+                  onChange={(e) => setRotate(e.target.valueAsNumber)}
                   tooltip="off"
                 />
               </Col>
