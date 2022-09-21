@@ -1,0 +1,49 @@
+.container {
+  margin: auto;
+  width: 800px;
+  color: white;
+}
+
+.slideContainer {
+  max-width: 800px;
+  margin: auto;
+  color: white;
+}
+
+.carouselContainer {
+  display: block;
+  height: 700px;
+}
+
+.itemContainer {
+  height: auto;
+}
+
+.formGroup {
+  width: 95%;
+  margin: 1.5rem auto;
+}
+
+.formLabel {
+  font-size: 20px;
+}
+
+.submitSection {
+  display: grid;
+  row-gap: 2rem;
+  text-align: center;
+  justify-items: center;
+}
+
+.submitButton {
+  width: 200px;
+  font-size: 20px !important;
+  border-radius: 0 !important;
+  border: none !important;
+  background-color: white;
+  color: black;
+}
+
+.submitButton:hover {
+  background-color: gray;
+}

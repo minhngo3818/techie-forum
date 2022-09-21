@@ -1,5 +1,6 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 import { style } from "@mui/system";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Form, Button, Carousel } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
 import AuthGuard from "../../services/auth/AuthGuard";
@@ -16,18 +17,28 @@ const refLinks = [
 ];
 
 const ProfileCreate = () => {
-  const displayNameRef = useRef();
-  const bioRef = useRef();
+  const formRef = useRef();
 
-  const [displayName, setDisplayName] = useState(null);
-  const [bio, setBio] = useState(null);
+  const [formInput, setFormInput] = useState({
+    avatar: none,
+    display_name: null,
+    bio: null,
+    twitter_url: null,
+    reddit_url: null,
+    stackoverflow_url: null,
+    linkedin_url: null,
+    indeed_url: null,
+    github_url: null,
+  });
 
-  const [allowNextPage, setAllowNextPage] = useState(false);
+  useEffect(() => {
+    formInput.current.focus();
+  }, []);
 
-  const handleNextPage = () => {
-    if (displayName !== null && bio !== null) {
-      setAllowNextPage(true);
-    }
+  const handleCreateProfile = () => {
+    formInput.map((member) => {
+      console.log(member);
+    });
   };
 
   return (
@@ -46,6 +57,11 @@ const ProfileCreate = () => {
               <Form.Control
                 className={customBS.formControl}
                 type="file"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, avatar: e.target.value })
+                }
+                value={formInput.avatar}
+                ref={formRef}
               ></Form.Control>
             </Form.Group>
             <Form.Group className={styles.formGroup}>
@@ -53,6 +69,11 @@ const ProfileCreate = () => {
               <Form.Control
                 className={customBS.formControl}
                 placeholder="display name"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, display_name: e.target.value })
+                }
+                value={formInput.display_name}
+                ref={formRef}
                 requrired
               ></Form.Control>
             </Form.Group>
@@ -62,21 +83,34 @@ const ProfileCreate = () => {
                 as="textarea"
                 className={customBS.formControl}
                 placeholder="Add your biography"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, bio: e.target.value })
+                }
+                value={formInput.bio}
                 rows={7}
+                ref={formRef}
               ></Form.Control>
             </Form.Group>
           </Carousel.Item>
           <Carousel.Item className={styles.itemContainer}>
             <div className={styles.linksContainer}></div>
-            {refLinks.map((refLink) => {
+            {refLinks.map((refLink, index) => {
               return (
-                <Form.Group className={styles.formGroup}>
+                <Form.Group key={index} className={styles.formGroup}>
                   <Form.Label className={styles.formLabel}>
                     {refLink.name}
                   </Form.Label>
                   <Form.Control
                     className={customBS.formControl}
                     placeholder={refLink.url}
+                    onChange={(e) =>
+                      setFormInput({
+                        ...formInput,
+                        [refLink.name.toLowerCase() + "_url"]: e.target.value,
+                      })
+                    }
+                    value={formInput[refLink.name.toLowerCase() + "_url"]}
+                    ref={formRef}
                   ></Form.Control>
                 </Form.Group>
               );
@@ -90,7 +124,11 @@ const ProfileCreate = () => {
               <Form.Label className={styles.formLabel}>
                 Go back and change your info if you're not done yet
               </Form.Label>
-              <Button type="submit" className={styles.submitButton}>
+              <Button
+                type="submit"
+                className={styles.submitButton}
+                onClick={handleCreateProfile}
+              >
                 Submit
               </Button>
             </Form.Group>
