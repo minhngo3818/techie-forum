@@ -53,3 +53,5 @@ forum/__pycache__/
 # migrations
 user/migrations/
 forum/migrations
+
+mockup/

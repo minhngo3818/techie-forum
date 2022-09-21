@@ -10,7 +10,7 @@ $(VENV)/bin/activate: requirements.txt
 venv: $(VENV)/bin/activate
 
 freeze:
-	pip freeze > requirements.txt
+	pip list --format=freeze > requirements.txt
 
 run:
 	python3 manage.py runserver
@@ -23,6 +23,9 @@ migrate:
 
 collect-static:
 	python3 manage.py collectstatic
+
+shell:
+	python3 manage.py shell
 
 format:
 	black **/*.py
