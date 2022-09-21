@@ -10,10 +10,11 @@ class User(AbstractUser):
     )  # no need for user id
     email = models.EmailField(blank=True, null=True, unique=True)
     id = models.UUIDField(
-        default=uuid.uuid4, unique=True, primary_key=True, editable=False
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True
     )
 
     USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
 
     def __str__(self):
         return self.username
@@ -24,9 +25,7 @@ class Profile(models.Model):
 
     # self
     display_name = models.CharField(max_length=100, null=True, blank=True)
-    display_name_id = models.IntegerField(
-        default=1000, null=True, blank=True, unique=True
-    )  # use in put request
+
     bio = models.TextField(null=True, blank=True)
     avatar = models.ImageField(
         default=os.path.join("avatar", "default-avatar.png"),
