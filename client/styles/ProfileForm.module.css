@@ -47,3 +47,9 @@
 .submitButton:hover {
   background-color: gray;
 }
+
+.submitButton:focus {
+  background-color: gray;
+  border: 0;
+  box-shadow: none;
+}
