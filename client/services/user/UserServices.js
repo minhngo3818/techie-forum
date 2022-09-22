@@ -24,9 +24,9 @@ const getProfile = async (pk, accessToken) => {
   return response;
 };
 
-const createProfile = async (input, pk, accessToken) => {
+const createProfile = async (input, accessToken) => {
   let response = await axiosInstance.post(
-    `profile-view/${pk}/`,
+    `profile-view/`,
     JSON.stringify(input),
     {
       headers: {
@@ -34,11 +34,14 @@ const createProfile = async (input, pk, accessToken) => {
       },
     }
   );
+
+  return response;
 };
 
 const UserServices = {
   getUser: getUser,
   getProfile: getProfile,
+  createProfile: createProfile,
 };
 
 export default UserServices;
