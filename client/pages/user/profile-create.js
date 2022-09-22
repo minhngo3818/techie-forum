@@ -1,9 +1,10 @@
-import { ConstructionOutlined } from "@mui/icons-material";
-import { style } from "@mui/system";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import AuthGuard from "../../services/auth/AuthGuard";
+import UserServices from "../../services/user/UserServices";
+import { toast } from "react-toastify";
 import { Form, Button, Carousel } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
-import AuthGuard from "../../services/auth/AuthGuard";
 import customBS from "../../styles/CustomBootstrap.module.css";
 import styles from "../../styles/ProfileForm.module.css";
 
@@ -17,28 +18,51 @@ const refLinks = [
 ];
 
 const ProfileCreate = () => {
-  const formRef = useRef();
+  const router = useRouter();
 
+  const formRef = useRef();
   const [formInput, setFormInput] = useState({
-    avatar: none,
-    display_name: null,
-    bio: null,
-    twitter_url: null,
-    reddit_url: null,
-    stackoverflow_url: null,
-    linkedin_url: null,
-    indeed_url: null,
-    github_url: null,
+    display_name: "",
+    bio: "",
+    avatar: null,
+    twitter_url: "",
+    reddit_url: "",
+    stackoverflow_url: "",
+    github_url: "",
+    linkedin_url: "",
+    indeed_url: "",
   });
 
   useEffect(() => {
-    formInput.current.focus();
+    formRef.current.focus();
   }, []);
 
-  const handleCreateProfile = () => {
-    formInput.map((member) => {
-      console.log(member);
-    });
+  const handleSubmitProfile = (e) => {
+    e.preventDefault();
+    if (formInput.display_name !== "") {
+      const authObj = JSON.parse(localStorage.getItem("tf_auth"));
+
+      // Send only inputed field
+      let sendInputs = formInput;
+      for (const property in sendInputs) {
+        if (sendInputs[property] === "" || sendInputs[property] === null) {
+          delete sendInputs[property];
+        }
+      }
+
+      // SendInputs properties must be in-order same as serializer in backend
+      let response = UserServices.createProfile(sendInputs, authObj.access);
+      
+      if (response) {
+        localStorage.setItem("tf_profile", JSON.stringify(response?.data));
+        router.replace("/");
+      }
+    } else {
+      toast.warn("Display Name must be filled", {
+        position: toast.POSITION.TOP_CENTER,
+        hideProgressBar: true,
+      });
+    }
   };
 
   return (
@@ -58,9 +82,8 @@ const ProfileCreate = () => {
                 className={customBS.formControl}
                 type="file"
                 onChange={(e) =>
-                  setFormInput({ ...formInput, avatar: e.target.value })
+                  setFormInput({ ...formInput, avatar: e.target.files[0] })
                 }
-                value={formInput.avatar}
                 ref={formRef}
               ></Form.Control>
             </Form.Group>
@@ -74,7 +97,7 @@ const ProfileCreate = () => {
                 }
                 value={formInput.display_name}
                 ref={formRef}
-                requrired
+                requrired="true"
               ></Form.Control>
             </Form.Group>
             <Form.Group className={styles.formGroup}>
@@ -125,9 +148,9 @@ const ProfileCreate = () => {
                 Go back and change your info if you're not done yet
               </Form.Label>
               <Button
-                type="submit"
+                type="button"
                 className={styles.submitButton}
-                onClick={handleCreateProfile}
+                onClick={handleSubmitProfile}
               >
                 Submit
               </Button>

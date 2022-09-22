@@ -1,8 +1,8 @@
 import { useState, useEffect, createContext } from "react";
 import axiosInstance from "../axios/index";
-import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import UserServices from "../user/UserServices";
+import { useRouter } from "next/router";
 
 const AuthContext = createContext();
 
@@ -35,11 +35,6 @@ export const AuthProvider = ({ children }) => {
 
     if (authResponse?.data) {
       let userResponse = await UserServices.getUser(authResponse?.data?.access);
-      let profileResponse = await UserServices.getProfile(
-        userResponse?.data?.id,
-        authResponse?.data?.access
-      );
-
       // Set user context data
       setAuth(authResponse?.data);
       setUser(userResponse?.data);
@@ -48,15 +43,25 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("tf_auth", JSON.stringify(authResponse?.data));
       localStorage.setItem("tf_user", JSON.stringify(userResponse?.data));
 
-      if (profileResponse.status === 404) {
-        router.push("/user/profile-create");
-      } else {
-        setProfile(profileResponse?.data);
-        localStorage.setItem(
-          "tf_profile",
-          JSON.stringify(profileResponse?.data)
+      // Profile request
+      try {
+        let profileResponse = await UserServices.getProfile(
+          userResponse?.data?.id,
+          authResponse?.data?.access
         );
-        router.push("/");
+
+        if (profileResponse?.data) {
+          setProfile(profileResponse?.data);
+          localStorage.setItem(
+            "tf_profile",
+            JSON.stringify(profileResponse?.data)
+          );
+        }
+      } catch (error) {
+        toast.error(error, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        router.push("/user/profile-create");
       }
     }
   };
@@ -89,7 +94,9 @@ export const AuthProvider = ({ children }) => {
         router.push("/user/profile-create");
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
   };
 
@@ -125,7 +132,9 @@ export const AuthProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
   };
 
