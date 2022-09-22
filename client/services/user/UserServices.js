@@ -1,5 +1,6 @@
 import axiosInstance from "../axios";
 import jwtDecode from "jwt-decode";
+import { toast } from "react-toastify";
 
 const getUser = async (accessToken) => {
   let response = await axiosInstance.get(
@@ -35,7 +36,19 @@ const createProfile = async (input, accessToken) => {
     }
   );
 
-  return response;
+  if (response?.status === 201) {
+    toast.success("Your profile was created successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+      hideProgressBar: true,
+    });
+  } else {
+    toast.error(response?.status, {
+      position: toast.POSITION.TOP_CENTER,
+      hideProgressBar: true,
+    });
+  }
+
+  return response.data;
 };
 
 const UserServices = {
