@@ -5,6 +5,7 @@ import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import SSRProvider from "react-bootstrap/SSRProvider";
 import { AuthProvider } from "../services/auth/AuthService";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }) {
   return (
