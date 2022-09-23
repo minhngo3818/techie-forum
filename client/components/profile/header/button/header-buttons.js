@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faDiamond } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import styles from "./HeaderButtons.module.css";
 
@@ -33,7 +33,10 @@ const HeaderButtons = (props) => {
       </OverlayTrigger>
 
       <div className={styles.decoration}>
-        <p>&lt; &#9671; &gt;</p>
+        <p>
+          &lt; <FontAwesomeIcon icon={faDiamond} flip />
+          &gt;
+        </p>
       </div>
 
       <OverlayTrigger
