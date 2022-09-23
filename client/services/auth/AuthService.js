@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
             "tf_profile",
             JSON.stringify(profileResponse?.data)
           );
+          router.push("/");
         }
       } catch (error) {
         toast.error(error, {
