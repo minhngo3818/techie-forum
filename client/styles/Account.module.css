@@ -1,0 +1,39 @@
+.container {
+  display: block;
+  margin: 2rem auto;
+  max-width: 760px;
+  padding: 1.5rem;
+  color: white;
+  border: 1px solid gray;
+}
+
+.accountField {
+  display: block;
+  margin: 1rem 0;
+  background-color: black;
+}
+
+.accountFiled input {
+  background-color: black;
+  border-radius: 0 !important;
+  border: 1px solid gray;
+}
+
+.btn {
+  display: block;
+  border-radius: 0 !important;
+  border: 2px solid gray !important;
+  background: black !important;
+  box-shadow: none !important;
+}
+
+.btn:hover {
+  background-color: white !important;
+  color: black;
+  outline: none !important;
+}
+
+.btn:focus {
+  box-shadow: none;
+  outline: none white !important;
+}

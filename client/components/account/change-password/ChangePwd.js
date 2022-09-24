@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
+import customBS from "../../../styles/CustomBootstrap.module.css";
 import genericStyles from "../../../styles/Account.module.css";
 import uniqueStyles from "./ChangePwd.module.css";
 
@@ -11,10 +12,6 @@ const ChangePwd = () => {
     new_password: "",
     new_password2: "",
   });
-
-  useEffect(() => {
-    pwdRef.current.focus();
-  }, []);
 
   const handleChangePwd = () => {};
 
@@ -28,15 +25,26 @@ const ChangePwd = () => {
     }
   };
 
+  useEffect(() => {
+    if (isDoChange) {
+      pwdRef.current.focus();
+    }
+  }, []);
+
   return (
     <div className={genericStyles.container}>
-      <Button onClick={handleDoChange}>Change Password</Button>
-      {isDoChange && (
+      <h4>User Password</h4>
+      {!isDoChange ? (
+        <Button className={genericStyles.btn} onClick={handleDoChange}>
+          Change Password
+        </Button>
+      ) : (
         <Form>
-          <Form.Group>
+          <Form.Group className={genericStyles.accountField}>
             <Form.Label>Old Password</Form.Label>
             <Form.Control
-              placeholder="old password"
+              className={customBS.formControl}
+              placeholder="Old password"
               value={pwdSet.old_password}
               onChange={(e) =>
                 setPwdSet({ ...pwdSet, old_password: e.target.value })
@@ -44,9 +52,10 @@ const ChangePwd = () => {
               ref={pwdRef}
             ></Form.Control>
           </Form.Group>
-          <Form.Group>
+          <Form.Group className={genericStyles.accountField}>
             <Form.Label>New Password</Form.Label>
             <Form.Control
+              className={customBS.formControl}
               placeholder="New password"
               value={pwdSet.new_password}
               onChange={(e) =>
@@ -55,9 +64,10 @@ const ChangePwd = () => {
               ref={pwdRef}
             ></Form.Control>
           </Form.Group>
-          <Form.Group>
+          <Form.Group className={genericStyles.accountField}>
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
+              className={customBS.formControl}
               placeholder="Confirm password"
               value={pwdSet.new_password2}
               onChange={(e) =>
@@ -66,8 +76,12 @@ const ChangePwd = () => {
               ref={pwdRef}
             ></Form.Control>
           </Form.Group>
-          <Button onClick={handleChangePwd}>Submit</Button>
-          <Button onClick={handleDoChange}>Cancel</Button>
+          <Button className={customBS.btn} onClick={handleChangePwd}>
+            Submit
+          </Button>
+          <Button className={customBS.btn} onClick={handleDoChange}>
+            Cancel
+          </Button>
         </Form>
       )}
     </div>
