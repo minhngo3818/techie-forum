@@ -27,7 +27,7 @@ const DeleteAccount = () => {
           You can recover your account by follow steps in the follow up email
         </Form.Label>
         <Form.Label>
-          Or you can sign login again to create your new account
+          Or you can login again to create your new account
         </Form.Label>
         <Button
           type="button"

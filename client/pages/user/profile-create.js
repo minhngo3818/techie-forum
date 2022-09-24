@@ -52,7 +52,7 @@ const ProfileCreate = () => {
 
       // SendInputs properties must be in-order same as serializer in backend
       let response = UserServices.createProfile(sendInputs, authObj.access);
-      
+
       if (response) {
         localStorage.setItem("tf_profile", JSON.stringify(response?.data));
         router.replace("/");

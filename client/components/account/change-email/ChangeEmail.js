@@ -74,5 +74,5 @@ const ChangeEmail = (props) => {
 export default ChangeEmail;
 
 ChangeEmail.propTypes = {
-  userEmail: PropTypes.string.isRequired,
+  userEmail: PropTypes.string,
 };

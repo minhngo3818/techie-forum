@@ -115,11 +115,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const changePassword = async (accessToken, passwords) => {
+  const changePassword = async (accessToken, inputPwds) => {
     try {
       let response = await axiosInstance.patch(
         "user/auth/change-password/",
-        JSON.stringify(passwords),
+        JSON.stringify(inputPwds),
         {
           headers: {
             Authorization: Bearer`${accessToken}`,

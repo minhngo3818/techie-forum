@@ -64,7 +64,7 @@
   content: none !important;
 }
 
-.modalContent .modal-content {
+.modalContent {
   background: transparent;
   border: none;
   border-radius: none;
