@@ -65,6 +65,7 @@
 .button {
   display: block;
   position: relative;
+  margin-right: 1rem;
   padding: 3px 0;
   width: 40px;
   height: 40px;
@@ -73,6 +74,10 @@
   border: none;
   border-radius: 0;
   color: white;
+}
+
+.button#active {
+  box-shadow: 0 0 1px 2px white !important;
 }
 
 .button:hover {
@@ -95,4 +100,8 @@
   font-size: 20px;
   transition: all 0.25s ease-in-out;
   transform-style: preserve-3d;
+}
+
+.editGroup {
+  margin: 1.5rem 0;
 }
