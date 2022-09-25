@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.utils import timezone
@@ -20,12 +21,14 @@ class ThreadViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Thread.objects.all()
 
-    def perform_create(self, serializer):
-        tag_names = self.request.data.get("tags", [])
-        for tag_name in tag_names:
-            tag, created = Tag.objects.get_or_create(name=tag_name)
-
+    def create(self, request, *args, **kwargs):
+        tag_names = request.data.get("tags", [])
+        for name in tag_names:
+            Tag.objects.get_or_create(name=name)
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
         serializer.save(owner=self.request.user.profile)
+        return Response(serializer.data)
 
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile, updated_date=timezone.now())

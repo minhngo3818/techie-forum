@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework import exceptions
 from user.serializers import ProfileSerializer
 from .models import Thread, Comment, Like, LikeComment, Tag
 from user.models import Profile
@@ -27,11 +28,16 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = "__all__"
 
+    def create(self, validated_data):
+        tag, created = Tag.objects.get_or_create(**validated_data)
+        if not created:
+            raise exceptions.ValidationError(validated_data["name"] + "already exists")
+        return tag
+
 
 class ThreadSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source="owner.id")
     tags = serializers.SlugRelatedField(
-        many=True, queryset=Tag.objects.all(), slug_field="name"
+        many=True, slug_field="name", queryset=Tag.objects.all()
     )
 
     class Meta:
