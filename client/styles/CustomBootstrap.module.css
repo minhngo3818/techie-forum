@@ -8,12 +8,39 @@
   transition: all 0.25s ease-in-out;
 }
 
+.formControl#title {
+  font-size: 36px;
+  font-weight: 500;
+}
+
 .formControl:focus {
   color: white;
   outline: none;
   background-color: black;
   border: 1px solid gray;
   box-shadow: 0 0 3px 1px #fff;
+}
+
+.formTextarea {
+  width: 100%;
+  min-height: 100px;
+  height: auto;
+  background-color: black;
+  color: white;
+  border-radius: 0;
+  padding: 10px;
+  outline: 0;
+  border: 1px solid gray;
+  transition: focus 0.3s ease-in-out;
+}
+
+.formTextarea:focus {
+  color: white;
+  outline: 0 !important;
+  border: 1px solid gray;
+  box-shadow: 0 0 3px 1px white !important;
+  transition: box-shadow 0.3s ease-in-out;
+  background-color: black;
 }
 
 /* Customed bootstrap button */
