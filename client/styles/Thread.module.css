@@ -58,11 +58,40 @@
 
 .buttonList {
   display: flex;
-  margin-top: 1rem;
+  position: relative;
+  z-index: 30;
 }
 
 .button {
-  margin-right: 1.5rem;
+  display: block;
+  position: relative;
+  padding: 3px 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  color: white;
+}
+
+.button:hover {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: 0 0 1px 2px white !important;
+}
+
+.button:focus {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none;
+}
+
+.button:active {
+  box-shadow: none !important;
+}
+
+.icon {
   font-size: 20px;
   transition: all 0.25s ease-in-out;
   transform-style: preserve-3d;
