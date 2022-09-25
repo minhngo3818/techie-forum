@@ -29,12 +29,13 @@ const ThreadForm = (props) => {
         </Form.Group>
         <Form.Group>
           <Form.Label className={styles.label}>Content</Form.Label>
-          <textarea
-            className={styles.threadContent}
+          <Form.Control
+            as="textarea"
+            className={customBS.formTextarea}
             placeholder="What's poppin eh?"
             rows="4"
             cols="50"
-          ></textarea>
+          ></Form.Control>
         </Form.Group>
         <Form.Group>
           <Form.Label className={styles.label}>Tags</Form.Label>

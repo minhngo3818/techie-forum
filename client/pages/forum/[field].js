@@ -43,6 +43,7 @@ const Field = () => {
 
   // Dummy content
   const author = "Tony";
+  const title = "Making a super quantum computer";
   const content =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, r\
    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis r\
@@ -62,6 +63,7 @@ const Field = () => {
         <ThreadForm isOpen={openForm} />
         <Thread
           author={author}
+          title={title}
           created={created}
           content={content}
           likes={likes}
