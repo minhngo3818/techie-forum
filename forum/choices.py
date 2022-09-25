@@ -1,8 +1,8 @@
 CATEGORIES = [
-    ("web_design", "web Design"),
-    ("operating_system", "OS"),
-    ("game_dev", "Game Dev"),
+    ("web-design", "web Design"),
+    ("os", "OS"),
+    ("game-dev", "Game Dev"),
     ("server", "Server"),
     ("cybersecurity", "Cybersecurity"),
-    ("programming_languages", "Languages"),
+    ("languages", "Languages"),
 ]

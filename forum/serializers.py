@@ -3,6 +3,7 @@ from rest_framework import exceptions
 from user.serializers import ProfileSerializer
 from .models import Thread, Comment, Like, LikeComment, Tag
 from user.models import Profile
+from .choices import CATEGORIES
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -39,6 +40,7 @@ class ThreadSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(
         many=True, slug_field="name", queryset=Tag.objects.all()
     )
+    category = serializers.ChoiceField(choices=CATEGORIES)
 
     class Meta:
         model = Thread
