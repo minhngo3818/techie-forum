@@ -1,0 +1,9 @@
+.pageHeader {
+    display: flex;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.pageHeader h3 {
+    color: white
+}
