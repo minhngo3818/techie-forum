@@ -1,5 +1,5 @@
 import Head from "next/head";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/page-header/PageHeader";
 import AuthContext from "../services/auth/AuthService";
 import { useContext } from "react";
 import styles from "../styles/Home.module.css";

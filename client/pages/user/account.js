@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import PageHeader from "../../components/PageHeader";
+import PageHeader from "../../components/page-header/PageHeader";
 import ChangeEmail from "../../components/account/change-email/ChangeEmail";
 import ChangePwd from "../../components/account/change-password/ChangePwd";
 import DeleteAccount from "../../components/account/delete-account/DeleteAccount";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AuthGuard from "../../services/auth/AuthGuard";
-import PageHeader from "../../components/PageHeader";
+import PageHeader from "../../components/page-header/PageHeader";
 import ProfileHeader from "../../components/profile/header/ProfileHeader";
 import ProfileBio from "../../components/profile/bio/ProfileBio";
 import ProfilePorfolio from "../../components/profile/porfolio/ProfilePorfolio";

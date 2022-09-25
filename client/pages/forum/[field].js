@@ -1,10 +1,9 @@
 import { Router, useRouter } from "next/router";
-import PageHeader from "../../components/PageHeader";
+import PageHeader from "../../components/page-header/PageHeader";
 import { useState, useEffect } from "react";
-import Thread from "../../components/forum/Thread";
+import Thread from "../../components/forum/thread/Thread";
 import ThreadForm from "../../components/forum/thread-form/ThreadForm";
 import styles from "../../styles/Forum.module.css";
-import { ConstructionOutlined } from "@mui/icons-material";
 
 // TODO: Add loading effect
 const Field = () => {

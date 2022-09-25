@@ -1,4 +1,4 @@
-import PageHeader from "../PageHeader";
+import PageHeader from "../page-header/PageHeader";
 import Image from "next/image";
 import styles from "./About.module.css";
 

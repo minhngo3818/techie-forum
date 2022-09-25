@@ -4,7 +4,7 @@ import AuthGuard from "../../services/auth/AuthGuard";
 import UserServices from "../../services/user/UserServices";
 import { toast } from "react-toastify";
 import { Form, Button, Carousel } from "react-bootstrap";
-import PageHeader from "../../components/PageHeader";
+import PageHeader from "../../components/page-header/PageHeader";
 import customBS from "../../styles/CustomBootstrap.module.css";
 import styles from "../../styles/ProfileForm.module.css";
 

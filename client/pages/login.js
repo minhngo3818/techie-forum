@@ -1,6 +1,6 @@
 import { Form, Button } from "react-bootstrap";
 import Link from "next/link";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/page-header/PageHeader";
 import styles from "../styles/Login.module.css";
 import customBS from "../styles/CustomBootstrap.module.css";
 import AuthContext from "../services/auth/AuthService";

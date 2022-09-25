@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer, useContext } from "react";
 import AuthContext from "../services/auth/AuthService";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/page-header/PageHeader";
 import { Form, Button, FormSelect } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
