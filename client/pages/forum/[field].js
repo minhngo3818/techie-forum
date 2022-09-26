@@ -1,4 +1,5 @@
 import { Router, useRouter } from "next/router";
+import AuthGuard from "../../services/auth/AuthGuard";
 import PageHeader from "../../components/page-header/PageHeader";
 import { useState, useEffect } from "react";
 import Thread from "../../components/forum/thread/Thread";
@@ -73,4 +74,4 @@ const Field = () => {
   );
 };
 
-export default Field;
+export default AuthGuard(Field);
