@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import AuthContext from "../../../services/auth/AuthService";
 import ThreadServices from "../../../services/forum/ThreadServices";
 import PropTypes from "prop-types";
-import TagForm from "./tag/Tags";
+import TagForm from "./tag-form/TagForm";
 import { EmojiButton, ImageButton } from "./buttons/Buttons";
 import { Form, Button } from "react-bootstrap";
 import styles from "./ThreadForm.module.css";
