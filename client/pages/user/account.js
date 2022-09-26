@@ -5,9 +5,6 @@ import ChangePwd from "../../components/account/change-password/ChangePwd";
 import DeleteAccount from "../../components/account/delete-account/DeleteAccount";
 import AuthContext from "../../services/auth/AuthService";
 import AuthGuard from "../../services/auth/AuthGuard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { Form, Button, Modal } from "react-bootstrap";
 import styles from "../../styles/Account.module.css";
 
 const Account = () => {
