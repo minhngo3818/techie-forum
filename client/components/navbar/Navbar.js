@@ -25,7 +25,12 @@ const Navigation = () => {
             {auth &&
               forumLinks.map((forum) => {
                 return (
-                  <Link href={`/forum/${forum.path}`} key={forum.name}>
+                  <Link
+                    href="/forum/[field]"
+                    as={`/forum/${forum.path}`}
+                    key={forum.name}
+                    replace
+                  >
                     <Nav.Link className={styles.forumLink} as="a" type="button">
                       {forum.name}
                     </Nav.Link>
