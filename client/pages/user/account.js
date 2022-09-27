@@ -1,8 +1,15 @@
 import { useState, useRef, useEffect, useContext } from "react";
+import dynamic from "next/dynamic";
 import PageHeader from "../../components/page-header/PageHeader";
-import ChangeEmail from "../../components/account/change-email/ChangeEmail";
-import ChangePwd from "../../components/account/change-password/ChangePwd";
-import DeleteAccount from "../../components/account/delete-account/DeleteAccount";
+const ChangeEmail = dynamic(() =>
+  import("../../components/account/change-email/ChangeEmail")
+);
+const ChangePwd = dynamic(() =>
+  import("../../components/account/change-password/ChangePwd")
+);
+const DeleteAccount = dynamic(() =>
+  import("../../components/account/delete-account/DeleteAccount")
+);
 import AuthContext from "../../services/auth/AuthService";
 import AuthGuard from "../../services/auth/AuthGuard";
 import styles from "../../styles/Account.module.css";
