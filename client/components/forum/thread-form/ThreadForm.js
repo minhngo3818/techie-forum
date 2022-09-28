@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
+import { useRouter } from "next/router";
 import AuthContext from "../../../services/auth/AuthService";
 import ThreadServices from "../../../services/forum/ThreadServices";
 import PropTypes from "prop-types";
@@ -8,38 +9,34 @@ import { Form, Button } from "react-bootstrap";
 import styles from "./ThreadForm.module.css";
 import customBS from "../../../styles/CustomBootstrap.module.css";
 
+const postObject = {
+  title: "",
+  content: "",
+  tags: [],
+  category: "",
+};
+
 const ThreadForm = (props) => {
-  const postObject = {
-    title: "",
-    content: "",
-    tags: [],
-    category: props.category,
-  };
-
-  const [postData, setPostData] = useState(postObject);
-  const postRef = useRef();
-
   // Auth Context
   const { auth } = useContext(AuthContext);
 
+  // Post
+  const [postData, setPostData] = useState(postObject);
+  const postRef = useRef();
+
+  useEffect(() => {
+    // Keep tracking the current page to set thread category
+    setPostData({ ...postData, category: props.category });
+  }, [props]);
+
   // Handlers
-  const removeTag = (indexToRemove) => {
-    setPostData({
-      ...postData,
-      tags: [...postData.tags.filter((_, index) => index !== indexToRemove)],
-    });
-  };
-
-  const addTag = (e) => {
-    if (e.target.value !== "") {
-      setPostData({ ...postData, tags: [...postData.tags, e.target.value] });
-      e.target.value = "";
-    }
-  };
-
   const handleSumitPost = async (e) => {
     e.preventDefault();
-    ThreadServices.postThread(auth?.access, postData);
+    console.log(postData);
+    if (postData.title !== "" && postData.content !== "") {
+      let access = auth?.access;
+      ThreadServices.postThread(access, postData);
+    }
 
     // refresh states
     setPostData(postObject);
@@ -68,6 +65,9 @@ const ThreadForm = (props) => {
             ref={postRef}
             className={customBS.formControl}
             placeholder="Enter a tittle"
+            onChange={(e) =>
+              setPostData({ ...postData, title: e.target.value })
+            }
           ></Form.Control>
         </Form.Group>
         <Form.Group>
@@ -77,18 +77,16 @@ const ThreadForm = (props) => {
             as="textarea"
             className={customBS.formTextarea}
             placeholder="Add thread content"
+            onChange={(e) =>
+              setPostData({ ...postData, content: e.target.value })
+            }
             rows="4"
             cols="50"
           ></Form.Control>
         </Form.Group>
         <Form.Group>
           <Form.Label className={styles.label}>Tags</Form.Label>
-          <TagForm
-            ref={postRef}
-            tags={postData.tags}
-            addTag={addTag}
-            removeTag={removeTag}
-          />
+          <TagForm postRef={postRef} post={postData} setTag={setPostData} />
         </Form.Group>
       </Form>
     </div>
@@ -99,4 +97,5 @@ export default ThreadForm;
 
 ThreadForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  category: PropTypes.string,
 };
