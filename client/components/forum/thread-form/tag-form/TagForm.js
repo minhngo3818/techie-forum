@@ -1,19 +1,36 @@
+import { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Element } from "react-is";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import styles from "../ThreadForm.module.css";
 
 const TagForm = (props) => {
+  const removeTag = useCallback((indexToRemove) => {
+    props.setTag({
+      ...props.post,
+      tags: [...props.post.tags.filter((_, index) => index !== indexToRemove)],
+    });
+  });
+
+  const addTag = useCallback((e) => {
+    if (e.target.value !== "") {
+      props.setTag({
+        ...props.post,
+        tags: [...props.post.tags, e.target.value],
+      });
+      e.target.value = "";
+    }
+  });
+
   return (
     <div className={styles.tagInput}>
       <ul className={styles.tags}>
-        {props.tags.map((tag, index) => {
+        {props.post.tags.map((tag, index) => {
           return (
             <li key={index} className={styles.tag}>
               <span>{tag}</span>
               <FontAwesomeIcon
-                onClick={() => props.removeTag(index)}
+                onClick={() => removeTag(index)}
                 icon={faCircleXmark}
               />
             </li>
@@ -22,7 +39,7 @@ const TagForm = (props) => {
       </ul>
       <input
         ref={props.ref}
-        onKeyUp={(e) => (e.key === "Enter" ? props.addTag(e) : null)}
+        onKeyUp={(e) => (e.key === "Enter" ? addTag(e) : null)}
         placeholder="Enter to add tag"
       ></input>
     </div>
@@ -30,13 +47,14 @@ const TagForm = (props) => {
 };
 
 TagForm.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string),
-  addTag: PropTypes.func.isRequired,
-  removeTag: PropTypes.func.isRequired,
-  refProp: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),
+  post: PropTypes.shape({
+    title: PropTypes.string,
+    content: PropTypes.string,
+    tags: PropTypes.arrayOf(PropTypes.string),
+    category: PropTypes.string,
+  }),
+  postRef: PropTypes.objectOf(PropTypes.any),
+  setTag: PropTypes.func.isRequired,
 };
 
 export default TagForm;
