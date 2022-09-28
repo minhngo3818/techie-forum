@@ -1,17 +1,23 @@
 import { Router, useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import AuthGuard from "../../services/auth/AuthGuard";
 import PageHeader from "../../components/page-header/PageHeader";
 import { useState, useEffect } from "react";
 import Thread from "../../components/forum/thread/Thread";
-import ThreadForm from "../../components/forum/thread-form/ThreadForm";
+const ThreadForm = dynamic(
+  () => import("../../components/forum/thread-form/ThreadForm"),
+  { ssr: false }
+);
 import styles from "../../styles/Forum.module.css";
 
 // TODO: Add loading effect
 const Field = () => {
   // Page section
   const router = useRouter();
+
+  let currentPage = router.query.field;
   let pageName = "";
-  switch (router.query.field) {
+  switch (currentPage) {
     case "web-design":
       pageName = "Web Design";
       break;
@@ -32,14 +38,10 @@ const Field = () => {
       break;
   }
 
-  const [openForm, setOpenForm] = useState(false);
+  const [isThreadForm, setIsThreadForm] = useState(false);
 
-  const handleOpenForm = () => {
-    if (!openForm) {
-      setOpenForm(true);
-    } else {
-      setOpenForm(false);
-    }
+  const handleIsThreadForm = () => {
+    setIsThreadForm((prev) => !prev);
   };
 
   // Dummy content
@@ -58,10 +60,10 @@ const Field = () => {
       <PageHeader pageName={pageName} />
       <div className={styles.container}>
         <div className={styles.toggleButton}>
-          <button onClick={handleOpenForm}>Start a Thread</button>
+          <button onClick={handleIsThreadForm}>Start a Thread</button>
           <button>Memorized</button>
         </div>
-        <ThreadForm isOpen={openForm} />
+        <ThreadForm isOpen={isThreadForm} category={currentPage} />
         <Thread
           author={author}
           title={title}
