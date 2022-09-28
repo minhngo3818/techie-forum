@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { useRouter } from "next/router";
+import Router from "next/router";
 import AuthContext from "../../../services/auth/AuthService";
 import ThreadServices from "../../../services/forum/ThreadServices";
 import PropTypes from "prop-types";
@@ -32,14 +32,14 @@ const ThreadForm = (props) => {
   // Handlers
   const handleSumitPost = async (e) => {
     e.preventDefault();
-    console.log(postData);
     if (postData.title !== "" && postData.content !== "") {
       let access = auth?.access;
       ThreadServices.postThread(access, postData);
-    }
 
-    // refresh states
-    setPostData(postObject);
+      // refresh postData state & reload current page
+      setPostData(postObject);
+      Router.reload(window.location.pathname);
+    }
   };
 
   return (
@@ -68,6 +68,7 @@ const ThreadForm = (props) => {
             onChange={(e) =>
               setPostData({ ...postData, title: e.target.value })
             }
+            isRequired={true}
           ></Form.Control>
         </Form.Group>
         <Form.Group>

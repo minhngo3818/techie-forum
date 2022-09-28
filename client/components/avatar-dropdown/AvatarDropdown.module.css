@@ -1,7 +1,3 @@
-.dropdown a:after {
-  content: none;
-}
-
 .image {
   border: 2px solid black;
   transition: all 0.3s ease-in-out;
@@ -14,4 +10,20 @@
 .dropdown a img:focus {
   box-shadow: 0 0 1px 1px black;
   border-radius: 50%;
+}
+
+.dropdownToggle::after {
+  content: none !important;
+}
+
+.dropdown div {
+  border-radius: 0 !important;
+}
+
+.dropdown a:after {
+  content: none;
+}
+
+.dropdown div a:active {
+  background-color: gray !important;
 }

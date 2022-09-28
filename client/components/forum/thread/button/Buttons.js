@@ -7,6 +7,7 @@ import {
   faMessage,
 } from "@fortawesome/free-regular-svg-icons";
 import {
+  faCheck,
   faShareNodes,
   faHeart as solidHeart,
   faPenToSquare as solidPenToSquare,
@@ -35,7 +36,10 @@ LikeButton.propTypes = {
 
 const EditButton = (props) => {
   return (
-    <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip>{props.isEdit ? "Abort" : "Edit"}</Tooltip>}
+    >
       <Button
         type="button"
         className={styles.button}
