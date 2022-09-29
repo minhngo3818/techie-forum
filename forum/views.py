@@ -11,15 +11,17 @@ from .serializers import (
     LikeCommentSerializer,
     TagSerializer,
 )
+from .pagination import ThreadPagination
 
 
 class ThreadViewSet(viewsets.ModelViewSet):
     serializer_class = ThreadSerializer
     queryset = Thread.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = ThreadPagination
 
     def get_queryset(self):
-        return Thread.objects.all()
+        return Thread.objects.filter(category=self.request.query_params.get("category"))
 
     def create(self, request, *args, **kwargs):
         tag_names = request.data.get("tags", [])

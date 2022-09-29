@@ -1,10 +1,17 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import axiosInstance from "../axios";
 import { toast } from "react-toastify";
 
-// TODO: paginate thread
-const getPaginatedThreads = async () => {};
+const getCursoredThreads = async (cursor, category, accessToken) => {
+  let response = await axiosInstance.get(
+    `forum/thread/?category=${category}&cursor=${cursor}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response;
+};
 
 const postThread = async (accessToken, threadInputs) => {
   try {
@@ -13,7 +20,7 @@ const postThread = async (accessToken, threadInputs) => {
       JSON.stringify(threadInputs),
       {
         headers: {
-          Bearer: `${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     );
@@ -35,7 +42,7 @@ const editThread = async (accessToken, pk, threadInputs) => {
       JSON.stringify(threadInputs),
       {
         headers: {
-          Bearer: `${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     );
@@ -50,6 +57,9 @@ const editThread = async (accessToken, pk, threadInputs) => {
   }
 };
 
-const ThreadServices = () => {};
+const ThreadServices = {
+  getThreadsByChoice: getThreadsByChoice,
+  postThread: postThread,
+};
 
 export default ThreadServices;
