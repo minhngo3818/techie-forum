@@ -1,24 +1,26 @@
 /* Customed bootstrap form */
 .formControl {
+  width: 100%;
   border: none;
   border-radius: 0;
   background-color: black;
   border: 1px solid gray;
   color: white;
-  transition: all 0.25s ease-in-out;
+  outline: 0;
+}
+
+.formControl:focus {
+  color: white;
+  outline: 0 !important;
+  background-color: black;
+  border: 1px solid gray;
+  box-shadow: 0 0 3px 1px #fff;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .formControl#title {
   font-size: 36px;
   font-weight: 500;
-}
-
-.formControl:focus {
-  color: white;
-  outline: none;
-  background-color: black;
-  border: 1px solid gray;
-  box-shadow: 0 0 3px 1px #fff;
 }
 
 .formTextarea {
@@ -31,14 +33,13 @@
   padding: 10px;
   outline: 0;
   border: 1px solid gray;
-  transition: focus 0.3s ease-in-out;
 }
 
 .formTextarea:focus {
   color: white;
   outline: 0 !important;
   border: 1px solid gray;
-  box-shadow: 0 0 3px 1px white !important;
+  box-shadow: 0 0 3px 1px white;
   transition: box-shadow 0.3s ease-in-out;
   background-color: black;
 }
