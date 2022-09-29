@@ -24,14 +24,31 @@ const ThreadForm = (props) => {
   const [postData, setPostData] = useState(postObject);
   const postRef = useRef();
 
+  // Validate form
+  const [validated, setValidated] = useState(false);
+
   useEffect(() => {
     // Keep tracking the current page to set thread category
     setPostData({ ...postData, category: props.category });
   }, [props]);
 
   // Handlers
-  const handleSumitPost = async (e) => {
+  // Prevent pressing Enter trigger submit event
+  const handleKeyDown = (e) => {
+    if ((e.charCode || e.keyCode) === 13) {
+      e.preventDefault();
+    }
+  };
+
+  const handleSubmitPost = (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    setValidated(true);
     if (postData.title !== "" && postData.content !== "") {
       let access = auth?.access;
       ThreadServices.postThread(access, postData);
@@ -47,18 +64,22 @@ const ThreadForm = (props) => {
       className={styles.postForm}
       id={props.isOpen ? styles.formOpen : styles.formClose}
     >
-      <Form className={styles.formContent}>
-        <div className={styles.formButtons}>
+      <Form
+        noValidate
+        validated={validated}
+        className={styles.formContent}
+        onSubmit={(e) => handleSubmitPost(e)}
+        onKeyDown={(e) => {
+          handleKeyDown(e);
+        }}
+      >
+        <Form.Group className={styles.formButtons}>
           <ImageButton />
           <EmojiButton />
-          <Button
-            className={customBS.btn}
-            id={styles.postButton}
-            onClick={handleSumitPost}
-          >
+          <Button className={customBS.btn} id={styles.postButton} type="submit">
             POST
           </Button>
-        </div>
+        </Form.Group>
         <Form.Group>
           <Form.Label className={styles.label}>Title</Form.Label>
           <Form.Control
@@ -68,8 +89,12 @@ const ThreadForm = (props) => {
             onChange={(e) =>
               setPostData({ ...postData, title: e.target.value })
             }
-            isRequired={true}
+            type="text"
+            required
           ></Form.Control>
+          <Form.Control.Feedback type="invalid">
+            Please add a title
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group>
           <Form.Label className={styles.label}>Content</Form.Label>
@@ -83,7 +108,12 @@ const ThreadForm = (props) => {
             }
             rows="4"
             cols="50"
+            type="text"
+            required
           ></Form.Control>
+          <Form.Control.Feedback type="invalid">
+            Please input content
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group>
           <Form.Label className={styles.label}>Tags</Form.Label>
