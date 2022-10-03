@@ -17,27 +17,15 @@ const Field = () => {
   const router = useRouter();
 
   let currentPage = router.query.field; // Assign to variable in order to keep track router.query
-  let pageName = "";
-  switch (currentPage) {
-    case "web-design":
-      pageName = "Web Design";
-      break;
-    case "server":
-      pageName = "Server";
-      break;
-    case "cybersecurity":
-      pageName = "Cybersecurity";
-      break;
-    case "game-dev":
-      pageName = "Game Development";
-      break;
-    case "os":
-      pageName = "Operating System";
-      break;
-    case "languages":
-      pageName = "Programming Languages";
-      break;
+  const pageMap = {
+    "web-design": "Web Design",
+    "server": "Server",
+    "cybersecurity": "Cybersecurity",
+    "game-dev": "Game Dev",
+    "os": "Operating System",
+    "languages": "Programming Languages"
   }
+  let pageName = pageMap[currentPage] ?? "Forum does not exist"
 
   const [isThreadForm, setIsThreadForm] = useState(false);
 
