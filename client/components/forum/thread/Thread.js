@@ -10,9 +10,6 @@ import { Form } from "react-bootstrap";
 import customBS from "../../../styles/CustomBootstrap.module.css";
 import styles from "./Thread.module.css";
 
-// Dummy tags
-const tags = ["C++", "Console App", "System", "Algorithm", "Server"];
-
 const Thread = (props) => {
   // States
   const [isLiked, setIsLiked] = useState(false);
@@ -92,7 +89,7 @@ const Thread = (props) => {
         )}
       </div>
       <div className={styles.tags}>
-        {tags.map((tag) => {
+        {props.tags.map((tag) => {
           return <p key={tag}>{tag}</p>;
         })}
       </div>
@@ -110,10 +107,13 @@ export default Thread;
 
 Thread.propTypes = {
   author: PropTypes.string,
+  avatar: PropTypes.string,
   date: PropTypes.string,
   title: PropTypes.string,
   content: PropTypes.string,
-  tags: PropTypes.arrayOf(
-    PropTypes.objectOf({ id: PropTypes.string, name: PropTypes.string })
-  ),
+  tags: PropTypes.arrayOf(PropTypes.string),
+  // Temporary string type tags for testing UI, replace back to object if add service
+  // tags: PropTypes.arrayOf(
+  //   PropTypes.objectOf({ id: PropTypes.string, name: PropTypes.string })
+  // ),
 };

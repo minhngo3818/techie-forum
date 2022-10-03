@@ -8,6 +8,7 @@ const ThreadForm = dynamic(
   () => import("../../components/forum/thread-form/ThreadForm"),
   { ssr: false }
 );
+import ThreadServices from "../../services/forum/ThreadServices";
 import styles from "../../styles/Forum.module.css";
 
 // TODO: Add loading effect
@@ -15,7 +16,7 @@ const Field = () => {
   // Page section
   const router = useRouter();
 
-  let currentPage = router.query.field;
+  let currentPage = router.query.field; // Assign to variable in order to keep track router.query
   let pageName = "";
   switch (currentPage) {
     case "web-design":
@@ -46,6 +47,7 @@ const Field = () => {
 
   // Dummy content
   const author = "Tony";
+  const avatar = "/../public/dev.jpg";
   const title = "Making a super quantum computer";
   const content =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, r\
@@ -54,6 +56,7 @@ const Field = () => {
    eprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur r\
    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ";
   const created = "07/17/2077";
+  const tags = ["C++", "Console App", "System", "Algorithm", "Server"];
   const likes = 200;
   return (
     <>
@@ -69,6 +72,7 @@ const Field = () => {
           title={title}
           created={created}
           content={content}
+          tags={tags}
           likes={likes}
         ></Thread>
       </div>
