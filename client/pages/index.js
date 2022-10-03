@@ -22,7 +22,6 @@ const Home = () => {
           <h1 className={styles.notAuthorized}>Not Authorized</h1>
         )}
       </div>
-      <About />
       <Footer />
     </div>
   );

@@ -9,6 +9,7 @@ const ThreadForm = dynamic(
   { ssr: false }
 );
 import ThreadServices from "../../services/forum/ThreadServices";
+import threadData from "../../utils/dummy-generator";
 import styles from "../../styles/Forum.module.css";
 
 // TODO: Add loading effect
@@ -19,13 +20,13 @@ const Field = () => {
   let currentPage = router.query.field; // Assign to variable in order to keep track router.query
   const pageMap = {
     "web-design": "Web Design",
-    "server": "Server",
-    "cybersecurity": "Cybersecurity",
+    server: "Server",
+    cybersecurity: "Cybersecurity",
     "game-dev": "Game Dev",
-    "os": "Operating System",
-    "languages": "Programming Languages"
-  }
-  let pageName = pageMap[currentPage] ?? "Forum does not exist"
+    os: "Operating System",
+    languages: "Programming Languages",
+  };
+  let pageName = pageMap[currentPage] ?? "Forum does not exist";
 
   const [isThreadForm, setIsThreadForm] = useState(false);
 
@@ -55,14 +56,18 @@ const Field = () => {
           <button>Memorized</button>
         </div>
         <ThreadForm isOpen={isThreadForm} category={currentPage} />
-        <Thread
-          author={author}
-          title={title}
-          created={created}
-          content={content}
-          tags={tags}
-          likes={likes}
-        ></Thread>
+
+        {threadData.map((thread) => {
+          return(
+          <Thread
+            author={thread.author}
+            title={thread.title}
+            created={thread.created}
+            content={thread.content}
+            tags={thread.tags}
+            likes={thread.likes}
+          />)
+        })}
       </div>
     </>
   );
