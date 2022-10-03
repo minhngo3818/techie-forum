@@ -58,7 +58,7 @@ const editThread = async (accessToken, pk, threadInputs) => {
 };
 
 const ThreadServices = {
-  getThreadsByChoice: getThreadsByChoice,
+  getCursoredThreads: getCursoredThreads,
   postThread: postThread,
 };
 
