@@ -95,4 +95,31 @@ CommentButton.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export { LikeButton, EditButton, ShareButton, CommentButton };
+const ShowCommentButton = (props) => {
+  return (
+    <OverlayTrigger placement="top" overlay={<Tooltip>Show Comment</Tooltip>}>
+      <Button
+        type="button"
+        className={styles.showCmtBtn}
+        id={props.isShow ? styles.active : null}
+        onClick={props.onChange}
+      >
+        Comment: {props.numOfComments}
+      </Button>
+    </OverlayTrigger>
+  );
+};
+
+ShowCommentButton.propTypes = {
+  isShow: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+  numOfComments: PropTypes.number,
+};
+
+export {
+  LikeButton,
+  EditButton,
+  ShareButton,
+  CommentButton,
+  ShowCommentButton,
+};
