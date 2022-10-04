@@ -27,7 +27,7 @@ class Thread(models.Model):
         ordering = ["-created_date"]
 
     def __str__(self) -> str:
-        return str(self.owner.name)
+        return str(self.owner.owner.username)
 
     @property
     def numLikes(self) -> int:
