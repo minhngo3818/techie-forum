@@ -46,7 +46,7 @@ const Thread = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <img src="#" alt="avatar"></img>
+        <img src={props.avatar} alt="avatar" />
         <h5>{props.author}</h5>
         <p>Posted on {props.created}</p>
       </div>
