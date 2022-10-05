@@ -58,15 +58,16 @@ const Field = () => {
         <ThreadForm isOpen={isThreadForm} category={currentPage} />
 
         {threadData.map((thread) => {
-          return(
-          <Thread
-            author={thread.author}
-            title={thread.title}
-            created={thread.created}
-            content={thread.content}
-            tags={thread.tags}
-            likes={thread.likes}
-          />)
+          return (
+            <Thread
+              author={thread.author}
+              title={thread.title}
+              created={thread.created}
+              content={thread.content}
+              tags={thread.tags}
+              likes={thread.likes}
+            />
+          );
         })}
       </div>
     </>
