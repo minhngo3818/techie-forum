@@ -3,12 +3,11 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.utils import timezone
-from .models import Thread, Comment, Like, LikeComment, Tag
+from .models import Thread, Comment, Like, Tag
 from .serializers import (
     ThreadSerializer,
     CommentSerializer,
     LikeSerializer,
-    LikeCommentSerializer,
     TagSerializer,
 )
 from .pagination import ThreadPagination
@@ -59,16 +58,6 @@ class LikeViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         thread = self.request.thread
         return Like.objects.filter(thread=thread)
-
-
-class LikeCommentViewSet(viewsets.ModelViewSet):
-    serializer_class = LikeCommentSerializer
-    query_set = LikeComment.objects.all()
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        comment = self.request.comment
-        return LikeComment.objects.filter(comment=comment)
 
 
 class TagViewSet(viewsets.ModelViewSet):

@@ -6,7 +6,6 @@ from .views import (
     ThreadViewSet,
     CommentViewSet,
     LikeViewSet,
-    LikeCommentViewSet,
     TagViewSet,
 )
 
@@ -15,7 +14,6 @@ router = DefaultRouter()
 router.register(r"thread", ThreadViewSet)
 router.register(r"comment", CommentViewSet)
 router.register(r"like", LikeViewSet)
-router.register(r"like-comment", LikeCommentViewSet, basename="like-comment")
 router.register(r"tag", TagViewSet, basename="tag")
 
 urlpatterns = [path("forum/", include(router.urls))]

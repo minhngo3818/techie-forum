@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework import exceptions
 from user.serializers import ProfileSerializer
-from .models import Thread, Comment, Like, LikeComment, Tag
+from .models import Thread, Comment, Like, Tag
 from user.models import Profile
 from .choices import CATEGORIES
 
@@ -15,12 +15,6 @@ class CommentSerializer(serializers.ModelSerializer):
 class LikeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Like
-        fields = "__all__"
-
-
-class LikeCommentSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = LikeComment
         fields = "__all__"
 
 
