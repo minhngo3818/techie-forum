@@ -21,6 +21,8 @@ const AuthGuard = (AuthComponent) => {
           setIsVerified(true);
         } else {
           localStorage.removeItem("tf_auth");
+          localStorage.removeItem("tf_user");
+          localStorage.removeItem("tf_profile");
           setIsVerified(false);
           router.replace("/login");
         }

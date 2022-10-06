@@ -28,25 +28,19 @@ const Field = () => {
   };
   let pageName = pageMap[currentPage] ?? "Forum does not exist";
 
+  // Get threads from a category
+  let threads = threadData.filter((thread) => {
+    return thread.category === currentPage;
+  });
+
+  // States
   const [isThreadForm, setIsThreadForm] = useState(false);
 
+  // Handlers
   const handleIsThreadForm = () => {
     setIsThreadForm((prev) => !prev);
   };
 
-  // Dummy content
-  const author = "Tony";
-  const avatar = "/../public/dev.jpg";
-  const title = "Making a super quantum computer";
-  const content =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, r\
-   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis r\
-   nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in r\
-   eprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur r\
-   sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ";
-  const created = "07/17/2077";
-  const tags = ["C++", "Console App", "System", "Algorithm", "Server"];
-  const likes = 200;
   return (
     <>
       <PageHeader pageName={pageName} />
@@ -56,16 +50,17 @@ const Field = () => {
           <button>Memorized</button>
         </div>
         <ThreadForm isOpen={isThreadForm} category={currentPage} />
-
-        {threadData.map((thread) => {
+        {threads.map((thread) => {
           return (
             <Thread
               author={thread.author}
+              avatar={thread.avatar}
               title={thread.title}
               created={thread.created}
               content={thread.content}
               tags={thread.tags}
               likes={thread.likes}
+              numOfComments={thread.numOfComments}
             />
           );
         })}

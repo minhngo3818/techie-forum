@@ -27,7 +27,7 @@ class Thread(models.Model):
         ordering = ["-created_date"]
 
     def __str__(self) -> str:
-        return str(self.owner.name)
+        return str(self.owner.owner.username)
 
     @property
     def numLikes(self) -> int:
@@ -78,22 +78,10 @@ class Like(models.Model):
     LIKE_CHOICES = (("Like", "Like"), ("Unlike", "Unlike"))
 
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     value = models.CharField(choices=LIKE_CHOICES, default="Like", max_length=10)
 
     def __str__(self) -> str:
         return str(self.tweet)
-
-
-class LikeComment(models.Model):
-    LIKE_CHOICES = (("Like", "Like"), ("Unlike", "Unlike"))
-
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    value = models.CharField(choices=LIKE_CHOICES, default="Like", max_length=10)
-
-    def __str__(self) -> str:
-        return str(self.comment)
 
 
 class Tag(models.Model):

@@ -5,16 +5,20 @@ import {
   EditButton,
   ShareButton,
   CommentButton,
+  ShowCommentButton,
 } from "./button/Buttons";
 import { Form } from "react-bootstrap";
 import customBS from "../../../styles/CustomBootstrap.module.css";
 import styles from "./Thread.module.css";
 
 const Thread = (props) => {
+  console.log(props.avatar);
+
   // States
   const [isLiked, setIsLiked] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isComment, setIsComment] = useState(false);
+  const [isShowComment, setIsShowComment] = useState(false);
   const [editThread, setEditThread] = useState({
     title: props.title,
     content: props.content,
@@ -37,6 +41,10 @@ const Thread = (props) => {
     setIsComment((prev) => !prev);
   };
 
+  const handleShowComment = () => {
+    setIsShowComment((prev) => !prev);
+  };
+
   useEffect(() => {
     if (isEdit) {
       editRef.current.focus();
@@ -47,7 +55,7 @@ const Thread = (props) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <img src={props.avatar} alt="avatar" />
-        <h5>{props.author}</h5>
+        <h6>{props.author}</h6>
         <p>Posted on {props.created}</p>
       </div>
       <div className={styles.content}>
@@ -89,7 +97,7 @@ const Thread = (props) => {
         )}
       </div>
       <div className={styles.tags}>
-        {props.tags.map((tag) => {
+        {props.tags?.map((tag) => {
           return <p key={tag}>{tag}</p>;
         })}
       </div>
@@ -98,6 +106,11 @@ const Thread = (props) => {
         <ShareButton />
         <EditButton isEdit={isEdit} onChange={handleIsEdit} />
         <CommentButton isComment={isComment} onChange={handleComment} />
+        <ShowCommentButton
+          isShow={isShowComment}
+          onChange={handleShowComment}
+          numOfComments={props.numOfComments}
+        />
       </div>
     </div>
   );
@@ -112,6 +125,7 @@ Thread.propTypes = {
   title: PropTypes.string,
   content: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
+  numOfComments: PropTypes.number,
   // Temporary string type tags for testing UI, replace back to object if add service
   // tags: PropTypes.arrayOf(
   //   PropTypes.objectOf({ id: PropTypes.string, name: PropTypes.string })

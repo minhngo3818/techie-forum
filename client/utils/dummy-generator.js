@@ -1,24 +1,34 @@
 import { faker } from "@faker-js/faker";
 import forumLinks from "../page-path/forum-links";
 
-const threadData = [];
+const randomGenerator = (limit) => {
+  return Math.floor(Math.random() * limit) + 1;
+};
 
+const threadData = [];
+const threadLimit = randomGenerator(200);
 const tagsList = [];
-const tagsLimit = Math.floor(Math.random() * 10);
-for (let i = 0; i < tagsLimit; i += 1) {
-  tagsList.push(faker.lorem.word());
+
+for (let i = 0; i < threadLimit; i += 1) {
+  let tags = [];
+  let tagsLimit = randomGenerator(20);
+  for (let i = 0; i <= tagsLimit; i += 1) {
+    tags.push(faker.lorem.word());
+  }
+  tagsList.push(tags);
 }
 
-for (let i = 0; i <= 50; i += 1) {
+for (let i = 0; i <= threadLimit; i += 1) {
   let author = faker.name.fullName();
   let avatar = faker.image.abstract(60, 60, true);
   let title = faker.lorem.sentence(5);
   let content = faker.lorem.paragraph(5);
   let created = faker.date.recent(20).toLocaleDateString();
-  let tags = tagsList;
+  let tags = tagsList[i];
   let category =
     forumLinks[Math.floor(Math.random() * forumLinks.length)]?.path;
-  let likes = Math.floor(Math.random() * 100);
+  let likes = randomGenerator(100);
+  let numOfComments = randomGenerator(80);
 
   threadData.push({
     author,
@@ -29,6 +39,7 @@ for (let i = 0; i <= 50; i += 1) {
     tags,
     category,
     likes,
+    numOfComments,
   });
 }
 
