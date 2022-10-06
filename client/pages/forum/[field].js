@@ -50,7 +50,6 @@ const Field = () => {
           <button>Memorized</button>
         </div>
         <ThreadForm isOpen={isThreadForm} category={currentPage} />
-
         {threads.map((thread) => {
           return (
             <Thread
