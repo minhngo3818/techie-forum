@@ -11,14 +11,15 @@ class Thread(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
     content = models.TextField(null=True, blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
     liked = models.ManyToManyField(
         Profile, default=None, blank=True, related_name="liked"
     )
+    memorized = models.BooleanField(default=False, blank=True)
     category = models.CharField(
         max_length=100, choices=CATEGORIES, null=True, blank=True
     )
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )

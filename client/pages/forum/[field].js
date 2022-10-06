@@ -14,10 +14,10 @@ import styles from "../../styles/Forum.module.css";
 
 // TODO: Add loading effect
 const Field = () => {
-  // Page section
   const router = useRouter();
 
-  let currentPage = router.query.field; // Assign to variable in order to keep track router.query
+  // Assign to variable in order to keep track router.query
+  let currentPage = router.query.field;
   const pageMap = {
     "web-design": "Web Design",
     server: "Server",
@@ -35,10 +35,26 @@ const Field = () => {
 
   // States
   const [isThreadForm, setIsThreadForm] = useState(false);
+  const [currentThreads, setThreads] = useState({
+    data: [],
+    next: null,
+  });
 
   // Handlers
   const handleIsThreadForm = () => {
     setIsThreadForm((prev) => !prev);
+  };
+
+  const handleAppendThread = async () => {
+    let auth = localStorage.getItem("tf_auth");
+    let threads = ThreadServices.getCursoredThreads(
+      currentThreads?.next,
+      currentPage,
+      JSON.parse(auth)?.access
+    );
+    if (threads?.status === 200) {
+      setThreads({ data: data.concat(threads?.results), next: threads?.next });
+    }
   };
 
   return (
