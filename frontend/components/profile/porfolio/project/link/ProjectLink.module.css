@@ -1,0 +1,11 @@
+.projectLinkWrapper {
+  @apply flex items-center w-48 h-full;
+}
+
+.projectLink {
+  @apply w-32 h-full text-center text-white 
+  bg-black hover:bg-gray 
+  border-2 border-gray duration-200
+  ml-4 px-2 
+  focus:outline-none;
+}

@@ -1,0 +1,82 @@
+.navbar {
+  @apply sticky top-0 flex justify-center 
+  items-center w-full h-16 bg-white z-40;
+}
+
+.navWrapper {
+  @apply flex items-center w-[80%];
+}
+
+.navBrandWrapper {
+  @apply flex flex-grow justify-start h-auto w-auto;
+}
+
+.navBrand {
+  @apply text-2xl text-black font-bold;
+}
+
+.navLoginBtn {
+  @apply flex justify-center items-center 
+  w-36 h-8 mr-4 font-semibold border-2 duration-300;
+}
+
+.navLoginLink {
+  @apply text-gray 
+  hover:text-white 
+  border-gray bg-white
+  hover:bg-gray;
+}
+
+.navLoginUser {
+  @apply border-none text-black bg-smoke
+  hover:text-white hover:bg-black;
+}
+
+.navLoginUserActive {
+  @apply text-white bg-black;
+}
+
+.navLoginUser:active {
+  @apply text-white bg-smoke;
+}
+
+.navSidebarToggler {
+  @apply flex justify-center items-center 
+  w-8 h-8 text-3xl text-gray
+  hover:text-black border-2 border-gray
+  hover:border-black bg-white duration-300;
+}
+
+.navTogglerActive {
+  @apply flex justify-center items-center 
+  w-8 h-8 text-3xl text-white
+  border-black bg-black duration-300;
+}
+
+.navDropDownContainer {
+  @apply relative w-36 h-8 mr-4;
+}
+
+.navDropdownWrapper {
+  @apply absolute flex flex-col 
+  justify-center items-center 
+  top-8 left-0 w-full h-auto
+  bg-white p-1;
+}
+
+.navDropdown {
+  @apply relative w-[120px] h-8 flex 
+  justify-center font-semibold items-center my-1;
+}
+
+.navDropdownLink {
+  @apply text-gray bg-white
+  hover:text-black border-0
+  hover:border-2 hover:border-black 
+  focus:border-gray;
+}
+
+.navDropdownLogout {
+  @apply text-white bg-gray 
+  border-2 border-gray hover:bg-black;
+}

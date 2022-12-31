@@ -1,0 +1,15 @@
+.forumButton {
+  @apply relative min-w-[36px] w-auto h-9 px-2 mr-3
+  flex justify-center items-center 
+  bg-black text-white
+  border border-black hover:border-white
+  duration-200;
+}
+
+.forumButtonActive {
+  @apply border border-white;
+}
+
+.forumIcon {
+  @apply text-xl animate-flip-x;
+}

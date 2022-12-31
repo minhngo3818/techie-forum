@@ -1,0 +1,8 @@
+.threadTags {
+  @apply w-full h-auto flex flex-wrap justify-start items-center py-2;
+}
+
+.threadTag {
+  @apply w-auto h-6 px-2 my-1 mr-2 border border-gray text-white
+  flex justify-center items-center;
+}

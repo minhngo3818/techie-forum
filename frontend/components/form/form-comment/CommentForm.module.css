@@ -1,0 +1,45 @@
+.cmtForm {
+  @apply relative w-full min-h-[150px] h-auto 
+  flex flex-col items-start border-t border-gray
+  duration-200;
+}
+
+.cmtFormLabel {
+  @apply text-white text-lg h-8 w-auto mt-4 mb-1;
+}
+
+.cmtFormInput {
+  @apply w-full h-auto overflow-hidden px-3 py-2 mb-4
+  text-gray bg-black border border-gray
+  hover:border-white outline-none
+  focus:text-white focus:border-white
+  duration-200;
+}
+
+.cmtFormImage {
+  @apply relative mt-4 mb-6 w-full py-8
+  min-h-[240px] h-auto flex justify-center items-center
+  border-2 border-gray hover:border-white duration-200;
+}
+
+.cmtFormInnerImage {
+  @apply relative min-w-[360px] w-auto min-h-[250px] h-auto;
+}
+
+.cmtFormTools {
+  @apply relative w-full h-7 flex justify-center items-center;
+}
+
+.cmtFormButton {
+  @apply w-7 h-7 mr-4 flex justify-center items-center
+  border border-gray text-gray cursor-pointer
+  hover:border-white hover:text-black
+  hover:bg-white duration-200;
+}
+
+.cmtFormReply {
+  @apply relative max-w-[120px] w-full h-full ml-auto mr-0
+  flex justify-center items-center
+  bg-white text-black font-semibold
+  hover:bg-gray hover:text-white;
+}

@@ -1,0 +1,11 @@
+.showCommentsButton {
+  @apply relative w-36 h-9 mr-0 ml-auto
+  flex justify-center items-center
+  text-white font-semibold bg-black
+  hover:text-black hover:bg-white
+  duration-200;
+}
+
+.showCommentsButtonActive {
+  @apply text-black bg-white;
+}

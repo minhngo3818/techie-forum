@@ -1,0 +1,18 @@
+.threadContentWrapper {
+  @apply w-full h-auto my-4 flex flex-col items-start;
+}
+
+.threadTitle {
+  @apply flex items-center w-full min-h-[48px] h-auto
+  text-3xl font-semibold text-white mb-4;
+}
+
+.threadContent {
+  @apply w-full h-auto text-smoke;
+}
+
+.threadInput {
+  @apply py-2 px-4 border-gray border
+  hover:border-white outline-none bg-black
+  duration-200;
+}

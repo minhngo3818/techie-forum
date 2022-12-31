@@ -1,0 +1,9 @@
+.procreWrapper {
+  @apply flex flex-col justify-start items-center 
+  max-w-[720px] w-full min-h-[640px] h-full m-auto;
+}
+
+.procreTitle {
+  @apply flex justify-center mb-8
+  max-w-[360px] w-full h-12 border-2 border-white;
+}

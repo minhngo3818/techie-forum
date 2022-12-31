@@ -1,0 +1,25 @@
+.commentBody {
+  @apply w-full min-h-[160px] h-auto pl-5
+  flex flex-col justify-start items-start;
+}
+
+.commentContentWrapper {
+  @apply w-full h-full border-white border-l-2
+  pl-10 pt-4;
+}
+
+.commentContent {
+  @apply text-smoke;
+}
+
+.commentButtons {
+  @apply min-w-[192px] w-auto min-h-[36px]  h-auto my-4
+  flex justify-start items-center;
+}
+
+.commentEditContent {
+  @apply w-full h-auto px-2 py-1 mb-4 
+  border border-gray text-gray bg-black
+  hover:text-white hover:border-white
+  focus:text-white focus:border-white;
+}

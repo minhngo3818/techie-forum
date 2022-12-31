@@ -1,0 +1,18 @@
+.registerWrapper {
+  @apply relative m-auto flex flex-col justify-center items-center max-w-[500px] w-full h-5/6;
+}
+
+.registerButtonWrapper {
+  @apply relative flex justify-center items-center w-full h-9 my-4;
+}
+
+.registerButton {
+  @apply w-36 h-full mr-5
+  flex justify-center items-center font-semibold
+  text-black hover:text-white bg-white
+  hover:bg-gray duration-200;
+}
+
+.registerRegrexInfo {
+  @apply w-[90%] flex flex-col justify-start text-smoke text-sm;
+}

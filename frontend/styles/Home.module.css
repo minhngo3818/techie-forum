@@ -1,0 +1,21 @@
+.homeWrapper {
+  @apply relative flex flex-col w-full justify-center 
+  items-center text-white text-4xl;
+}
+
+.homeBrand {
+  @apply w-[500px] h-20 flex justify-center items-center 
+  text-4xl font-bold border-2 border-white animate-lock-on;
+}
+
+.homeSlogan {
+  @apply mt-8 text-2xl z-20;
+}
+
+.homeJoinBtn {
+  @apply flex justify-center items-center w-[160px]
+  h-9 mt-16 text-base text-black
+  hover:text-white font-semibold bg-white
+  hover:bg-gray border-2 border-white
+  hover:border-gray duration-300 z-20;
+}

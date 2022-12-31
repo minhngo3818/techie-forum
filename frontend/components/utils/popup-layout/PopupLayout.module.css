@@ -1,0 +1,39 @@
+.popupContainer {
+  @apply absolute w-full h-full;
+}
+
+.popupBG {
+  @apply fixed inset-0 bg-gray opacity-40;
+}
+
+.popupPopup {
+  @apply absolute w-[500px] h-auto
+  bg-white z-50 top-1/4 left-1/2 
+  -translate-x-1/2 py-8 px-8 drop-shadow-md;
+}
+
+.popupHeader {
+  @apply w-full h-10 py-2 flex justify-start items-center 
+  border-b-2 border-black text-2xl font-bold;
+}
+
+.popupFields {
+  @apply w-full h-auto my-4 flex flex-col items-start;
+}
+
+.popupButtons {
+  @apply w-full h-8 flex justify-start items-center;
+}
+
+.popupButton {
+  @apply w-24 h-full border-black border-2 hover:border-gray hover:bg-gray
+  text-lg mr-4 duration-200;
+}
+
+.popupSubmit {
+  @apply bg-black text-white;
+}
+
+.popupCancel {
+  @apply bg-white text-black hover:text-white;
+}

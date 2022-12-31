@@ -1,0 +1,9 @@
+.threadButtons {
+  @apply relative w-full min-h-[36px] h-auto my-3
+  flex justify-start items-center flex-wrap;
+}
+
+.threadButtonsLeftside {
+  @apply relative min-w-[192px] w-auto h-9 
+  flex justify-start items-center;
+}

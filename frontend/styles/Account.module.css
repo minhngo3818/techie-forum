@@ -1,0 +1,52 @@
+.accountWrapper {
+  @apply flex flex-col justify-start items-center max-w-[500px] w-full h-auto py-20;
+}
+
+.accountTitleWrapper {
+  @apply flex justify-center items-center w-full h-10;
+}
+
+.accountTitle {
+  @apply flex justify-center items-center 
+  max-w-[240px] w-full h-full border-2 border-white;
+}
+
+.accountSections {
+  @apply w-full h-auto;
+}
+
+.accountSection {
+  @apply w-full h-auto border-2 border-smoke 
+  py-4 px-8 my-8;
+}
+
+.accountSecTitle {
+  @apply font-bold text-white text-2xl mb-2;
+}
+
+.accountSecBtnWrapper {
+  @apply flex mt-4 w-full h-7;
+}
+
+.accountSecBtn {
+  @apply flex justify-center items-center 
+  h-full font-semibold
+  hover:bg-gray hover:text-white
+  duration-200;
+}
+
+.accountSecBtnNormal {
+  @apply w-32 bg-white text-black;
+}
+
+.accountSecBtnSmall {
+  @apply w-20 mr-4 bg-white text-black;
+}
+
+.accountSecBtnDelete {
+  @apply w-32 text-white bg-black border-2 border-white;
+}
+
+.accountText {
+  @apply text-smoke my-2;
+}

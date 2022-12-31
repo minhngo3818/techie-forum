@@ -1,0 +1,35 @@
+.deletePanelContainer {
+  @apply absolute w-full h-full top-0 left-0;
+}
+
+.deletePanelBG {
+  @apply fixed inset-0 bg-gray opacity-40;
+}
+
+.deletePopup {
+  @apply absolute w-[400px] h-auto
+  bg-white z-50 top-1/4 left-1/2 
+  -translate-x-1/2 py-6 px-6 drop-shadow-md;
+}
+
+.deleteHeader {
+  @apply flex justify-start items-center text-2xl text-black font-bold my-2;
+}
+
+.deleteText {
+  @apply text-lg text-black;
+}
+
+.deleteSecBtnDelete {
+  @apply w-32 text-white bg-black 
+  border border-white;
+}
+
+.deleteBtn {
+  @apply w-20 mr-4 text-white bg-black;
+}
+
+.deleteCancelBtn {
+  @apply w-20 mr-4 border-2 border-black
+  bg-white text-black hover:border-gray;
+}

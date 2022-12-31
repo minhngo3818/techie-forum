@@ -1,0 +1,4 @@
+.projectSummary {
+  @apply flex-grow flex items-center 
+  h-full outline-none ml-4 text-white;
+}

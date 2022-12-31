@@ -1,0 +1,8 @@
+.projectButtonWrapper {
+  @apply w-full h-8;
+}
+
+.projectButton {
+  @apply w-8 h-8 bg-white text-black flex justify-center items-center
+  hover:bg-gray hover:text-white duration-200;
+}

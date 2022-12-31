@@ -1,0 +1,37 @@
+.project {
+  @apply relative w-full min-h-[144px] h-auto flex justify-start my-4;
+}
+
+.projectLargeCol {
+  @apply relative flex-grow w-full h-auto flex flex-col;
+}
+
+.projectNarrowCol {
+  @apply max-w-[80px] w-full h-auto flex flex-col justify-around items-center;
+}
+
+.projectContentWrapper {
+  @apply relative flex-grow flex flex-col 
+  justify-around max-w-[560px] w-full 
+  h-full ml-16;
+}
+
+.projectContentWrapper::before {
+  @apply content-[""] absolute top-0 h-[84px] 
+  border-l border-gray;
+}
+
+.projectRow {
+  @apply flex justify-start 
+  items-center w-full h-7;
+}
+
+.connectLine {
+  @apply relative block bg-gray w-12 h-[1px];
+}
+
+.connectLine:after {
+  @apply absolute h-2 w-2 bg-gray 
+  content-[""] -top-[3.5px] 
+  -right-1 left-auto rounded-full;
+}

@@ -1,0 +1,20 @@
+.loginWrapper {
+  @apply relative m-auto flex flex-col justify-center items-center max-w-[500px] w-full h-auto;
+}
+
+.loginButtonWrapper {
+  @apply relative flex w-full h-9 my-4;
+}
+
+.loginButton {
+  @apply w-24 mr-5
+  flex justify-center items-center font-semibold
+  text-black hover:text-white bg-white
+  hover:bg-gray duration-200;
+}
+
+.loginLink {
+  @apply flex justify-center items-center 
+  text-gray underline
+  hover:text-white cursor-pointer duration-200;
+}

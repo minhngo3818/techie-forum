@@ -1,0 +1,13 @@
+import { Diamond } from "../../../icons/icons";
+import styles from "../GeneralInfo.module.css";
+
+export default function ProfileHeader() {
+  return (
+    <div className={styles.genDecorWrapper}>
+      {/* Add loading bar effect  */}
+      <Diamond className={styles.genDiamond} />
+      <div className={styles.genTitle}>Profile</div>
+      <Diamond className={styles.genDiamond} />
+    </div>
+  );
+}

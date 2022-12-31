@@ -1,0 +1,25 @@
+.sidebar {
+  @apply fixed inset-y-0 right-0 w-[200px] h-screen bg-white z-10;
+}
+
+.sidebarWrapper {
+  @apply flex flex-col items-center mt-16 border-t-2;
+}
+
+.sidebarTitle {
+  @apply flex mx-auto mt-6 w-[160px]  text-lg font-bold;
+}
+
+.sidebarLink {
+  @apply w-[160px] flex justify-center 
+  items-center h-10 my-2 text-gray 
+  border-transparent hover:text-black 
+  hover:font-semibold hover:border-2
+  hover:border-black duration-200 ease-in-out;
+}
+
+.sidebarLinkActive {
+  @apply w-[160px] flex justify-center 
+  items-center h-10 my-2 text-black 
+  font-semibold border-2 border-black;
+}

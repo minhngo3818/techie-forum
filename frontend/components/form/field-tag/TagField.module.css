@@ -1,0 +1,35 @@
+.tagFieldContainer {
+  @apply flex-wrap flex flex-col items-start w-full min-h-[44px] h-auto my-2;
+}
+
+.tagFieldLabel {
+  @apply flex-grow text-xl text-white;
+}
+
+.tagFieldWrapper {
+  @apply w-full min-h-[44px] h-auto px-2 py-1 mt-2 border-2 border-gray hover:border-white
+  duration-200 flex-wrap flex justify-start items-center;
+}
+
+.tagFieldList {
+  @apply flex flex-wrap justify-start items-center;
+}
+
+.tagFieldItem {
+  @apply flex justify-center items-center list-none bg-white text-black
+  m-1 w-auto h-6;
+}
+
+.tagFieldInput {
+  @apply w-full h-8 outline-none px-1 py-2 text-gray focus:text-white
+  bg-black;
+}
+
+.tagFieldName {
+  @apply px-2;
+}
+
+.tagFieldBtn {
+  @apply flex justify-center items-center text-black w-6 h-full
+  hover:text-white hover:bg-gray duration-200 text-lg;
+}

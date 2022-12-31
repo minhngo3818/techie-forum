@@ -1,0 +1,34 @@
+.aboutWrapper {
+  @apply flex flex-col justify-start
+  max-w-[760px] w-full h-full py-10;
+}
+
+.aboutTittleWrapper {
+  @apply flex justify-start items-center 
+  w-full h-10;
+}
+
+.aboutTitle {
+  @apply flex justify-center items-center 
+  w-[200px] h-10 border-2 border-white 
+  py-2 text-white text-xl;
+}
+
+.aboutContentWrapper {
+  @apply flex flex-grow justify-center 
+  items-center w-full h-full my-8;
+}
+
+.aboutContent {
+  @apply w-full h-full overflow-hidden 
+  px-8 py-4 text-[#CCCCCC] focus:text-white 
+  focus:outline-none text-sm bg-black;
+}
+
+.aboutEditWrapper {
+  @apply flex justify-end items-center w-full h-8;
+}
+
+.aboutEditBtn {
+  @apply block w-48 h-full;
+}

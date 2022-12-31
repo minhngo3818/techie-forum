@@ -1,0 +1,33 @@
+.porContainer {
+  @apply flex flex-col justify-start max-w-[760px] w-full h-full py-10;
+}
+
+.porTitleWrapper {
+  @apply flex justify-end items-center w-full h-10;
+}
+
+.porTitle {
+  @apply flex justify-center items-center w-[200px] h-full border-2 border-white py-2 text-white text-xl;
+}
+
+.porProjects {
+  @apply flex flex-col justify-center items-start max-w-[760px] w-full h-auto py-4 px-8;
+}
+
+.porAddButtonWrapper {
+  @apply w-full h-8 flex justify-center items-center my-2;
+}
+
+.porAddButton {
+  @apply flex justify-start items-center px-2 w-56 h-full text-black
+  text-lg bg-white hover:bg-gray hover:text-white duration-200
+  border-2 border-white;
+}
+
+.porAddButtonWrapper::before {
+  @apply content-[""] w-[128px] h-[1px] bg-gray;
+}
+
+.porAddButtonWrapper::after {
+  @apply content-[""] w-full h-[1px] bg-gray;
+}

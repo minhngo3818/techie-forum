@@ -1,0 +1,9 @@
+.projectTitleWrapper {
+  @apply w-full h-8 flex justify-start;
+}
+
+.projectTitle {
+  @apply w-auto h-8 px-3 flex items-center
+    text-center font-semibold
+    text-white border-2 border-gray bg-black;
+}

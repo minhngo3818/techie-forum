@@ -1,0 +1,25 @@
+.editBtnContainer {
+  @apply max-w-[192px] w-full max-h-[32px] h-full;
+}
+
+.editBtnWrapper {
+  @apply flex justify-start items-center w-full h-full border-2 border-white bg-white;
+}
+
+.editBtn {
+  @apply flex justify-center items-center outline outline-2 outline-white
+  h-full bg-none hover:bg-gray
+  text-lg hover:text-white duration-200;
+}
+
+.editBtnLarge {
+  @apply w-full text-black;
+}
+
+.editBtnSubmit {
+  @apply w-1/2 text-black;
+}
+
+.editBtnCancel {
+  @apply w-1/2 text-white bg-black;
+}

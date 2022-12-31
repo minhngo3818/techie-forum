@@ -1,0 +1,33 @@
+# ide
+.idea/
+.vscode/
+.env
+
+# django
+/techies/__pycache__
+/venv
+db.sqlite3
+
+# misc
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# migrations
+/user/migrations/*.py
+/user/__pychache__
+!/user/migrations/__init__.py
+/user/migrations/__pycache__
+
+/forum/migrations/*.py
+/forum/__pycache__
+!/forum/migrations/__init__.py
+/forum/migrations/__pycache__
+
+# pycache
+user/__pycache__/
+forum/__pycache__/
+
+mockup/

@@ -1,0 +1,5 @@
+.thread {
+  @apply max-w-[720px] w-full h-auto py-6 px-10 mt-4 mb-8
+  flex flex-col justify-center items-center border-gray border-2
+  hover:border-white duration-200;
+}

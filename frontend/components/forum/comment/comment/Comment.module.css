@@ -1,0 +1,3 @@
+.comment {
+  @apply relative w-full h-auto flex flex-col justify-start items-center;
+}

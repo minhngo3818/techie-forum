@@ -1,0 +1,13 @@
+.forgotPwdWrapper {
+  @apply relative m-auto flex flex-col justify-center items-center max-w-[500px] w-full h-auto;
+}
+
+.forgotPwdBtnWrapper {
+  @apply relative flex justify-center items-center w-full h-9 my-4;
+}
+
+.forgotPwdButton {
+  @apply flex justify-center items-center w-auto max-h-8 h-full py-5 px-8
+  bg-white hover:bg-gray text-black hover:text-white 
+  text-lg font-semibold duration-200;
+}

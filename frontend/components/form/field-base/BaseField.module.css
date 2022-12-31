@@ -1,0 +1,38 @@
+.baseFieldWrapper {
+  @apply relative flex flex-col max-w-[800px] w-full min-h-[80px] h-auto my-2;
+}
+
+.baseFieldLabelWrapper {
+  @apply flex justify-start items-center w-full h-7;
+}
+
+.baseFieldLabel {
+  @apply text-xl;
+}
+
+.baseFieldLabelDark {
+  @apply text-white;
+}
+
+.baseFieldLabelLigjt {
+  @apply text-black;
+}
+
+.baseFieldInput {
+  @apply flex justify-center items-center w-full min-h-[32px] h-auto px-3 py-2
+  mt-2 border-2 outline-none duration-200 overflow-hidden;
+}
+
+.baseFieldDark {
+  @apply border-gray text-gray hover:border-white
+  bg-black focus:border-white focus:text-white;
+}
+
+.baseFieldLight {
+  @apply border-black text-gray
+  bg-white focus:text-black;
+}
+
+.baseFieldIcon {
+  @apply text-lg text-white ml-3;
+}

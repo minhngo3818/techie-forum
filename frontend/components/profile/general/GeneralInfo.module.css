@@ -1,0 +1,51 @@
+.generalContainer {
+  @apply flex flex-col justify-start 
+  items-center max-w-[760px] w-full h-full py-6;
+}
+
+.genDecorWrapper {
+  @apply flex justify-center items-center w-full h-9 my-2.5;
+}
+
+.genDiamond {
+  @apply text-white text-3xl animate-flip-x-infinite;
+}
+
+.genTitle {
+  @apply flex justify-center items-center
+  w-[180px] h-9 text-xl font-semibold
+  text-white border-2 border-white mx-1 my-2.5;
+}
+
+.genDetailWrapper {
+  @apply w-full grid grid-flow-row grid-cols-3 my-2.5;
+}
+
+.genDetailCol {
+  @apply relative w-full h-full flex flex-col justify-start items-center;
+}
+
+.gen2ndColImg {
+  @apply max-w-[180px] w-full h-[180px] border-2 mb-7;
+}
+
+.gen2ndColImg:active {
+  @apply bg-white;
+}
+
+.gen2ndColName {
+  @apply max-w-[180px] w-full h-9 mb-7 focus:outline-none 
+  border-l-2 border-r-2 text-xl text-center 
+  font-semibold;
+}
+
+.genNotEdit {
+  @apply text-white bg-black border-gray;
+}
+
+.genOnEdit {
+  @apply text-black bg-white border-black;
+}
+
+.genPopoverAvatar {
+}

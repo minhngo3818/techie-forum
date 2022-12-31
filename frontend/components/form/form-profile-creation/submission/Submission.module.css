@@ -1,0 +1,23 @@
+.submitWrapper {
+  @apply relative flex-grow w-full flex flex-col justify-start items-center;
+}
+
+.submitBg {
+  @apply absolute top-0 left-0 w-full h-full object-contain
+  bg-[url("../../../../public/submit-bg.jpg")] opacity-20;
+}
+
+.submitDiamond {
+  @apply text-white text-4xl animate-flip-x-infinite;
+}
+
+.submitNotes {
+  @apply text-white my-4;
+}
+
+.submitBtn {
+  @apply w-[160px] h-10 text-lg font-semibold
+  my-4 text-black bg-white 
+  hover:text-white hover:bg-gray
+  duration-200;
+}

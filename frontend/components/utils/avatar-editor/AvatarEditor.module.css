@@ -1,0 +1,23 @@
+.avEditorWrapper {
+  @apply relative grid grid-cols-3 w-full h-[200px] bg-black;
+}
+
+.avEditorCropper {
+  @apply relative col-start-2 col-span-2 w-full h-full mt-2;
+}
+
+.avEditorToolWrapper {
+  @apply max-w-[560px] w-full h-auto grid grid-cols-3 mt-4;
+}
+
+.avEditorTool {
+  @apply relative col-start-2 col-span-2 flex justify-start items-center w-full h-8;
+}
+
+.avEditorToolLabel {
+  @apply w-20 text-white;
+}
+
+.avEditorToolInput {
+  @apply appearance-none max-w-[240px] w-full h-0.5 bg-smoke;
+}

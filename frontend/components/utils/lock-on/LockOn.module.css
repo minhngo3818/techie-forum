@@ -1,0 +1,43 @@
+.lockOnWrapper {
+  @apply relative flex justify-center items-center;
+}
+
+.lockOnTitle {
+  @apply font-semibold text-white text-4xl z-20;
+}
+
+.lockOnRectWrapper {
+  @apply absolute w-full h-full flex justify-center items-center z-10 animate-lock-on;
+}
+
+.lockOnFrame {
+  @apply absolute w-[98%] h-[98%] animate-lock-on;
+}
+
+.lockOnCorner {
+  @apply absolute w-8 h-5 border-white bg-transparent;
+}
+
+.lockOnRectTL {
+  @apply border-t-4 border-l-4 top-0 left-0;
+}
+
+.lockOnRectTR {
+  @apply border-t-4 border-r-4 top-0 right-0;
+}
+
+.lockOnRectBL {
+  @apply border-b-4 border-l-4 bottom-0 left-0;
+}
+
+.lockOnRectBR {
+  @apply border-b-4 border-r-4 bottom-0 right-0;
+}
+
+/* .lockOnCenterRect {
+  @apply flex justify-center items-center flex-grow w-full h-full bg-transparent border-4 border-black;
+}
+
+.lockOnSideSquare {
+  @apply w-10 h-10 bg-black;
+} */

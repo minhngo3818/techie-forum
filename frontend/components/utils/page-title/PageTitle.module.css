@@ -1,0 +1,7 @@
+.pageTitleWrapper {
+  @apply flex justify-center items-center w-full h-11;
+}
+
+.pageTitleText {
+  @apply text-2xl text-white font-semibold;
+}

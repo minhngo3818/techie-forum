@@ -1,0 +1,7 @@
+.boxContainer {
+  @apply relative flex justify-center duration-200;
+}
+
+.boxWrapper {
+  @apply relative flex flex-col items-center bg-black duration-200;
+}

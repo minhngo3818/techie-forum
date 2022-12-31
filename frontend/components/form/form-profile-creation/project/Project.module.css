@@ -1,0 +1,29 @@
+.projectHeader {
+  @apply w-full h-9
+  font-bold my-2 flex justify-start items-center;
+}
+
+.projectHeaderTitle {
+  @apply flex-grow text-white text-3xl;
+}
+
+.projectDeleteBtn {
+  @apply w-9 h-full flex justify-center items-center border border-gray text-white bg-black
+  hover:bg-gray duration-200;
+}
+
+.projectFieldsWrapper {
+  @apply w-full min-h-[320px] py-4 h-full flex flex-col 
+  justify-around items-center border border-dashed border-gray;
+}
+
+.projectBtnWrapper {
+  @apply w-full h-8 flex justify-end items-center my-4;
+}
+
+.projectAddBtn {
+  @apply w-32 h-8 my-2 text-white text-center 
+  border-2 border-white bg-black
+  hover:bg-white hover:text-black
+  duration-200;
+}

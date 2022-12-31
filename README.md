@@ -1,4 +1,6 @@
 # techies-forum
-A lair for techies
 
-This project is for practicing django rest_framework and Next.js
+A lair for technomancers
+
+Inspired by Twitter and Stackoverflow
+Build from django rest_framework and Next.js
