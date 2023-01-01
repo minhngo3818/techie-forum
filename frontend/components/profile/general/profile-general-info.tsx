@@ -4,11 +4,21 @@ import ProfileHeader from "./header/profile-header";
 import ProfileIdentity from "./identity/profile-identity";
 import ProfileStats from "./stats/profile-stats";
 import ProfileRefLinksForward from "./ref-links/profile-reflinks";
+import RefLinksInterface from "../../../interfaces/refLinks";
 import EditButton from "../../utils/buttons/edit-button/edit-button";
-import ProfileInterface from "../../../interfaces/profile";
 import styles from "./ProfileGeneralInfo.module.css";
 
-export default function ProfileGeneralInfo() {
+interface ProjectGeneralInfoType extends RefLinksInterface {
+  profileName: string;
+  avatar: string;
+  threadsCount: number;
+  commentsCount: number;
+  reputationsCount: number;
+  handleChange: () => void;
+  handleSubmit: () => void;
+}
+
+export default function ProfileGeneralInfo(props: ProjectGeneralInfoType) {
   const [isEdit, setEdit] = useState(false);
   const linkRef = useRef<HTMLInputElement>(null);
 
@@ -36,8 +46,16 @@ export default function ProfileGeneralInfo() {
         <ProfileHeader />
         <div className={styles.genDetailWrapper}>
           <div className={styles.genDetailCol}>
-            <ProfileStats thread={55} comment={100} reputation={800} />
-            <EditButton isEdit={isEdit} onClick={() => setEdit(!isEdit)} />
+            <ProfileStats
+              thread={props.threadsCount}
+              comment={props.commentsCount}
+              reputation={props.reputationsCount}
+            />
+            <EditButton
+              isEdit={isEdit}
+              onClick={() => setEdit(!isEdit)}
+              onSubmit={props.handleSubmit}
+            />
           </div>
           <div className={styles.genDetailCol}>
             <ProfileIdentity

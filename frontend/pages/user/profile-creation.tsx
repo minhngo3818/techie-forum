@@ -7,7 +7,7 @@ import styles from "../../styles/ProfileCreation.module.css";
 import dynamic from "next/dynamic";
 
 const initialProfile: ProfileInterface = {
-  name: "",
+  profileName: "",
   about: "",
   avatar: "",
   twitter: "",

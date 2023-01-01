@@ -26,7 +26,7 @@ const initialProject = {
 };
 
 const initialState: ProfileInterface = {
-  name: "",
+  profileName: "",
   about: "",
   avatar: "",
   twitter: "",
@@ -130,7 +130,7 @@ function ProfileCreationForm() {
       >
         <BasicInfo
           isShow={currentIndex === 0}
-          name={profile.name}
+          name={profile.profileName}
           about={profile.about}
           avatar={profile.avatar}
           onChange={handleChangeProfile}
