@@ -43,7 +43,7 @@ export default function ChangeEmail(props: ChangeEmailType) {
         <>
           <BaseField
             name="email"
-            label="Change Email"
+            label="On Changing Email"
             type="text"
             defaultValue={props.email}
             onChange={handleChangeEmail}
