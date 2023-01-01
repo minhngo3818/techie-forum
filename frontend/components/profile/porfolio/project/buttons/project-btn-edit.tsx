@@ -3,7 +3,9 @@ import dynamic from "next/dynamic";
 import ProjectInterface from "../../../../../interfaces/project";
 import { Edit } from "../../../../icons/icons";
 import { Tooltip } from "react-tooltip";
-const ProjectForm = dynamic(() => import("../../../../form/form-project/project-form"));
+const ProjectForm = dynamic(
+  () => import("../../../../form/form-project/project-form")
+);
 import "node_modules/react-tooltip/dist/react-tooltip.css";
 import styles from "./ProjectButton.module.css";
 

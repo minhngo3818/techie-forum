@@ -15,7 +15,7 @@ interface ProfileIdentityType {
 export default function ProfileIdentity(props: ProfileIdentityType) {
   const nameRef = useRef<HTMLInputElement>(null);
 
-  const [isEditAvatar, setIsEditAvatar] = useState(false)
+  const [isEditAvatar, setIsEditAvatar] = useState(false);
 
   const handleIsEditAvatar = useCallback(() => {
     setIsEditAvatar((isEditAvatar) => !isEditAvatar);

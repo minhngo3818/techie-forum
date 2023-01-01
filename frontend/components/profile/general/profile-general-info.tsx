@@ -18,7 +18,7 @@ export default function ProfileGeneralInfo() {
     }
   });
 
-  const handleChange = () => {}
+  const handleChange = () => {};
 
   // replace with data
   const name = "Made In Heaven";
@@ -40,7 +40,7 @@ export default function ProfileGeneralInfo() {
             <EditButton isEdit={isEdit} onClick={() => setEdit(!isEdit)} />
           </div>
           <div className={styles.genDetailCol}>
-            <ProfileIdentity 
+            <ProfileIdentity
               isEdit={isEdit}
               profileName={name}
               avatar={avatar}

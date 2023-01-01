@@ -2,10 +2,11 @@ import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { Delete } from "../../../../icons/icons";
 import { Tooltip } from "react-tooltip";
-const PopupLayout = dynamic(() => import("../../../../utils/popup-layout/popup-layout"));
+const PopupLayout = dynamic(
+  () => import("../../../../utils/popup-layout/popup-layout")
+);
 import "node_modules/react-tooltip/dist/react-tooltip.css";
 import styles from "./ProjectButton.module.css";
-
 
 interface RemoveBtnType {
   id: number;

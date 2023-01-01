@@ -4,7 +4,7 @@ import { Point, Area } from "react-easy-crop";
 import styles from "./AvatarEditor.module.css";
 
 interface AvatarEditorType {
-  isCenter?: boolean
+  isCenter?: boolean;
   avatar: string;
 }
 
@@ -25,7 +25,11 @@ export default function AvatarEditor(props: AvatarEditorType) {
     <>
       {props.avatar !== "" && (
         <React.Fragment>
-          <div className={`${styles.avEditorWrapper} ${props.isCenter ? styles.avCenter : styles.avRight}`}>
+          <div
+            className={`${styles.avEditorWrapper} ${
+              props.isCenter ? styles.avCenter : styles.avRight
+            }`}
+          >
             <div className={styles.avEditorCropper}>
               <Cropper
                 image={props.avatar}
@@ -38,7 +42,11 @@ export default function AvatarEditor(props: AvatarEditorType) {
               />
             </div>
           </div>
-          <div className={`${styles.avEditorToolWrapper}  ${props.isCenter ? styles.avCenter : styles.avRight}`}>
+          <div
+            className={`${styles.avEditorToolWrapper}  ${
+              props.isCenter ? styles.avCenter : styles.avRight
+            }`}
+          >
             <div className={styles.avEditorTool}>
               <h5 className={styles.avEditorToolLabel}>Zoom</h5>
               <input

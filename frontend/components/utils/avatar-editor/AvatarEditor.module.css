@@ -7,11 +7,11 @@
 }
 
 .avRight {
-  @apply grid grid-cols-3
+  @apply grid grid-cols-3;
 }
 
 .avCenter {
-  @apply flex justify-center items-center
+  @apply flex justify-center items-center;
 }
 
 .avEditorCropper {

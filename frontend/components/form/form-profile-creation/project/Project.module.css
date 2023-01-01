@@ -1,5 +1,5 @@
 .projectWrapper {
-  @apply w-full h-auto mb-6
+  @apply w-full h-auto mb-6;
 }
 
 .projectHeader {
