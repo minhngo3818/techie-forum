@@ -1,13 +1,13 @@
 import Box from "../../../utils/box/box";
-import styles from "./Stats.module.css";
+import styles from "./ProfileStats.module.css";
 
-interface StatsType {
+interface ProfileStatsType {
   thread: number;
   comment: number;
   reputation: number;
 }
 
-function Stats(props: StatsType) {
+export default function ProfileStats(props: ProfileStatsType) {
   const stats = [
     {
       attr: "Thread",
@@ -50,4 +50,3 @@ function Stats(props: StatsType) {
     </Box>
   );
 }
-export default Stats;

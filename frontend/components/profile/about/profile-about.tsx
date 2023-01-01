@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Box from "../../utils/box/box";
 import EditButton from "../../utils/buttons/edit-button/edit-button";
 import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea";
-import styles from "./About.module.css";
+import styles from "./ProfileAbout.module.css";
 
 function ProfileAbout(props: { about: string }) {
   const [about, setAbout] = useState(props.about);

@@ -5,7 +5,6 @@ import useShowComponent from "../../../hooks/useShowComponent";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./Navbar.module.css";
-import Sidebar from "../sidebar/sidebar";
 
 type NavbarProps = {
   isToggled: Boolean;
@@ -68,8 +67,7 @@ function NavUserBtn({
 }
 
 export default function Navbar(props: NavbarProps) {
-  const isLogin = false;
-  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const isLogin = true;
 
   return (
     <nav className={styles.navbar}>
@@ -107,7 +105,6 @@ export default function Navbar(props: NavbarProps) {
           events={["hover"]}
         />
       </div>
-      {/* <Sidebar isToggled={toggleSidebar}/> */}
     </nav>
   );
 }

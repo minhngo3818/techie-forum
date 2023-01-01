@@ -1,5 +1,5 @@
 import { Diamond } from "../../../icons/icons";
-import styles from "../GeneralInfo.module.css";
+import styles from "./ProfileHeader.module.css";
 
 export default function ProfileHeader() {
   return (

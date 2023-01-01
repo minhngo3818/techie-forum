@@ -9,7 +9,7 @@ import {
   Reddit,
   Stackoverflow,
 } from "../../../icons/icons";
-import styles from "./RefLinks.module.css";
+import styles from "./ProfileRefLinks.module.css";
 import RefLinksInterface from "../../../../interfaces/refLinks";
 
 //TYPES
@@ -57,7 +57,10 @@ function EditLink({
   );
 }
 
-function RefLinks(props: RefLinksType, ref: React.Ref<HTMLInputElement>) {
+function ProfileRefLinks(
+  props: RefLinksType,
+  ref: React.Ref<HTMLInputElement>
+) {
   const links = [
     {
       name: "Twitter",
@@ -92,29 +95,27 @@ function RefLinks(props: RefLinksType, ref: React.Ref<HTMLInputElement>) {
   ];
 
   return (
-    <div className={styles.refLinks}>
-      <Box
-        width={180}
-        height={300}
-        borderWidth={1}
-        borderColor={!props.isEdit ? "bg-gray" : "bg-white"}
-        align="items-around"
-        clipType="clip-opposite-corners-right"
-      >
-        <div className={styles.refLinkWrapper}>
-          {links.map((link: LinkType) => {
-            return (
-              <div key={link.name} className={styles.refLinkRow}>
-                {!props.isEdit && <RenderLink item={link} />}
-                {props.isEdit && <EditLink item={link} ref={ref} />}
-              </div>
-            );
-          })}
-        </div>
-      </Box>
-    </div>
+    <Box
+      width={180}
+      height={300}
+      borderWidth={1}
+      borderColor={!props.isEdit ? "bg-gray" : "bg-white"}
+      align="items-around"
+      clipType="clip-opposite-corners-right"
+    >
+      <div className={styles.refLinkWrapper}>
+        {links.map((link: LinkType) => {
+          return (
+            <div key={link.name} className={styles.refLinkRow}>
+              {!props.isEdit && <RenderLink item={link} />}
+              {props.isEdit && <EditLink item={link} ref={ref} />}
+            </div>
+          );
+        })}
+      </div>
+    </Box>
   );
 }
-const RefLinksForward = React.forwardRef(RefLinks);
+const RefLinksForward = React.forwardRef(ProfileRefLinks);
 
 export default RefLinksForward;

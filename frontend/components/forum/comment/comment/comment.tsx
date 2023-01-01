@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
-import CommentHeader, { CommentHeaderType } from "./header/comment-header";
-import CommentBody, { CommentBodyType } from "./body/comment-body";
+import CommentHeader from "./header/comment-header";
+import CommentBody from "./body/comment-body";
 import CommentUserInterface from "../../../../interfaces/comment-user";
 import styles from "./Comment.module.css";
 import { EventTargetNameValue } from "../../../../interfaces/form-field";

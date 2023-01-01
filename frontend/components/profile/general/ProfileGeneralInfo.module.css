@@ -1,0 +1,20 @@
+.generalContainer {
+  @apply flex flex-col justify-start 
+  items-center max-w-[760px] w-full h-full py-6;
+}
+
+.genDetailWrapper {
+  @apply w-full grid grid-flow-row grid-cols-3 my-2.5;
+}
+
+.genDetailCol {
+  @apply relative w-full h-full flex flex-col justify-start items-center;
+}
+
+.genNotEdit {
+  @apply text-white bg-black border-gray;
+}
+
+.genOnEdit {
+  @apply text-black bg-white border-black;
+}

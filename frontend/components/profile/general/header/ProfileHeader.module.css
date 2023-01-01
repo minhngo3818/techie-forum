@@ -1,0 +1,13 @@
+.genDecorWrapper {
+  @apply flex justify-center items-center w-full h-9 my-2.5;
+}
+
+.genDiamond {
+  @apply text-white text-3xl animate-flip-x-infinite;
+}
+
+.genTitle {
+  @apply flex justify-center items-center
+  w-[180px] h-9 text-xl font-semibold
+  text-white border-2 border-white mx-1 my-2.5;
+}

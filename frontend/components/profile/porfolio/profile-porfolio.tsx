@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import Box from "../../utils/box/box";
 import Project from "./project/project";
-import ProjectForm from "../../form/form-project/project-form";
+const ProjectForm = dynamic(() => import("../../form/form-project/project-form"));
 import ProjectInterface from "../../../interfaces/project";
-import styles from "./Porfolio.module.css";
-import { TypeFlags } from "typescript";
+import styles from "./ProfilePorfolio.module.css";
 import { AddSquare } from "../../icons/icons";
 
 function ProfilePorfolio(props: { projects?: ProjectInterface[] }) {

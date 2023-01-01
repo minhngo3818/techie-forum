@@ -1,6 +1,6 @@
-import ProfileAbout from "../../components/profile/about/about";
-import ProfileGeneral from "../../components/profile/general/general";
-import ProfilePorfolio from "../../components/profile/porfolio/porfolio";
+import ProfileAbout from "../../components/profile/about/profile-about";
+import ProfileGeneral from "../../components/profile/general/profile-general-info";
+import ProfilePorfolio from "../../components/profile/porfolio/profile-porfolio";
 
 function Profile() {
   const about =
