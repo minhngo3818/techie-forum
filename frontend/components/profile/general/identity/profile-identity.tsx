@@ -39,7 +39,7 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
         handleShow={{ isState: isEditAvatar, setState: handleIsEditAvatar }}
         handleSubmit={props.handleChange}
       >
-        <div className={styles.changeAvatarWrapper}>
+        <div className={styles.genChangeAvatarWrapper}>
           <AvatarEditor isCenter={true} avatar={props.avatar} />
         </div>
       </PopupLayout>
