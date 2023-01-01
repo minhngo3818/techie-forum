@@ -2,6 +2,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import LockOnWrapper from "../components/utils/lock-on/lock-on";
+import Footer from "../components/footer/footer";
 const ParticleBackground = dynamic(
   () => import("../components/utils/particles/particle-background")
 );

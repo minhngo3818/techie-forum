@@ -2,23 +2,20 @@ import React, { useCallback, useState, useRef } from "react";
 import Image from "next/image";
 import PopupLayout from "../../../utils/popup-layout/popup-layout";
 import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
-import generalStyles from "../GeneralInfo.module.css";
+import generalStyles from "../ProfileGeneralInfo.module.css";
 import styles from "./ProfileIdentity.module.css";
 
 interface ProfileIdentityType {
   isEdit: boolean;
-  name: string;
+  profileName: string;
   avatar: string;
   handleChange: () => void;
 }
 
 export default function ProfileIdentity(props: ProfileIdentityType) {
-  const [name, setName] = useState(props.name);
   const nameRef = useRef<HTMLInputElement>(null);
 
-  const [isEditAvatar, setIsEditAvatar] = useState(false);
-
-  const avatar = "/made-in-heaven.jpg";
+  const [isEditAvatar, setIsEditAvatar] = useState(false)
 
   const handleIsEditAvatar = useCallback(() => {
     setIsEditAvatar((isEditAvatar) => !isEditAvatar);
@@ -33,7 +30,7 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
         disabled={!props.isEdit}
         onClick={handleIsEditAvatar}
       >
-        <Image src={avatar} width={180} height={180} alt="avatar" />
+        <Image src={props.avatar} width={180} height={180} alt="avatar" />
       </button>
       <PopupLayout
         headerTitle="EDIT AVATAR"
@@ -42,14 +39,16 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
         handleShow={{ isState: isEditAvatar, setState: handleIsEditAvatar }}
         handleSubmit={props.handleChange}
       >
-        <AvatarEditor avatar={avatar} />
+        <div className={styles.changeAvatarWrapper}>
+          <AvatarEditor isCenter={true} avatar={props.avatar} />
+        </div>
       </PopupLayout>
       <input
         className={`${styles.genName} ${
           props.isEdit ? generalStyles.genOnEdit : generalStyles.genNotEdit
         }`}
         ref={nameRef}
-        defaultValue={name}
+        defaultValue={props.profileName}
         onChange={props.handleChange}
         disabled={!props.isEdit}
       />

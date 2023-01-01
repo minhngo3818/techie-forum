@@ -52,7 +52,7 @@ export default function Project(props: ProjectsType) {
           <div className={generalStyles.procrePanelWrapper}>
             {props.projects.map((project, index) => {
               return (
-                <React.Fragment key={index}>
+                <div className={styles.projectWrapper} key={index}>
                   <div className={styles.projectHeader}>
                     <h3 className={styles.projectHeaderTitle}>
                       Project {index + 1}
@@ -86,7 +86,7 @@ export default function Project(props: ProjectsType) {
                       onChange={props.onChange}
                     />
                   </Transition.Child>
-                </React.Fragment>
+                </div>
               );
             })}
             <div className={styles.projectBtnWrapper}>

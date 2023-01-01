@@ -1,3 +1,7 @@
+.projectWrapper {
+  @apply w-full h-auto mb-6
+}
+
 .projectHeader {
   @apply w-full h-9
   font-bold my-2 flex justify-start items-center;

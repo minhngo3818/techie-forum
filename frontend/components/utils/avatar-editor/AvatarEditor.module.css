@@ -1,17 +1,25 @@
 .avEditorWrapper {
-  @apply relative grid grid-cols-3 w-full h-[200px] bg-black;
+  @apply relative  w-full h-[200px] bg-black;
+}
+
+.avEditorToolWrapper {
+  @apply max-w-[560px] w-full h-auto mt-4 flex-col;
+}
+
+.avRight {
+  @apply grid grid-cols-3
+}
+
+.avCenter {
+  @apply flex justify-center items-center
 }
 
 .avEditorCropper {
   @apply relative col-start-2 col-span-2 w-full h-full mt-2;
 }
 
-.avEditorToolWrapper {
-  @apply max-w-[560px] w-full h-auto grid grid-cols-3 mt-4;
-}
-
 .avEditorTool {
-  @apply relative col-start-2 col-span-2 flex justify-start items-center w-full h-8;
+  @apply relative col-start-2 col-span-2 flex justify-center items-center w-full h-8;
 }
 
 .avEditorToolLabel {

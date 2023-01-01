@@ -11,3 +11,7 @@
 .genAvatar:active {
   @apply bg-white;
 }
+
+.genChangeAvatarWrapper {
+  @apply w-full h-auto bg-black flex flex-col justify-center items-center py-4;
+}
