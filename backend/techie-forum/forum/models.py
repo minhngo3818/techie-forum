@@ -42,6 +42,9 @@ class Thread(BasePost):
         max_length=100, choices=CATEGORIES, null=True, blank=True
     )
 
+    def __str__(self) -> str:
+        return "thread-{}".format(self.title)
+
 
 class Comment(BasePost):
     thread_cmt = models.ForeignKey(
@@ -60,6 +63,7 @@ class ParentChildComment(models.Model):
     child = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name="child_comment"
     )
+    depth = models.PositiveIntergerField(default=0)
 
     def __str__(self) -> str:
         return "comment-{}-has-{}".format(self.parent, self.child)

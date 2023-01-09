@@ -39,8 +39,13 @@ class ThreadSerializer(serializers.ModelSerializer):
         many=True, slug_field="name", queryset=Tag.objects.all()
     )
     category = serializers.ChoiceField(choices=CATEGORIES)
+    comment_counts = serializers.SerializerMethodField("get_comment_counts")
 
     class Meta:
         model = Thread
         fields = "__all__"
         read_only_fields = ["created_date", "category"]
+
+    @classmethod
+    def get_comment_counts(self):
+        return Comment.objects.all().count()

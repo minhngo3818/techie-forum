@@ -11,14 +11,13 @@ from .serializers import (
     MemorizedSerializer,
     TagSerializer,
 )
-from .pagination import ThreadPagination
-
+from .pagination import PaginationHelper
 
 class ThreadViewSet(viewsets.ModelViewSet):
     serializer_class = ThreadSerializer
     queryset = Thread.objects.all()
     permission_classes = [IsAuthenticated]
-    pagination_class = ThreadPagination
+    pagination_class = PaginationHelper
 
     def get_queryset(self):
         return Thread.objects.filter(category=self.request.query_params.get("category"))
@@ -40,11 +39,17 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = PaginationHelper
 
     def get_queryset(self):
-        return Comment.objects.filter(owner=self.request.user.profile)
+        # Must include recursive query from ParentChildComment model
+        return Comment.objects.all()
 
     def perform_create(self, serializer):
+        # Create object of parent child comment
+        # Add new object to database
+        # if the there is no parent comment
+        # set null to the parent
         serializer.save(owner=self.request.user.profile)
 
     def perform_update(self, serializer):
