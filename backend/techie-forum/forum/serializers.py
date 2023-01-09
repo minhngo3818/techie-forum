@@ -43,4 +43,4 @@ class ThreadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thread
         fields = "__all__"
-        read_only_fields = "created_date"
+        read_only_fields = ["created_date", "category"]

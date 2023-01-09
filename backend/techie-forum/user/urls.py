@@ -1,20 +1,30 @@
 from django.urls import path, re_path, include
-from . import views
 from rest_framework.routers import DefaultRouter
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from .views import (
+    UserViewSet,
+    UserRegisterView,
+    LoginView,
+    LogoutView,
+    RequestResetPasswordView,
+    ResetPasswordView,
+    ConfirmResetPasswordUrlView,
+    ProfileViewSet,
+    ChangePasswordView,
+)
 
 router = DefaultRouter()
-router.register(r"user-view", views.UserViewSet)
-router.register(r"profile-view", views.ProfileViewSet)
+router.register(r"user-view", UserViewSet)
+router.register(r"profile-view", ProfileViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
         title="Techies Forum API",
         default_version="v1",
-        description="API for admin to view data in Techies Forum",
+        description="REST API Techies Forum",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="dummycontatc@gmail.com"),
         license=openapi.License(name="BSD License"),
@@ -25,18 +35,30 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("user/register/", views.UserRegisterView.as_view(), name="user_register"),
-    path(
-        "user/auth/",
-        views.CustomTokenObtainPairView.as_view(),
-        name="token_obtain_view",
-    ),
+    path("user/login/", LoginView.as_view(), name="user_login"),
+    path("user/logout", LogoutView.as_view(), name="user_logout"),
+    path("user/register/", UserRegisterView.as_view(), name="user_register"),
     path("user/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh_view"),
     path("user/auth/verify/", TokenVerifyView.as_view(), name="token_verification"),
     path(
         "user/auth/change-password/<str:pk>/",
-        views.ChangePasswordView.as_view(),
+        ChangePasswordView.as_view(),
         name="change_password",
+    ),
+    path(
+        "user/password-reset-request",
+        RequestResetPasswordView.as_view(),
+        name="password-reset-request",
+    ),
+    path(
+        "user/password-reset-confirm/<uidb64>/<token>",
+        ConfirmResetPasswordUrlView.as_view(),
+        name="password-reset-confirm",
+    ),
+    path(
+        "user/password-reset-complete/",
+        ResetPasswordView.as_view(),
+        name="password-reset-complete",
     ),
     # drf swagger ui
     re_path(
