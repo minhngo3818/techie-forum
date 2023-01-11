@@ -18,6 +18,7 @@ class BasePost(models.Model):
     liked = models.ManyToManyField(
         Profile, default=None, blank=True, related_name="liked"
     )
+    is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -47,10 +48,10 @@ class Thread(BasePost):
 
 
 class Comment(BasePost):
-    thread_cmt = models.ForeignKey(
-        Thread,
-        on_delete=models.CASCADE,
+    _thread = models.ForeignKey(
+        Thread, on_delete=models.CASCADE, related_name="comments"
     )
+    depth = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
         return "{}-comment-{}".format(self.owner, self.thread_cmt)
@@ -63,7 +64,6 @@ class ParentChildComment(models.Model):
     child = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name="child_comment"
     )
-    depth = models.PositiveIntergerField(default=0)
 
     def __str__(self) -> str:
         return "comment-{}-has-{}".format(self.parent, self.child)

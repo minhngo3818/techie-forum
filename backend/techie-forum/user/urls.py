@@ -7,6 +7,7 @@ from drf_yasg import openapi
 from .views import (
     UserViewSet,
     UserRegisterView,
+    EmailVerificationView,
     LoginView,
     LogoutView,
     RequestResetPasswordView,
@@ -35,13 +36,14 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("user/login/", LoginView.as_view(), name="user_login"),
+    path("user/login", LoginView.as_view(), name="user_login"),
     path("user/logout", LogoutView.as_view(), name="user_logout"),
     path("user/register/", UserRegisterView.as_view(), name="user_register"),
-    path("user/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh_view"),
-    path("user/auth/verify/", TokenVerifyView.as_view(), name="token_verification"),
+    path("user/email-verification", EmailVerificationView.as_view(), name="email-verification"),
+    path("user/auth/refresh", TokenRefreshView.as_view(), name="token_refresh_view"),
+    path("user/auth/verify", TokenVerifyView.as_view(), name="token_verification"),
     path(
-        "user/auth/change-password/<str:pk>/",
+        "user/auth/change-password/<str:pk>",
         ChangePasswordView.as_view(),
         name="change_password",
     ),
@@ -56,7 +58,7 @@ urlpatterns = [
         name="password-reset-confirm",
     ),
     path(
-        "user/password-reset-complete/",
+        "user/password-reset-complete",
         ResetPasswordView.as_view(),
         name="password-reset-complete",
     ),

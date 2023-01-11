@@ -118,7 +118,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Password didn't match!"})
 
         # add all fields to create an instance
-        return attrs
+        return super().validate(attrs)
 
     @classmethod
     def get_tokens(cls, user):
@@ -129,8 +129,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
         access = str(token.access_token)
         return {"refresh": refresh, "access": access}
 
-    def create(self, validate_data):
-        return User.objects.create_user(**validate_data)
+    def create(self, validated_data):
+        user = User(
+            email=validated_data["email"],
+            username=validated_data["username"]
+        )
+        user.set_password(validated_data["password"])
+        user.save()
+        return user
 
 
 class LoginSerializer(serializers.ModelSerializer):

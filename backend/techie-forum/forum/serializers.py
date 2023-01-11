@@ -1,7 +1,14 @@
 from rest_framework import serializers
 from rest_framework import exceptions
-from .models import Thread, Comment, Like, Memorize, Tag
+from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag
 from .choices import CATEGORIES
+
+
+class ParentChildCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParentChildComment
+        fields = "__all__"
+        readonly_fields = "__all__"
 
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.utils import timezone
-from .models import Thread, Comment, Like, Memorize, Tag
+from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag
 from .serializers import (
     ThreadSerializer,
     CommentSerializer,
@@ -12,6 +12,7 @@ from .serializers import (
     TagSerializer,
 )
 from .pagination import PaginationHelper
+
 
 class ThreadViewSet(viewsets.ModelViewSet):
     serializer_class = ThreadSerializer
@@ -42,18 +43,28 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = PaginationHelper
 
     def get_queryset(self):
-        # Must include recursive query from ParentChildComment model
-        return Comment.objects.all()
+        thread_id = self.request.GET.get("thid", "")
+        parent_id = self.request.GET.get("pcid", "")
+        depth = self.request.GET.get("depth", 0)
+        comment_pairs = ParentChildComment.objects.filter(parent=parent_id)
+
+        return Comment.objects.filter(
+            Q(id=comment_pairs.child | None), _thread=thread_id, depth=depth,
+        )
 
     def perform_create(self, serializer):
-        # Create object of parent child comment
-        # Add new object to database
-        # if the there is no parent comment
-        # set null to the parent
-        serializer.save(owner=self.request.user.profile)
+        thread_id = self.request.POST.get("thid", "")
+        parent_id = self.request.POST.get("pcid", "")
+        depth = self.request.POST.get("depth", 0)
+        serializer.save(owner=self.request.user.profile, _thread=thread_id, depth=depth)
+
+        if depth > 0 and parent_id != "":
+            ParentChildComment.objects.create(
+                parent=parent_id, child=serializer.data["id"]
+            )
 
     def perform_update(self, serializer):
-        serializer.save(owner=self.request.user.profile)
+        serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
 
 
 class LikeViewSet(viewsets.ModelViewSet):

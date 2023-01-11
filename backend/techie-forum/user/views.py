@@ -1,4 +1,3 @@
-import jwt
 from django.utils import timezone
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
@@ -29,11 +28,12 @@ from .serializers import (
     ProjectSerializer,
 )
 from django.conf import settings
+import jwt
 import os
 
 
 class CustomRedirect(HttpResponsePermanentRedirect):
-    allowed_schemes = [os.environ.get("APP_SCHEMES"), "http", "https"]
+    allowed_schemes = [os.environ.get("APP_SCHEMES")]
 
 
 class UserViewSet(ReadOnlyModelViewSet):
@@ -73,7 +73,7 @@ class UserRegisterView(CreateAPIView):
         email_body = (
             "Welcome {} to our lair, \n\n".format(user.username)
             + "Just one more step. Access the link below to verify your email:\n\n"
-            + email_verification_url
+            + email_verification_url + "\n\n"
             + "Best,\n"
             + "The Techies Forum Team"
         )
@@ -98,13 +98,18 @@ class EmailVerificationView(GenericAPIView):
 
     @classmethod
     def get(cls, request):
-        token = request.GET.get("token")
+        token = request.GET.get("token", "")
         try:
-            payload = jwt.decode(token, settings.SECRETKEY)
+            payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=["HS256"])
+            print(payload)
             user = User.objects.get(id=payload["user_id"])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
+                redirect_url = str(os.environ.get("FRONTEND_URL")) + "?email_verify=True"
+                return CustomRedirect(redirect_url)
+            else:
+                return Response({"message": "Email was verified"})
 
         except jwt.ExpiredSignatureError:
             return Response(
