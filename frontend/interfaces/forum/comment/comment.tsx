@@ -1,4 +1,5 @@
-export default interface CommentUserInterface {
+export default interface CommentInterface {
+  cid: string,
   author: string;
   authorId: string;
   avatar: string;

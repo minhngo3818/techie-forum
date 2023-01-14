@@ -1,5 +1,5 @@
 import React, { ReactElement, SVGProps } from "react";
-import { StateDuo } from "../../../interfaces/button";
+import { StateDuo } from "../../../interfaces/utils/button";
 import { Dialog, Transition } from "@headlessui/react";
 import useCurrentScollY from "../../../hooks/useCurrentScrollY";
 import PopupButtons from "./popup-buttons";

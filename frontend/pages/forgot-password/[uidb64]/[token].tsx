@@ -6,7 +6,7 @@ import styles from "../../../styles/ForgotPwd.module.css";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../../../interfaces/form-field";
+} from "../../../interfaces/forum/post/form-field";
 
 const initialState = {
   password: "",

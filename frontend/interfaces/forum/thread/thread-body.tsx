@@ -1,4 +1,4 @@
-export default interface ThreadInterface {
+export default interface ThreadBodyInterface {
   title: string;
   content: string;
   images?: string[];

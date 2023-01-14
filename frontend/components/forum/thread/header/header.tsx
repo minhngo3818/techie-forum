@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import PostHeaderInterface from "../../../../interfaces/post-header";
+import PostHeaderInterface from "../../../../interfaces/forum/post/post-header";
 import styles from "./ThreadHeader.module.css";
 
 interface ThreadHeaderType extends PostHeaderInterface {}

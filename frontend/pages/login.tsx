@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import PageTitle from "../components/utils/page-title/page-title";
 import BaseField from "../components/form/field-base/base-field";
-import { EventTargetNameValue, FormEvent } from "../interfaces/form-field";
+import { EventTargetNameValue, FormEvent } from "../interfaces/forum/post/form-field";
 import styles from "../styles/Login.module.css";
 
 const initialState = {

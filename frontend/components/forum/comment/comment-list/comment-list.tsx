@@ -1,12 +1,12 @@
 import React from "react";
 import Comment from "../comment/comment";
-import CommentUserInterface from "../../../../interfaces/comment-user";
+import CommentInterface from "../../../../interfaces/forum/comment/comment";
 import styles from "./CommentList.module.css";
 
 interface CommentListType {
   threadKey: string;
   showComments: boolean;
-  comments: CommentUserInterface[];
+  comments: CommentInterface[];
 }
 
 export default function CommentList(props: CommentListType) {

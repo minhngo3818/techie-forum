@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { StateDuo } from "../../../interfaces/button";
+import { StateDuo } from "../../../interfaces/utils/button";
 import BaseField from "../field-base/base-field";
-import ProjectInterface from "../../../interfaces/project";
-import { EventTargetNameValue } from "../../../interfaces/form-field";
+import ProjectInterface from "../../../interfaces/profile/project";
+import { EventTargetNameValue } from "../../../interfaces/forum/post/form-field";
 import PopupLayout from "../../utils/popup-layout/popup-layout";
 import styles from "./ProjectForm.module.css";
 

@@ -4,7 +4,7 @@ import ProfileHeader from "./header/profile-header";
 import ProfileIdentity from "./identity/profile-identity";
 import ProfileStats from "./stats/profile-stats";
 import ProfileRefLinksForward from "./ref-links/profile-reflinks";
-import RefLinksInterface from "../../../interfaces/refLinks";
+import RefLinksInterface from "../../../interfaces/profile/ref-links";
 import EditButton from "../../utils/buttons/edit-button/edit-button";
 import styles from "./ProfileGeneralInfo.module.css";
 

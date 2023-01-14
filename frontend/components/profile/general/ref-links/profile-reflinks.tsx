@@ -10,7 +10,7 @@ import {
   Stackoverflow,
 } from "../../../icons/icons";
 import styles from "./ProfileRefLinks.module.css";
-import RefLinksInterface from "../../../../interfaces/refLinks";
+import RefLinksInterface from "../../../../interfaces/profile/ref-links";
 
 //TYPES
 interface LinkType {

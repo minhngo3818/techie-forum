@@ -1,5 +1,5 @@
 import { SetStateAction, Dispatch } from "react";
-import ThreadInterface from "../../../../interfaces/thread";
+import ThreadBodyInterface from "../../../../interfaces/forum/thread/thread-body";
 import TagField from "../../../form/field-tag/tag-field";
 import styles from "./ThreadTags.module.css";
 import {
@@ -10,7 +10,7 @@ import {
 interface ThreadTagsType {
   isEdit: boolean;
   tags: Set<string>;
-  setThread: Dispatch<SetStateAction<ThreadInterface>>;
+  setThread: Dispatch<SetStateAction<ThreadBodyInterface>>;
 }
 
 export default function ThreadTags(props: ThreadTagsType) {

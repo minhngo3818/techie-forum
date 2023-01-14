@@ -1,4 +1,4 @@
-import { StateDuo } from "../../../interfaces/button";
+import { StateDuo } from "../../../interfaces/utils/button";
 import styles from "./PopupLayout.module.css";
 
 interface PopupButtonsType {

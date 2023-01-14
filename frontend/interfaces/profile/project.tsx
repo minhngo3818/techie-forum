@@ -1,5 +1,5 @@
 export default interface ProjectInterface {
-  id: number;
+  id: string;
   title: string;
   summary: string;
   demo: string;

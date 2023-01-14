@@ -1,4 +1,4 @@
-import ProjectInterface from "../../../../interfaces/project";
+import ProjectInterface from "../../../../interfaces/profile/project";
 import ProjectTitle from "./title/project-title";
 import ProjectSummary from "./summary/project-sumary";
 import ProjectLink from "./link/project-link";

@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import ProjectInterface from "../../../interfaces/project";
-import ProfileInterface from "../../../interfaces/profile";
+import ProjectInterface from "../../../interfaces/profile/project";
+import ProfileInterface from "../../../interfaces/profile/profile";
 import BasicInfo from "./basic-info/basic-info";
 import Reference from "./reference/reference";
 import Submission from "./submission/submission";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../../../interfaces/form-field";
+} from "../../../interfaces/forum/post/form-field";
 import { Tab } from "@headlessui/react";
 import useMultistepForm from "../../../hooks/useMultistepForm";
 import styles from "./ProfileCreationForm.module.css";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import BaseField from "../../form/field-base/base-field";
 import styles from "../../../styles/Account.module.css";
-import { EventTargetNameValue } from "../../../interfaces/form-field";
+import { EventTargetNameValue } from "../../../interfaces/forum/post/form-field";
 
 export default function ChangePassword() {
   const [passwords, setPasswords] = useState({

@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import ThreadInterface from "../../../interfaces/thread";
-import ThreadUserInterface from "../../../interfaces/thread-user";
+import ThreadBodyInterface from "../../../interfaces/forum/thread/thread-body";
+import ThreadInterface from "../../../interfaces/forum/thread/thread";
 import ThreadHeader from "./header/header";
 import ThreadContent from "./content/content";
 import ThreadButtons from "./buttons/thread-buttons";
@@ -14,17 +14,18 @@ const CommentList = dynamic(
 const CommentForm = dynamic(
   () => import("../../form/form-comment/comment-form")
 );
-import CommentUserInterface from "../../../interfaces/comment-user";
+import CommentInterface from "../../../interfaces/forum/comment/comment";
 import styles from "./Thread.module.css";
-import { EventTargetNameValue } from "../../../interfaces/form-field";
+import { EventTargetNameValue } from "../../../interfaces/forum/post/form-field";
 
-interface ThreadType extends ThreadUserInterface {
+interface ThreadType extends ThreadInterface {
   keyId: number;
 }
 
 export default function Thread(props: ThreadType) {
-  let commentList: CommentUserInterface[] = [
+  let commentList: CommentInterface[] = [
     {
+      id: "1",
       author: "Jotaro",
       authorId: "29038rsfasd",
       avatar: "/jotaro.jpg",
@@ -40,6 +41,7 @@ export default function Thread(props: ThreadType) {
       numOfLikes: 0,
     },
     {
+      id: "2",
       author: "Josuke",
       authorId: "29038rsfasd",
       avatar: "/josuke.jpg",
@@ -51,7 +53,7 @@ export default function Thread(props: ThreadType) {
     },
   ];
 
-  const [thread, setThread] = useState<ThreadInterface>({
+  const [thread, setThread] = useState<ThreadBodyInterface>({
     title: props.title,
     content: props.content,
     tags: props.tags,

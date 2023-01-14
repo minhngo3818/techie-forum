@@ -3,7 +3,7 @@ import LeftsideButtons, {
 } from "../../buttons-leftside/leftside-buttons";
 import ShowCommentsBtn from "./comment-list-button/show-comments";
 import EditButton from "../../../utils/buttons/edit-button/edit-button";
-import { StateDuo } from "../../../../interfaces/button";
+import { StateDuo } from "../../../../interfaces/utils/button";
 import styles from "./ThreadButtons.module.css";
 
 export interface ThreadButtonTypes extends LeftsideButtonsType {

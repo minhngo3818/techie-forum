@@ -1,16 +1,17 @@
 import { useState, useRef, useCallback } from "react";
 import CommentHeader from "./header/comment-header";
 import CommentBody from "./body/comment-body";
-import CommentUserInterface from "../../../../interfaces/comment-user";
+import CommentInterface from "../../../../interfaces/forum/comment/comment";
 import styles from "./Comment.module.css";
-import { EventTargetNameValue } from "../../../../interfaces/form-field";
+import { EventTargetNameValue } from "../../../../interfaces/forum/post/form-field";
 
-interface CommentType extends CommentUserInterface {
+interface CommentType extends CommentInterface {
   keyId: string;
 }
 
 export default function Comment(props: CommentType) {
-  const [comment, setComment] = useState<CommentUserInterface>({
+  const [comment, setComment] = useState<CommentInterface>({
+    id: props.id,
     author: props.author,
     authorId: props.authorId,
     avatar: props.avatar,
@@ -54,7 +55,7 @@ export default function Comment(props: CommentType) {
   };
 
   return (
-    <div className={styles.comment}>
+    <div className={styles.comment} data-depth={1}>
       <CommentHeader
         author={props.author}
         authorId={props.authorId}

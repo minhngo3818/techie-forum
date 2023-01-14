@@ -1,7 +1,7 @@
-import ThreadUserInterface from "../interfaces/thread-user";
+import ThreadInterface from "../interfaces/forum/thread/thread";
 
 export default function searchFilterThread(
-  data: ThreadUserInterface,
+  data: ThreadInterface,
   filterKey: boolean,
   searchKey: string
 ) {

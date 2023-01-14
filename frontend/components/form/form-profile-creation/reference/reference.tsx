@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import HorzField from "../../field-horizontal/horizontal-field";
-import RefLinksInterface from "../../../../interfaces/refLinks";
+import RefLinksInterface from "../../../../interfaces/profile/ref-links";
 import { Tab, Transition } from "@headlessui/react";
 import { CaretLeftFilled, CaretRightFilled } from "../../../icons/icons";
 import generalStyles from "../ProfileCreationForm.module.css";

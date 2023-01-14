@@ -5,7 +5,7 @@ import Thread from "../../components/forum/thread/thread";
 const ThreadForm = dynamic(
   () => import("../../components/form/form-thread/thread-form")
 );
-import ThreadUserInterface from "../../interfaces/thread-user";
+import ThreadInterface from "../../interfaces/forum/thread/thread";
 import searchFilterThread from "../../utils/searchFilterThread";
 import forumLinks from "../../page-paths/forum";
 import data from "../../dummy-data/data.json";
@@ -14,10 +14,10 @@ import styles from "../../styles/Forum.module.css";
 // Helper function convert json data to ThreadUserInterface data
 // Temporary use for testing rending frontend
 function convertData(data: any) {
-  let newData: ThreadUserInterface[] = [];
+  let newData: ThreadInterface[] = [];
   for (let i = 0; i < data?.length; i += 1) {
     let dateObj = data[i].date.split("/");
-    let thread: ThreadUserInterface = {
+    let thread: ThreadInterface = {
       author: data[i].author,
       authorId: data[i].authorId,
       avatar: data[i].avatar,
@@ -45,7 +45,7 @@ export default function Field() {
   let currentPage = linkObj?.name ?? "Forum does not exist";
 
   // States
-  const [threadList, setThreadList] = useState<ThreadUserInterface[]>([]);
+  const [threadList, setThreadList] = useState<ThreadInterface[]>([]);
   const [isThreadForm, setThreadForm] = useState(false);
   const [filter, setFilter] = useState(false);
   const [search, setSearch] = useState("");

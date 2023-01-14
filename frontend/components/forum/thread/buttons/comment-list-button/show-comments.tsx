@@ -1,7 +1,7 @@
 import styles from "./ShowCommentsBtn.module.css";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
-import ButtonInterface from "../../../../../interfaces/button";
+import ButtonInterface from "../../../../../interfaces/utils/button";
 var pluralize = require("pluralize");
 
 export interface ShowCommentsBtnType extends ButtonInterface {

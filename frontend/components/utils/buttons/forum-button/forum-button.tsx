@@ -8,7 +8,7 @@ import {
   CommentOutline,
   Comment,
 } from "../../../icons/icons";
-import ButtonInterface from "../../../../interfaces/button";
+import ButtonInterface from "../../../../interfaces/utils/button";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./ForumButton.module.css";

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useRef } from "react";
-import ProjectInterface from "../../../../interfaces/project";
+import ProjectInterface from "../../../../interfaces/profile/project";
 import HorzField from "../../field-horizontal/horizontal-field";
 import styles from "./Project.module.css";
 

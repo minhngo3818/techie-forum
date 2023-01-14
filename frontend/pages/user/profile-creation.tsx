@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import PageTitle from "../../components/utils/page-title/page-title";
 import ProfileCreationFormFwd from "../../components/form/form-profile-creation/profile-creation-form";
-import ProfileInterface from "../../interfaces/profile";
-import ProjectInterface from "../../interfaces/project";
+import ProfileInterface from "../../interfaces/profile/profile";
+import ProjectInterface from "../../interfaces/profile/project";
 import styles from "../../styles/ProfileCreation.module.css";
 import dynamic from "next/dynamic";
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import ProfileAbout from "../../components/profile/about/profile-about";
 import ProfileGeneral from "../../components/profile/general/profile-general-info";
 import ProfilePorfolio from "../../components/profile/porfolio/profile-porfolio";
-import ProfileInterface from "../../interfaces/profile";
+import ProfileInterface from "../../interfaces/profile/profile";
 
 function Profile() {
   const sampleProfile = {

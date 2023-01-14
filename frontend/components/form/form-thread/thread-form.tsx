@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState, useCallback, useRef, ChangeEvent, MouseEvent } from "react";
-import { EventTargetNameValue } from "../../../interfaces/form-field";
-import ThreadInterface from "../../../interfaces/thread";
+import { EventTargetNameValue } from "../../../interfaces/forum/post/form-field";
+import ThreadBodyInterface from "../../../interfaces/forum/thread/thread-body";
 import BaseField from "../field-base/base-field";
 import TagField from "../field-tag/tag-field";
 import { useAddTag, useRemoveTag } from "../field-tag/function/handleTag";
@@ -17,7 +17,7 @@ interface ThreadFormType {
   category: string;
 }
 
-const initialState: ThreadInterface = {
+const initialState: ThreadBodyInterface = {
   title: "",
   content: "",
   images: [],

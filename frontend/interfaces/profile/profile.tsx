@@ -1,9 +1,10 @@
 import ProjectInterface from "./project";
-import RefLinksInterface from "./refLinks";
+import RefLinksInterface from "./ref-links";
 
 export default interface ProfileInterface extends RefLinksInterface {
+  pid: string,
   profileName: string;
   avatar: string;
   about: string;
-  projects: Array<ProjectInterface>;
+  projects: ProjectInterface[];
 }
