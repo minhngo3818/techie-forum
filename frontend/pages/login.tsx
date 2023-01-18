@@ -1,9 +1,13 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import Link from "next/link";
 import PageTitle from "../components/utils/page-title/page-title";
 import BaseField from "../components/form/field-base/base-field";
-import { EventTargetNameValue, FormEvent } from "../interfaces/forum/post/form-field";
+import {
+  EventTargetNameValue,
+  FormEvent,
+} from "../interfaces/forum/post/form-field";
 import styles from "../styles/Login.module.css";
+import { AuthContext } from "../services/auth/auth-guard";
 
 const initialState = {
   username: "",
@@ -11,6 +15,7 @@ const initialState = {
 };
 
 function Login() {
+  const context = useContext(AuthContext);
   const [loginValues, setLoginValues] = useState(initialState);
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -28,15 +33,13 @@ function Login() {
     []
   );
 
-  const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      console.log(loginValues);
-      alert("Login request was sent");
-    },
-    [loginValues]
-  );
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    context?.login({
+      username: loginValues.username,
+      password: loginValues.password,
+    });
+  };
 
   return (
     <form className={styles.loginWrapper} onSubmit={handleSubmit}>

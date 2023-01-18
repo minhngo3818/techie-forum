@@ -67,7 +67,7 @@ function NavUserBtn({
 }
 
 export default function Navbar(props: NavbarProps) {
-  const isLogin = true;
+  const isLogin = false;
 
   return (
     <nav className={styles.navbar}>

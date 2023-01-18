@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageTitle from "../components/utils/page-title/page-title";
 import BaseField from "../components/form/field-base/base-field";
-import { EventTargetNameValue, FormEvent } from "../interfaces/forum/post/form-field";
+import {
+  EventTargetNameValue,
+  FormEvent,
+} from "../interfaces/forum/post/form-field";
 import styles from "../styles/Register.module.css";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;

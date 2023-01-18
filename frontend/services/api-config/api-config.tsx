@@ -1,9 +1,4 @@
 export const APIConfig = {
-  baseUrl: "http://127.0.0.1",
-  instance: {
-    mode: "cors",
-    headers: {
-      "Content-type": "application/json",
-    }
-  }
-}
+  devApi: "http://127.0.0.1:8000/api/",
+  hostedApi: "",
+};

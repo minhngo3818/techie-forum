@@ -1,5 +1,8 @@
 import React, { FC } from "react";
-import { InputProps, TextareaProps } from "../../../interfaces/forum/post/form-field";
+import {
+  InputProps,
+  TextareaProps,
+} from "../../../interfaces/forum/post/form-field";
 import styles from "./HorizontalField.module.css";
 
 const HorzField: FC<InputProps | TextareaProps> = (props) => {
