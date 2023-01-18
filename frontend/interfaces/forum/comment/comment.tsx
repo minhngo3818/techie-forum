@@ -1,5 +1,5 @@
 export default interface CommentInterface {
-  cid: string,
+  cid: string;
   author: string;
   authorId: string;
   avatar: string;
