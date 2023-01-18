@@ -49,8 +49,10 @@ class CommentViewSet(viewsets.ModelViewSet):
         comment_pairs = ParentChildComment.objects.filter(parent=parent_id)
 
         return Comment.objects.filter(
-            Q(id=comment_pairs.child | None), _thread=thread_id, depth=depth,
-        )
+            Q(id=comment_pairs.child | None),
+            _thread=thread_id,
+            depth=depth,
+        ).defer("content")
 
     def perform_create(self, serializer):
         thread_id = self.request.POST.get("thid", "")
@@ -60,7 +62,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
         if depth > 0 and parent_id != "":
             ParentChildComment.objects.create(
-                parent=parent_id, child=serializer.data["id"]
+                parent=parent_id, child=serializer.data.get("id")
             )
 
     def perform_update(self, serializer):

@@ -5,6 +5,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.http import HttpResponsePermanentRedirect
+from django.middleware import csrf
 from rest_framework import status
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.generics import GenericAPIView, CreateAPIView, UpdateAPIView
@@ -73,7 +74,8 @@ class UserRegisterView(CreateAPIView):
         email_body = (
             "Welcome {} to our lair, \n\n".format(user.username)
             + "Just one more step. Access the link below to verify your email:\n\n"
-            + email_verification_url + "\n\n"
+            + email_verification_url
+            + "\n\n"
             + "Best,\n"
             + "The Techies Forum Team"
         )
@@ -100,13 +102,17 @@ class EmailVerificationView(GenericAPIView):
     def get(cls, request):
         token = request.GET.get("token", "")
         try:
-            payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=["HS256"])
+            payload = jwt.decode(
+                jwt=token, key=settings.SECRET_KEY, algorithms=["HS256"]
+            )
             print(payload)
             user = User.objects.get(id=payload["user_id"])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
-                redirect_url = str(os.environ.get("FRONTEND_URL")) + "?email_verify=True"
+                redirect_url = (
+                    str(os.environ.get("FRONTEND_URL")) + "?email_verify=True"
+                )
                 return CustomRedirect(redirect_url)
             else:
                 return Response({"message": "Email was verified"})
@@ -133,7 +139,20 @@ class LoginView(GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        response = Response(
+            data={"success": "login successfully", "data": serializer.data},
+            status=status.HTTP_200_OK,
+        )
+        response.set_cookie(
+            value=serializer.data.get("tokens").get("access"),
+            expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+            key=settings.COOKIES["AUTH_COOKIE"],
+            secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+            httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
+            samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
+        )
+        csrf.get_token(request)
+        return response
 
 
 class LogoutView(CreateAPIView):

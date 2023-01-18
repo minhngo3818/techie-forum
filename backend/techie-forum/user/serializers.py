@@ -130,10 +130,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return {"refresh": refresh, "access": access}
 
     def create(self, validated_data):
-        user = User(
-            email=validated_data["email"],
-            username=validated_data["username"]
-        )
+        user = User(email=validated_data["email"], username=validated_data["username"])
         user.set_password(validated_data["password"])
         user.save()
         return user
@@ -144,13 +141,14 @@ class LoginSerializer(serializers.ModelSerializer):
     Serializer for log-in, return auth tokens
     """
 
-    username = serializers.CharField(max_length=255, write_only=True, required=True)
+    username = serializers.CharField(max_length=255, required=True)
+    email = serializers.SerializerMethodField("get_email")
     password = serializers.CharField(max_length=128, write_only=True, required=True)
     tokens = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["username", "password", "tokens"]
+        fields = ["username", "email", "password", "tokens"]
 
     @classmethod
     def get_tokens(cls, attrs):
@@ -160,6 +158,12 @@ class LoginSerializer(serializers.ModelSerializer):
         refresh = user.get_tokens["refresh"]
         access = user.get_tokens["access"]
         return {"refresh": refresh, "access": access}
+
+    @classmethod
+    def get_email(cls, attrs):
+        user = User.objects.get(username=attrs["username"])
+        email = user.email
+        return email
 
     def validate(self, attrs):
         # Validate login input and return user object if succeed
