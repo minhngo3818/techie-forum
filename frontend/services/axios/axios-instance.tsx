@@ -25,6 +25,13 @@ axiosInst.interceptors.response.use(
       return;
     }
 
+    if (error.response.status === 500) {
+      toast.error("Internal server error", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+
     return Promise.reject(error);
   }
 );

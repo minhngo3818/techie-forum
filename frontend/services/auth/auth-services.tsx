@@ -8,23 +8,12 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Hanle login logic and retrieve user data
-export async function loginService(
-  data: LoginInterface,
-  setUser: (user: UserInterface) => void
-) {
-  await axiosInst
-    .post("/user/login", data, {
-      withCredentials: true,
-    })
-    .then(function (response) {
-      if (response?.status === 200) {
-        toast("login succeed", { position: toast.POSITION.TOP_CENTER });
-        setUser({
-          username: response.data.username,
-          email: response.data.email,
-        });
-      }
-    });
+export async function loginService(data: LoginInterface) {
+  const response = await axiosInst.post("/user/login", data, {
+    withCredentials: true,
+  });
+
+  return response;
 }
 
 // Hanle logout and return to homepage
@@ -39,6 +28,13 @@ export async function logoutService() {
 // Handle user registration logic
 export async function registerService(data: RegisterInterface) {
   const response = await axiosInst.post("user/register", data);
+
+  return response;
+}
+
+// Handle user email verification
+export async function verifyEmailService() {
+  const response = await axiosInst.get("user/email-verification");
 
   return response;
 }
