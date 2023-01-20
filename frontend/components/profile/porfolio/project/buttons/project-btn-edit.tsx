@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
-import ProjectInterface from "../../../../../interfaces/profile/project";
+import ProjectInterface from "../../../../../interfaces/project/project";
 import { Edit } from "../../../../icons/icons";
 import { Tooltip } from "react-tooltip";
 const ProjectForm = dynamic(

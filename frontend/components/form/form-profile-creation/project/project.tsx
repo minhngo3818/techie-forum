@@ -6,7 +6,7 @@ import React, {
   Dispatch,
   ChangeEvent,
 } from "react";
-import ProjectInterface from "../../../../interfaces/profile/project";
+import ProjectInterface from "../../../../interfaces/project/project";
 import ProjectInner from "./project-inner";
 import { Tab, Transition } from "@headlessui/react";
 import { Delete } from "../../../icons/icons";

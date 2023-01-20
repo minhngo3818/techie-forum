@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import ProjectInterface from "../../../interfaces/profile/project";
+import ProjectInterface from "../../../interfaces/project/project";
 import ProfileInterface from "../../../interfaces/profile/profile";
 import BasicInfo from "./basic-info/basic-info";
 import Reference from "./reference/reference";

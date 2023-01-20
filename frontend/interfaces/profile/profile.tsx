@@ -1,4 +1,4 @@
-import ProjectInterface from "./project";
+import ProjectInterface from "../project/project";
 import RefLinksInterface from "./ref-links";
 
 export default interface ProfileInterface extends RefLinksInterface {

@@ -5,7 +5,7 @@ import Project from "./project/project";
 const ProjectForm = dynamic(
   () => import("../../form/form-project/project-form")
 );
-import ProjectInterface from "../../../interfaces/profile/project";
+import ProjectInterface from "../../../interfaces/project/project";
 import styles from "./ProfilePorfolio.module.css";
 import { AddSquare } from "../../icons/icons";
 
