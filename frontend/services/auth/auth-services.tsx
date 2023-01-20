@@ -63,3 +63,19 @@ export async function changePasswordService(data: ChangePasswordInterface) {
   });
   return response;
 }
+
+// Set account to inactive
+export async function deactivateAccountService() {
+  const response = await axiosInst.post("user/auth/", {is_active: false}, {
+    withCredentials: true
+  })
+
+  return response
+}
+
+// Delete account
+export  async function deleteAccountService() {
+  const response = await axiosInst.post("user/auth/delete-account/")
+
+  return response;
+}
