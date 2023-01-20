@@ -33,6 +33,7 @@ class ThreadViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def perform_update(self, serializer):
+        #TODO: Add query to remove tags are not contained in the request
         serializer.save(owner=self.request.user.profile, updated_date=timezone.now())
 
 

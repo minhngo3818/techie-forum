@@ -66,6 +66,7 @@ urlpatterns = [
         ResetPasswordView.as_view(),
         name="password-reset-complete",
     ),
+    path("user/", include(router.urls, "user")),
     # drf swagger ui
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
