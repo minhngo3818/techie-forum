@@ -66,16 +66,20 @@ export async function changePasswordService(data: ChangePasswordInterface) {
 
 // Set account to inactive
 export async function deactivateAccountService() {
-  const response = await axiosInst.post("user/auth/", {is_active: false}, {
-    withCredentials: true
-  })
+  const response = await axiosInst.post(
+    "user/auth/",
+    { is_active: false },
+    {
+      withCredentials: true,
+    }
+  );
 
-  return response
+  return response;
 }
 
 // Delete account
-export  async function deleteAccountService() {
-  const response = await axiosInst.post("user/auth/delete-account/")
+export async function deleteAccountService() {
+  const response = await axiosInst.post("user/auth/delete-account/");
 
   return response;
 }
