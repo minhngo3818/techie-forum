@@ -5,10 +5,9 @@ import Thread from "../../components/forum/thread/thread";
 const ThreadForm = dynamic(
   () => import("../../components/form/form-thread/thread-form")
 );
-import ThreadInterface from "../../interfaces/forum/thread/thread";
+import { TagInterface, ThreadInterface } from "../../interfaces/forum/post/post";
 import searchFilterThread from "../../utils/searchFilterThread";
 import forumLinks from "../../page-paths/forum";
-import data from "../../dummy-data/data.json";
 import styles from "../../styles/Forum.module.css";
 
 // Helper function convert json data to ThreadUserInterface data
@@ -18,15 +17,16 @@ function convertData(data: any) {
   for (let i = 0; i < data?.length; i += 1) {
     let dateObj = data[i].date.split("/");
     let thread: ThreadInterface = {
+      thid: data[i].id,
       author: data[i].author,
       authorId: data[i].authorId,
       avatar: data[i].avatar,
       date: new Date(dateObj[2], dateObj[0] - 1, dateObj[1]),
       title: data[i].title,
       content: data[i].content,
-      tags: new Set<string>(data[i].tags),
-      memorize: data[i].memorize,
-      numOfLikes: data[i].numOfLikes,
+      tags: new Set<TagInterface>(data[i].tags),
+      memorized: data[i].memorized,
+      likes: data[i].numOfLikes,
     };
     newData.push(thread);
   }
@@ -68,16 +68,16 @@ export default function Field() {
     setThreadForm(!isThreadForm);
   }, [isThreadForm]);
 
-  const threads = convertData(data);
+  const threads = [] as ThreadInterface[]
   const avatar = "/king-crimson.jpg";
   const images = [] as string[];
   const date = new Date(Date.now());
-  const tags = new Set<string>();
-  tags.add("Python");
-  tags.add("Typescript");
-  tags.add("C++");
-  tags.add("SQL");
-  tags.add("llvm");
+  const tags = new Set<TagInterface>();
+  tags.add({name: "Python"});
+  tags.add({name: "Typescript"});
+  tags.add({name: "C++"});
+  tags.add({name: "SQL"});
+  tags.add({name: "llvm"});
 
   return (
     <div className={styles.forumContainer}>
@@ -122,13 +122,14 @@ export default function Field() {
             <Thread
               key={index}
               keyId={index}
+              thid={thread.thid}
               author={thread.author}
               authorId={thread.authorId}
               avatar={avatar}
               date={date}
               title={thread.title}
               content={thread.content}
-              numOfLikes={thread.numOfLikes}
+              likes={thread.likes}
               tags={tags}
               images={images}
             />

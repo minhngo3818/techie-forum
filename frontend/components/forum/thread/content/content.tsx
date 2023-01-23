@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { ChangeEvent } from "../../../../interfaces/forum/post/form-field";
+import { ChangeEvent } from "../../../../interfaces/forum/form/form-field";
 import useAutosizeTextArea from "../../../../hooks/useAutosizeTextArea";
 import styles from "./ThreadContent.module.css";
 

@@ -4,7 +4,7 @@ import BaseField from "../components/form/field-base/base-field";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../interfaces/forum/post/form-field";
+} from "../interfaces/forum/form/form-field";
 import styles from "../styles/Register.module.css";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;

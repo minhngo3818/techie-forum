@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageTitle from "../../components/utils/page-title/page-title";
 import BaseField from "../../components/form/field-base/base-field";
 import styles from "../../styles/ForgotPwd.module.css";
-import { EventTargetNameValue } from "../../interfaces/forum/post/form-field";
+import { EventTargetNameValue } from "../../interfaces/forum/form/form-field";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");

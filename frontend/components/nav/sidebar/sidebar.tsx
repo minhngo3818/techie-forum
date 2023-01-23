@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Transition, Dialog } from "@headlessui/react";
+import { Transition } from "@headlessui/react";
+import { AuthContext } from "../../../services/auth/auth-guard";
 import forumLinks from "../../../page-paths/forum";
 import styles from "./Sidebar.module.css";
 
@@ -13,7 +14,16 @@ interface SideBarProps {
 
 function Sidebar(props: SideBarProps) {
   const router = useRouter();
+  const context = useContext(AuthContext);
   const [currentPage, setPage] = useState("");
+
+  const handleSwitchPage = (name: string) => {
+    if (!context?.user) {
+      router.push("/login");
+    } else {
+      setPage(name);
+    }
+  };
 
   return (
     <Transition
@@ -37,7 +47,7 @@ function Sidebar(props: SideBarProps) {
                   ? styles.sidebarLink
                   : styles.sidebarLinkActive
               }
-              onClick={() => setPage(forum.name)}
+              onClick={() => handleSwitchPage(forum.name)}
               href="/forum/[field]"
               as={`/forum/${forum.path}`}
               key={forum.name}

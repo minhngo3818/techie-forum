@@ -21,20 +21,28 @@ class ThreadViewSet(viewsets.ModelViewSet):
     pagination_class = PaginationHelper
 
     def get_queryset(self):
-        return Thread.objects.filter(category=self.request.query_params.get("category"))
+        category = self.request.query_params.get("category", None)
 
-    def create(self, request, *args, **kwargs):
-        tag_names = request.data.get("tags", [])
+        if category:
+            return self.queryset.filter(category=category)
+
+        return self.queryset
+
+    def perform_create(self, serializer):
+        tag_names = self.request.data.get("tags", [])
         for name in tag_names:
             Tag.objects.get_or_create(name=name)
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=self.request.user.profile)
         return Response(serializer.data)
 
     def perform_update(self, serializer):
         #TODO: Add query to remove tags are not contained in the request
-        serializer.save(owner=self.request.user.profile, updated_date=timezone.now())
+        tag_names = self.request.data.get("tag", [])
+        for name in tag_names:
+            Tag.objects.get_or_create(name=name)
+        serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -77,7 +85,7 @@ class LikeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         thread = self.request.thread
-        return Like.objects.filter(thread=thread)
+        return self.queryset.filter(thread=thread)
 
 
 class MemorizeViewSet(viewsets.ModelViewSet):
@@ -87,16 +95,13 @@ class MemorizeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         thread = self.request.thread
-        return Memorize.objects.filter(thread=thread)
+        return self.queryset.filter(thread=thread)
 
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     query_set = Tag.objects.all()
     permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return Tag.objects.all()
 
     def perform_create(self, serializer):
         serializer.save()

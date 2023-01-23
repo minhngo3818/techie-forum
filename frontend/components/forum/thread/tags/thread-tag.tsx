@@ -1,15 +1,15 @@
 import { SetStateAction, Dispatch } from "react";
-import ThreadBodyInterface from "../../../../interfaces/forum/thread/thread-body";
 import TagField from "../../../form/field-tag/tag-field";
 import styles from "./ThreadTags.module.css";
 import {
   useAddTag,
   useRemoveTag,
 } from "../../../form/field-tag/function/handleTag";
+import { ThreadBodyInterface, TagInterface } from "../../../../interfaces/forum/post/post";
 
 interface ThreadTagsType {
   isEdit: boolean;
-  tags: Set<string>;
+  tags: Set<TagInterface>;
   setThread: Dispatch<SetStateAction<ThreadBodyInterface>>;
 }
 
@@ -22,8 +22,8 @@ export default function ThreadTags(props: ThreadTagsType) {
       {!props.isEdit ? (
         Array.from(props.tags).map((tag) => {
           return (
-            <p key={tag} className={styles.threadTag}>
-              {tag}
+            <p key={tag.name} className={styles.threadTag}>
+              {tag.name}
             </p>
           );
         })

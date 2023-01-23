@@ -7,7 +7,7 @@ import Submission from "./submission/submission";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../../../interfaces/forum/post/form-field";
+} from "../../../interfaces/forum/form/form-field";
 import { Tab } from "@headlessui/react";
 import useMultistepForm from "../../../hooks/useMultistepForm";
 import styles from "./ProfileCreationForm.module.css";

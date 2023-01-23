@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function useAutosizeTextArea(
   textAreaRef: HTMLTextAreaElement | null,
-  value: string
+  value: string | undefined
 ) {
   const [initialHeight, setInitialHeight] = useState(0);
 

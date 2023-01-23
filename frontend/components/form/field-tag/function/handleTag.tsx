@@ -1,12 +1,15 @@
 import { SetStateAction, Dispatch, useCallback } from "react";
-import ThreadBodyInterface from "../../../../interfaces/forum/thread/thread-body";
+import {
+  ThreadBodyInterface,
+  TagInterface,
+} from "../../../../interfaces/forum/post/post";
 
 export function useAddTag(
-  tags: Set<string>,
+  tags: Set<TagInterface>,
   setThread: Dispatch<SetStateAction<ThreadBodyInterface>>
 ) {
   return useCallback(
-    (tag: string) => {
+    (tag: TagInterface) => {
       let newTags = tags;
       newTags.add(tag);
       setThread((thread) => ({ ...thread, tags: newTags }));
@@ -16,11 +19,11 @@ export function useAddTag(
 }
 
 export function useRemoveTag(
-  tags: Set<string>,
+  tags: Set<TagInterface>,
   setThread: Dispatch<SetStateAction<ThreadBodyInterface>>
 ) {
   return useCallback(
-    (tag: string) => {
+    (tag: TagInterface) => {
       let newTags = tags;
       newTags.delete(tag);
       setThread((thread) => ({ ...thread, tags: newTags }));

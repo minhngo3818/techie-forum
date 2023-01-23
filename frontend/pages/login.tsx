@@ -5,7 +5,7 @@ import BaseField from "../components/form/field-base/base-field";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../interfaces/forum/post/form-field";
+} from "../interfaces/forum/form/form-field";
 import styles from "../styles/Login.module.css";
 import { AuthContext } from "../services/auth/auth-guard";
 

@@ -2,9 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import ThreadBodyInterface from "../../../interfaces/forum/thread/thread-body";
-import ThreadInterface from "../../../interfaces/forum/thread/thread";
-import ThreadHeader from "./header/header";
+
+import ThreadHeader from "./header/thread-header";
 import ThreadContent from "./content/content";
 import ThreadButtons from "./buttons/thread-buttons";
 import ThreadTags from "./tags/thread-tag";
@@ -14,9 +13,13 @@ const CommentList = dynamic(
 const CommentForm = dynamic(
   () => import("../../form/form-comment/comment-form")
 );
-import CommentInterface from "../../../interfaces/forum/comment/comment";
+import {
+  ThreadInterface,
+  ThreadBodyInterface,
+  CommentInterface,
+} from "../../../interfaces/forum/post/post";
 import styles from "./Thread.module.css";
-import { EventTargetNameValue } from "../../../interfaces/forum/post/form-field";
+import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
 
 interface ThreadType extends ThreadInterface {
   keyId: number;
@@ -25,7 +28,8 @@ interface ThreadType extends ThreadInterface {
 export default function Thread(props: ThreadType) {
   let commentList: CommentInterface[] = [
     {
-      id: "1",
+      thid: "1",
+      cid: "1",
       author: "Jotaro",
       authorId: "29038rsfasd",
       avatar: "/jotaro.jpg",
@@ -38,10 +42,11 @@ export default function Thread(props: ThreadType) {
         Excepteur sint occaecat cupidatat non proident, sunt in culpa\
         qui officia deserunt mollit anim id est laborum. ",
       date: new Date(Date.now()),
-      numOfLikes: 0,
+      likes: 0,
     },
     {
-      id: "2",
+      thid: "1",
+      cid: "2",
       author: "Josuke",
       authorId: "29038rsfasd",
       avatar: "/josuke.jpg",
@@ -49,7 +54,7 @@ export default function Thread(props: ThreadType) {
         "Excepteur sint occaecat cupidatat non proident, \
       sunt in culpa qui officia deserunt mollit anim id est laborum.",
       date: new Date(Date.now()),
-      numOfLikes: 0,
+      likes: 0,
     },
   ];
 
@@ -124,7 +129,7 @@ export default function Thread(props: ThreadType) {
       <ThreadTags isEdit={isEdit} tags={props.tags} setThread={setThread} />
       <ThreadButtons
         keyId={`thr-${props.keyId}`}
-        numOfLikes={props.numOfLikes}
+        numOfLikes={props.likes}
         handleIsLike={{ isState: isLike, setState: handleIsLike }}
         handleIsMemorized={{
           isState: isMemorized,

@@ -3,7 +3,7 @@ import CommentHeader from "./header/comment-header";
 import CommentBody from "./body/comment-body";
 import CommentInterface from "../../../../interfaces/forum/comment/comment";
 import styles from "./Comment.module.css";
-import { EventTargetNameValue } from "../../../../interfaces/forum/post/form-field";
+import { EventTargetNameValue } from "../../../../interfaces/forum/form/form-field";
 
 interface CommentType extends CommentInterface {
   keyId: string;

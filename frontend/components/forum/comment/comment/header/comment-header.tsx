@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import PostHeaderInterface from "../../../../../interfaces/forum/post/post-header";
+import PostHeaderInterface from "../../../../../interfaces/forum/post/post";
 import styles from "./CommentHeader.module.css";
 
 export interface CommentHeaderType extends PostHeaderInterface {}

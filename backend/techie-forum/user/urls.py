@@ -38,7 +38,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path("user/login", LoginView.as_view(), name="login"),
     path("user/logout", LogoutView.as_view(), name="logout"),
-    path("user/register/", UserRegisterView.as_view(), name="user_register"),
+    path("user/register", UserRegisterView.as_view(), name="user_register"),
     path(
         "user/email-verification",
         EmailVerificationView.as_view(),
@@ -66,7 +66,6 @@ urlpatterns = [
         ResetPasswordView.as_view(),
         name="password-reset-complete",
     ),
-    path("user/", include(router.urls, "user")),
     # drf swagger ui
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",

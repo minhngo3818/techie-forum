@@ -8,16 +8,17 @@ import {
 } from "react";
 import styles from "./TagField.module.css";
 import { ClosePixel } from "../../icons/icons";
+import { TagInterface } from "../../../interfaces/forum/post/post";
 
 interface TagFieldType {
-  tags: Set<string>;
+  tags: Set<TagInterface>;
   isLabel?: boolean;
-  onRemove: (tag: string) => void;
-  onAdd: (tag: string) => void;
+  onRemove: (tag: TagInterface) => void;
+  onAdd: (tag: TagInterface) => void;
 }
 
 export default function TagField(props: TagFieldType) {
-  const [tag, setTag] = useState("");
+  const [tag, setTag] = useState({ name: "" } as TagInterface);
   const tagRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -28,13 +29,13 @@ export default function TagField(props: TagFieldType) {
 
   const handleChangeTag = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      setTag(event.target?.value);
+      setTag({ ...tag, name: event.target?.value });
     },
-    []
+    [tag]
   );
 
   const handleRemoveTag = useCallback(
-    (tag: string) => {
+    (tag: TagInterface) => {
       console.log("Remove was clicked");
       props.onRemove(tag);
     },
@@ -45,7 +46,7 @@ export default function TagField(props: TagFieldType) {
     (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         props.onAdd(tag);
-        setTag("");
+        setTag({ name: "" } as TagInterface);
       }
     },
     [tag, props]
@@ -58,8 +59,8 @@ export default function TagField(props: TagFieldType) {
         <ul className={styles.tagFieldList}>
           {Array.from(props.tags).map((tag) => {
             return (
-              <li key={tag} className={styles.tagFieldItem}>
-                <p className={styles.tagFieldName}>{tag}</p>
+              <li key={tag.name} className={styles.tagFieldItem}>
+                <p className={styles.tagFieldName}>{tag.name}</p>
                 <button
                   className={styles.tagFieldBtn}
                   onClick={() => handleRemoveTag(tag)}
@@ -75,7 +76,7 @@ export default function TagField(props: TagFieldType) {
           name="tag-field"
           type="input"
           ref={tagRef}
-          value={tag}
+          value={tag.name}
           onChange={handleChangeTag}
           onKeyUp={handleKeyDown}
           placeholder="Enter to add tag"

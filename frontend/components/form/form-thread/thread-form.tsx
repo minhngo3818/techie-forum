@@ -1,7 +1,10 @@
 import Image from "next/image";
 import { useState, useCallback, useRef, ChangeEvent, MouseEvent } from "react";
-import { EventTargetNameValue } from "../../../interfaces/forum/post/form-field";
-import ThreadBodyInterface from "../../../interfaces/forum/thread/thread-body";
+import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
+import {
+  ThreadBodyInterface,
+  TagInterface,
+} from "../../../interfaces/forum/post/post";
 import BaseField from "../field-base/base-field";
 import TagField from "../field-tag/tag-field";
 import { useAddTag, useRemoveTag } from "../field-tag/function/handleTag";
@@ -21,7 +24,7 @@ const initialState: ThreadBodyInterface = {
   title: "",
   content: "",
   images: [],
-  tags: new Set<string>(),
+  tags: new Set() as Set<TagInterface>,
 };
 
 export default function ThreadForm(props: ThreadFormType) {

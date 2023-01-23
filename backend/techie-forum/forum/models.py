@@ -15,10 +15,10 @@ class BasePost(models.Model):
         blank=True,
     )
     content = models.TextField(null=True, blank=True)
-    liked = models.ManyToManyField(
-        Profile, default=None, blank=True, related_name="liked"
+    likes = models.ManyToManyField(
+        Profile, default=None, blank=True, related_name="likes_set"
     )
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -26,25 +26,25 @@ class BasePost(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return "Post by".format(self.owner)
+        return "{} {}".format(self.owner.profile_name, self.id)
 
     @property
     def get_likes(self) -> int:
-        return int(self.liked.all().count())
+        return int(self.likes.all().count())
 
 
 class Thread(BasePost):
     title = models.CharField(max_length=255, null=True, blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
     memorized = models.ManyToManyField(
-        Profile, default=None, blank=True, related_name="is_memorized_thread"
+        Profile, default=None, blank=True, related_name="is_memorized_set"
     )
     category = models.CharField(
         max_length=100, choices=CATEGORIES, null=True, blank=True
     )
 
     def __str__(self) -> str:
-        return "thread-{}".format(self.title)
+        return str(self.title)
 
 
 class Comment(BasePost):
@@ -54,7 +54,7 @@ class Comment(BasePost):
     depth = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
-        return "{}-comment-{}".format(self.owner, self.thread_cmt)
+        return "{}-{}".format(self.owner, self._thread.title)
 
 
 class ParentChildComment(models.Model):
@@ -66,7 +66,7 @@ class ParentChildComment(models.Model):
     )
 
     def __str__(self) -> str:
-        return "comment-{}-has-{}".format(self.parent, self.child)
+        return "{}-has-{}".format(self.parent, self.child)
 
 
 class Like(models.Model):
@@ -85,7 +85,7 @@ class Memorize(models.Model):
     value = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return r"{}-memorize-{}".format(self.owner, self.thread)
+        return r"{}-{}".format(self.owner, self.thread)
 
 
 class Tag(models.Model):
@@ -93,7 +93,15 @@ class Tag(models.Model):
         db_index=True, max_length=100, blank=True, null=True, unique=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return str(self.name)
+
+
+class Image(models.Model):
+    post = models.ForeignKey(BasePost, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="forum", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return str(self.image.name)

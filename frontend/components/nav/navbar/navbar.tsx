@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Menu } from "../../icons/icons";
 import Link from "next/link";
 import useShowComponent from "../../../hooks/useShowComponent";
+import { AuthContext } from "../../../services/auth/auth-guard";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./Navbar.module.css";
@@ -11,13 +12,7 @@ type NavbarProps = {
   onClick(event: React.MouseEvent<HTMLButtonElement>): void;
 };
 
-function NavUserBtn({
-  isLoggedIn,
-  username,
-}: {
-  isLoggedIn: boolean;
-  username: string;
-}): JSX.Element {
+function NavUserBtn({ username }: { username: string }): JSX.Element {
   const { ref, isShow, setIsShow } = useShowComponent(false);
 
   return (
@@ -67,7 +62,7 @@ function NavUserBtn({
 }
 
 export default function Navbar(props: NavbarProps) {
-  const isLogin = false;
+  const context = useContext(AuthContext);
 
   return (
     <nav className={styles.navbar}>
@@ -77,7 +72,7 @@ export default function Navbar(props: NavbarProps) {
             Techies Forum
           </Link>
         </div>
-        {!isLogin ? (
+        {!context?.user ? (
           <Link
             href="/login"
             className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
@@ -85,7 +80,7 @@ export default function Navbar(props: NavbarProps) {
             Login
           </Link>
         ) : (
-          <NavUserBtn isLoggedIn={isLogin} username="Wekapeapo" />
+          <NavUserBtn username={context?.user.username} />
         )}
         <button
           id="sidebar-toggle"
