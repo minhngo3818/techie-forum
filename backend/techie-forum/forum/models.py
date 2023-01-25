@@ -15,7 +15,7 @@ class BasePost(models.Model):
         blank=True,
     )
     content = models.TextField(null=True, blank=True)
-    likes = models.ManyToManyField(
+    liked = models.ManyToManyField(
         Profile, default=None, blank=True, related_name="likes_set"
     )
     is_active = models.BooleanField(default=True)
@@ -30,7 +30,7 @@ class BasePost(models.Model):
 
     @property
     def get_likes(self) -> int:
-        return int(self.likes.all().count())
+        return int(self.liked.all().count())
 
 
 class Thread(BasePost):
@@ -54,7 +54,7 @@ class Comment(BasePost):
     depth = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
-        return "{}-{}".format(self.owner, self._thread.title)
+        return "{}-{}".format(self.owner, self.thread.title)
 
 
 class ParentChildComment(models.Model):
@@ -70,22 +70,31 @@ class ParentChildComment(models.Model):
 
 
 class Like(models.Model):
-    LIKE_CHOICES = (("Like", "Like"), ("Unlike", "Unlike"))
-
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    value = models.CharField(choices=LIKE_CHOICES, default="Like", max_length=10)
+    post = models.ForeignKey(BasePost, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["owner", "post"], name="user_like_post")
+        ]
 
     def __str__(self) -> str:
-        return str(self.owner)
+        return "{}-{}".format(self.owner, self.post)
 
 
 class Memorize(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True, blank=True)
-    value = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["owner", "thread"], name="user_memorize_thread")
+        ]
 
     def __str__(self) -> str:
-        return r"{}-{}".format(self.owner, self.thread)
+        return "{}-{}".format(self.owner, self.thread)
 
 
 class Tag(models.Model):

@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 // Hanle login logic and retrieve user data
 export async function loginService(data: LoginInterface) {
   const response = await axiosInst.post("/user/login", data, {
-    withCredentials: true,
+    withCredentials: true
   });
 
   return response;

@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from rest_framework import exceptions
+from django.conf import settings
 from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 from .choices import CATEGORIES
+import jwt
 
 
 class ParentChildCommentSerializer(serializers.ModelSerializer):
@@ -51,6 +53,7 @@ class ThreadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     images = ImageSerializer(source="image_set", many=True, read_only=True)
     likes = serializers.IntegerField(source="get_likes", read_only=True)
+    memorized = serializers.SerializerMethodField("is_memorized")
     category = serializers.ChoiceField(choices=CATEGORIES)
     comment_counts = serializers.SerializerMethodField("count_comments")
 
@@ -67,6 +70,7 @@ class ThreadSerializer(serializers.ModelSerializer):
             "tags",
             "created_at",
             "updated_at",
+            "memorized",
             "likes",
             "comment_counts"
         ]
@@ -75,5 +79,13 @@ class ThreadSerializer(serializers.ModelSerializer):
     def count_comments(cls, thread):
         return Comment.objects.filter(_thread=thread.id).count()
 
+    # TODO: access context directly and get necessary data to include is memorized
+    # TODO: Add owner name to the query inside serializer
+    def is_memorized(self, thread):
 
+        owner = self.context.get("request").query_params.get("pid")
+        print(thread)
+        print(thread.id)
+        print(owner)
 
+        return False

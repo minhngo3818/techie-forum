@@ -1,4 +1,4 @@
-import ThreadInterface from "../../../interfaces/forum/thread/thread";
+import ThreadInterface from "../../../interfaces/forum/post/post";
 import { axiosInst } from "../../axios/axios-instance";
 
 export async function getThreads() {

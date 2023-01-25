@@ -3,6 +3,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.http import HttpResponsePermanentRedirect
 from django.middleware import csrf
@@ -136,6 +137,7 @@ class LoginView(GenericAPIView):
     queryset = User.objects.all()
     serializer_class = LoginSerializer
 
+    @csrf_exempt
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -148,6 +150,7 @@ class LoginView(GenericAPIView):
             expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
             key=settings.COOKIES["AUTH_COOKIE"],
             secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+            path=settings.COOKIES["AUTH_COOKIE_PATH"],
             httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
             samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
         )

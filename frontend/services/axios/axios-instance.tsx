@@ -2,6 +2,9 @@ import { APIConfig } from "../api-config/api-config";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+// axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+// axios.defaults.xsrfCookieName = "csrftoken";
+
 export const axiosInst = axios.create({
   baseURL: APIConfig.devApi,
   headers: {
@@ -9,12 +12,15 @@ export const axiosInst = axios.create({
   },
 });
 
+
+
 axiosInst.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
+    console.log(error)
+    if (error.status === 401) {
       toast.error("Unauthorized or session expired", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -25,7 +31,7 @@ axiosInst.interceptors.response.use(
       return;
     }
 
-    if (error.response.status === 500) {
+    if (error.status === 500) {
       toast.error("Internal server error", {
         position: toast.POSITION.TOP_CENTER,
       });

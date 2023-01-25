@@ -6,7 +6,7 @@ from rest_framework import exceptions
 
 
 def enforce_csrf(request):
-    check = CSRFCheck()
+    check = CSRFCheck(get_response=request)
     check.process_request(request)
     reason = check.process_view(request, None, (), {})
     if reason:

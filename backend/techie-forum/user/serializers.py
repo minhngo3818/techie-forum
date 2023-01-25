@@ -32,9 +32,9 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
     Serialize all related information of user profile
     """
 
-    thread_counts = serializers.SerializerMethodField("get_thread_counts")
-    comment_counts = serializers.SerializerMethodField("get_comment_counts")
-    like_counts = serializers.SerializerMethodField("get_like_counts")
+    # thread_counts = serializers.SerializerMethodField("get_thread_counts")
+    # comment_counts = serializers.SerializerMethodField("get_comment_counts")
+    # like_counts = serializers.SerializerMethodField("get_like_counts")
 
     class Meta:
         model = Profile
@@ -49,22 +49,22 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             "stackoverflow_url",
             "linkedin_url",
             "indeed_url",
-            "thread_counts",
-            "comment_counts",
-            "like_counts",
+            # "thread_counts",
+            # "comment_counts",
+            # "like_counts",
         ]
 
-    @classmethod
-    def get_thread_counts(cls, profile):
-        return Thread.objects.filter(owner=profile.id).count()
-
-    @classmethod
-    def get_comment_counts(cls, profile):
-        return Comment.objects.filter(owner=profile.id).count()
-
-    @classmethod
-    def get_like_counts(cls, profile):
-        return BasePost.objects.filter(owner=profile.id).annotate(Count("liked"))
+    # @classmethod
+    # def get_thread_counts(cls, profile):
+    #     return Thread.objects.filter(owner=profile.id).count()
+    #
+    # @classmethod
+    # def get_comment_counts(cls, profile):
+    #     return Comment.objects.filter(owner=profile.id).count()
+    #
+    # @classmethod
+    # def get_like_counts(cls, profile):
+    #     return BasePost.objects.filter(owner=profile.id).annotate(Count("liked"))
 
 
 class ProjectSerializer(serializers.ModelSerializer):
