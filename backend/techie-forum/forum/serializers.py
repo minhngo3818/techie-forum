@@ -1,9 +1,7 @@
 from rest_framework import serializers
 from rest_framework import exceptions
-from django.conf import settings
 from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 from .choices import CATEGORIES
-import jwt
 
 
 class ParentChildCommentSerializer(serializers.ModelSerializer):
@@ -19,7 +17,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class LikeSerializer(serializers.HyperlinkedModelSerializer):
+class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = "__all__"
@@ -72,7 +70,7 @@ class ThreadSerializer(serializers.ModelSerializer):
             "updated_at",
             "memorized",
             "likes",
-            "comment_counts"
+            "comment_counts",
         ]
 
     @classmethod

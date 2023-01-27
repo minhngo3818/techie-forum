@@ -2,6 +2,7 @@ from django.db import models
 from user.models import Profile
 import uuid
 from .choices import CATEGORIES
+from django.utils import timezone
 
 
 class BasePost(models.Model):
@@ -64,6 +65,15 @@ class ParentChildComment(models.Model):
     child = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name="child_comment"
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["parent", "child"], name="comment_parent_child"
+            )
+        ]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return "{}-has-{}".format(self.parent, self.child)
@@ -78,6 +88,7 @@ class Like(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["owner", "post"], name="user_like_post")
         ]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return "{}-{}".format(self.owner, self.post)
@@ -90,8 +101,11 @@ class Memorize(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["owner", "thread"], name="user_memorize_thread")
+            models.UniqueConstraint(
+                fields=["owner", "thread"], name="user_memorize_thread"
+            )
         ]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return "{}-{}".format(self.owner, self.thread)
@@ -99,7 +113,7 @@ class Memorize(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(
-        db_index=True, max_length=100, blank=True, null=True, unique=True
+        db_index=True, max_length=100, null=True, blank=True, unique=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
