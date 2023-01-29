@@ -56,7 +56,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     # dependencies
     "corsheaders.middleware.CorsMiddleware",
-    
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -64,7 +63,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
 ]
 
 ROOT_URLCONF = "techies.urls"
@@ -98,8 +96,10 @@ DATABASES = {
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
+#         "USER" : os.getenv("DB_USER"),
+#         "PASSWORD": os.getenv("DB_PASSWORD"),
 #         "NAME": "techies_db",  # database name
-#         "HOST": "127.0.0.1",
+#         "HOST": os.getenv("DB_HOST"),
 #         "PORT": "5432",
 #     }
 # }
