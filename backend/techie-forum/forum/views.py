@@ -31,20 +31,30 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
         return self.queryset
 
-    def perform_create(self, serializer):
-        tag_names = self.request.data.get("tags", [])
+    def create(self, request, *args, **kwargs):
+        tag_names = request.data.get("tags", [])
+
         for name in tag_names:
             Tag.objects.get_or_create(name=name)
-        serializer = self.serializer_class(data=self.request.data)
+
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(owner=self.request.user.profile)
-        return Response(serializer.data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def perform_create(self, serializer):
+        serializer.save(author=serializer.data.get("author"))
 
     def perform_update(self, serializer):
-        # TODO: Add query to remove tags are not contained in the request
         tag_names = self.request.data.get("tag", [])
+        thread = self.queryset.get(id=self.request.query_params.get("thid", ""))
+
         for name in tag_names:
-            Tag.objects.get_or_create(name=name)
+            tag, created = Tag.objects.get_or_create(name=name)
+
+            if created:
+                thread.tags.add(tag)
+
+        exclusion = thread.tags.filter(name=tag_names).exclude()
 
         serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
 
@@ -56,27 +66,30 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = PaginationHelper
 
     def get_queryset(self):
-        thread_id = self.request.GET.get("tid", "")
-        parent_id = self.request.GET.get("pcid", "")
-        depth = self.request.GET.get("depth", 0)
-        comment_pairs = ParentChildComment.objects.filter(parent=parent_id)
+        return Response(data=self.queryset, status=status.HTTP_200_OK)
 
-        return Comment.objects.filter(
-            Q(id=comment_pairs.child | None),
-            _thread=thread_id,
-            depth=depth,
-        ).defer("content")
+    def filter_queryset(self, queryset):
+        thid = self.request.query_params.get("thid", "")
+        pcid = self.request.query_params.get("pcid", "")
+        depth = self.request.query_params.get("depth")
+        parent_child_comments = ParentChildComment.objects.filter(parent=pcid)
 
-    def perform_create(self, serializer):
-        thread_id = self.request.POST.get("tid", "")
-        parent_id = self.request.POST.get("pcid", "")
-        depth = self.request.POST.get("depth", 0)
-        serializer.save(owner=self.request.user.profile, _thread=thread_id, depth=depth)
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=self.request.data)
+        serializer.is_valid()
+        serializer.save(owner=self.request.data["author"])
+        depth = serializer.data["depth"]
+        parent = serializer.data["parent"]
 
-        if depth > 0 and parent_id != "":
+        if depth > 0 and parent != "":
             ParentChildComment.objects.create(
-                parent=parent_id, child=serializer.data.get("id")
+                parent=parent, child=serializer.data.get("id")
             )
+
+        return Response(
+            data={"success": "Comment was created successfully"},
+            status=status.HTTP_201_CREATED,
+        )
 
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
@@ -92,17 +105,10 @@ class LikeViewSet(viewsets.ModelViewSet):
         return self.queryset
 
     def create(self, request, *args, **kwargs):
-        post_id = request.data.get("post", "")
-        pid = request.data.get("owner", "")
-
-        if post_id == "" or pid == "":
-            return Response(
-                {"error": "Failed to provide post id and profile id"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        post = BasePost.objects.get(id=post_id)
-        owner = Profile.objects.get(id=pid)
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid()
+        post = BasePost.objects.get(id=serializer.data["post_id"])
+        owner = Profile.objects.get(id=serializer.data["owner"])
         liked, created = Like.objects.get_or_create(post=post, owner=owner)
 
         if created:
@@ -120,8 +126,8 @@ class LikeViewSet(viewsets.ModelViewSet):
     @action(
         methods=["delete"],
         detail=False,
-        url_path="remove-like",
-        url_name="remove_like",
+        url_path="remove",
+        url_name="remove",
     )
     def remove_like(self, request):
         post_id = request.query_params.get("post_id", "")
@@ -142,11 +148,11 @@ class LikeViewSet(viewsets.ModelViewSet):
 
         except Exception as e:
             return Response(
-                data={"error": "Query failed {}".format(e)},
+                data={"error": "Query failed! {}".format(e)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        return Response(data={"success": "User was unliked"}, status=status.HTTP_200_OK)
+        return Response(data={"success": "User unliked"}, status=status.HTTP_200_OK)
 
 
 class MemorizeViewSet(viewsets.ModelViewSet):
@@ -154,18 +160,11 @@ class MemorizeViewSet(viewsets.ModelViewSet):
     queryset = Memorize.objects.all()
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        tid = self.request.query_params.get("tid", "")
-        pid = self.request.query_params.get("pid", "")
-
-        if tid == "" or pid == "":
-            return Response(
-                data={"error": "Query params must contain tid and pid"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        thread = Thread.objects.get(id=tid)
-        owner = Profile.objects.get(id=pid)
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid()
+        thread = Thread.objects.get(id=serializer.data["thread"])
+        owner = Profile.objects.get(id=serializer.data["owner"])
         memorize, created = self.queryset.get_or_create(thread=thread, owner=owner)
 
         if created:
@@ -183,8 +182,8 @@ class MemorizeViewSet(viewsets.ModelViewSet):
     @action(
         methods=["delete"],
         detail=False,
-        url_path="remove-memorize",
-        url_name="remove-memorize",
+        url_path="remove",
+        url_name="remove",
     )
     def remove_memorize(self, request):
         tid = request.query_params.get("tid", "")
@@ -214,7 +213,7 @@ class MemorizeViewSet(viewsets.ModelViewSet):
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
-    query_set = Tag.objects.all()
+    queryset = Tag.objects.all()
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):

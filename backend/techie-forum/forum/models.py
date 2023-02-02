@@ -9,7 +9,7 @@ class BasePost(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )
-    owner = models.ForeignKey(
+    author = models.ForeignKey(
         Profile,
         on_delete=models.SET_NULL,
         null=True,
@@ -27,7 +27,7 @@ class BasePost(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return "{} {}".format(self.owner.profile_name, self.id)
+        return "{} {}".format(self.author.profile_name, self.id)
 
     @property
     def get_likes(self) -> int:
@@ -49,13 +49,11 @@ class Thread(BasePost):
 
 
 class Comment(BasePost):
-    _thread = models.ForeignKey(
-        Thread, on_delete=models.CASCADE, related_name="comments"
-    )
+    cmt_thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     depth = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
-        return "{}-{}".format(self.owner, self.thread.title)
+        return "{}-{}".format(self.author, self.thread_cmt.title)
 
 
 class ParentChildComment(models.Model):

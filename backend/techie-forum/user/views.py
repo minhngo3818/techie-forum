@@ -22,6 +22,7 @@ from .serializers import (
     UserSerializer,
     RegistrationSerializer,
     LoginSerializer,
+    LogoutSerializer,
     EmailVerificationSerializer,
     ChangePasswordSerializer,
     RequestResetPasswordSerializer,
@@ -164,6 +165,7 @@ class LogoutView(CreateAPIView):
     """
 
     permission_classes = [IsAuthenticated]
+    serializer_class = LogoutSerializer
 
     def post(self, request, *args, **kwargs):
         try:
@@ -174,7 +176,7 @@ class LogoutView(CreateAPIView):
 
         except TokenError:
             return Response(
-                data={"message": "Failed to blacklist token"},
+                data={"error": "Failed to blacklist token"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
