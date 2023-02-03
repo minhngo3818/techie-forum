@@ -1,44 +1,33 @@
 from rest_framework import serializers
-from rest_framework import exceptions
+
+from user.models import Profile
 from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 from .choices import CATEGORIES
 
 
-class ParentChildCommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ParentChildComment
-        fields = "__all__"
-        readonly_fields = "__all__"
+class TagListSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        tag_list = []
 
+        if data.__class__.__name__ == "list":
+            for tag in data:
+                tag_list.append(
+                    {"id": tag.id, "name": tag.name, "created_at": tag.created_at}
+                )
 
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = "__all__"
+        if data.__class__.__name__ == "ManyRelatedManager":
+            for tag in data.all():
+                tag_list.append(tag.name)
 
-
-class LikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Like
-        fields = "__all__"
-
-
-class MemorizedSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Memorize
-        fields = "__all__"
+        return tag_list
 
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = "__all__"
-
-    def create(self, validated_data):
-        tag, created = Tag.objects.get_or_create(**validated_data)
-        if not created:
-            raise exceptions.ValidationError(validated_data["name"] + "already exists")
-        return tag
+        read_only_fields = ("id", "created_at")
+        list_serializer_class = TagListSerializer
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -47,19 +36,90 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ThreadSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True)
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = "__all__"
+        read_only_fields = ["created_at"]
+
+    def validate(self, attrs):
+        if attrs["post_id"] == "" or attrs["user"] == "":
+            raise serializers.ValidationError("Field is empty")
+
+        return super().validate(attrs)
+
+
+class MemorizedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Memorize
+        fields = "__all__"
+        read_only_fields = ["created_at"]
+
+    def validate(self, attrs):
+        if attrs["thread"] == "" or attrs["user"] == "":
+            raise serializers.ValidationError("Field is empty")
+
+        return super().validate(attrs)
+
+
+class ParentChildCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParentChildComment
+        fields = "__all__"
+        read_only_fields = ["__all__"]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    parent = ParentChildCommentSerializer(source="parent_set", read_only=True)
     images = ImageSerializer(source="image_set", many=True, read_only=True)
     likes = serializers.IntegerField(source="get_likes", read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = [
+            "id",
+            "author",
+            "cmt_thread",
+            "parent",
+            "is_active",
+            "content",
+            "images",
+            "created_at",
+            "updated_at",
+            "likes",
+        ]
+
+    def to_representation(self, instance):
+        if not instance.is_active:
+            return {
+                "id": instance.id,
+                "author": instance.author,
+                "cmt_thread": instance.cmt_thread,
+                "parent": instance.parent,
+                "is_active": instance.is_active,
+                "created_at": instance.create_at,
+                "updated_at": instance.updated_at,
+                "likes": instance.get_likes,
+                "notice": "This comment was deleted by user.",
+            }
+
+        default_data = super(CommentSerializer, self).to_representation(instance)
+        return default_data
+
+
+class ThreadSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True)
+    images = ImageSerializer(source="image_set", many=True, required=False)
+    likes = serializers.IntegerField(source="get_likes", required=False)
     memorized = serializers.SerializerMethodField("is_memorized")
-    category = serializers.ChoiceField(choices=CATEGORIES)
-    comment_counts = serializers.SerializerMethodField("count_comments")
+    category = serializers.ChoiceField(choices=CATEGORIES, required=False)
+    comment_counts = serializers.SerializerMethodField()
 
     class Meta:
         model = Thread
         fields = [
             "id",
-            "owner",
+            "author",
             "is_active",
             "category",
             "title",
@@ -72,18 +132,56 @@ class ThreadSerializer(serializers.ModelSerializer):
             "likes",
             "comment_counts",
         ]
+        read_only_fields = ("id", "category", "created_at", "likes", "comment_counts")
 
-    @classmethod
-    def count_comments(cls, thread):
-        return Comment.objects.filter(_thread=thread.id).count()
+    def get_comment_counts(self, instance):
+        request = self.context["request"]
 
-    # TODO: access context directly and get necessary data to include is memorized
-    # TODO: Add owner name to the query inside serializer
-    def is_memorized(self, thread):
+        if request.method != "POST":
+            return Comment.objects.filter(cmt_thread=instance.id).count()
 
-        owner = self.context.get("request").query_params.get("pid")
-        print(thread)
-        print(thread.id)
-        print(owner)
+        return 0
+
+    def is_memorized(self, instance):
+        request = self.context["request"]
+        profile = Profile.objects.get(owner=request.user)
+
+        if (
+            request.method == "GET"
+            and instance.memorized.filter(id=profile.id).exists()
+        ):
+            return True
 
         return False
+
+    def validate(self, attrs):
+        request = self.context["request"]
+
+        if request.method == "POST":
+            author = attrs.get("author", "")
+            category = attrs.get("category", "")
+
+            if author == "":
+                raise serializers.ValidationError("author is required")
+
+            if category == "":
+                raise serializers.ValidationError("category is required")
+
+        return attrs
+
+    def to_representation(self, instance):
+        if not instance.is_active:
+            return {
+                "id": instance.id,
+                "author": instance.author.id,
+                "is_active": instance.is_active,
+                "category": instance.category,
+                "created_at": instance.created_at,
+                "updated_at": instance.updated_at,
+                "likes": instance.get_likes,
+                "count_comments": self.get_comment_counts(instance),
+                "notice": "This thread was deleted by user.",
+            }
+
+        default_data = super(ThreadSerializer, self).to_representation(instance)
+        return default_data
