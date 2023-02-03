@@ -10,7 +10,7 @@ def enforce_csrf(request):
     check.process_request(request)
     reason = check.process_view(request, None, (), {})
     if reason:
-        raise exceptions.PermissionDenied("CSRF Failed: {}".format(reason))
+        raise exceptions.PermissionDenied("CSRF Failed! {}".format(reason))
 
 
 class CustomAuthentication(JWTAuthentication):

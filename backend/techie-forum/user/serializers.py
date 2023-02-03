@@ -3,7 +3,6 @@ from abc import ABC
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.db.models import Count
 from django.utils.encoding import (
     force_str,
 )
@@ -11,7 +10,7 @@ from django.utils.http import urlsafe_base64_decode
 from rest_framework import exceptions, serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from utils.dynamic_field_serializer import DynamicFieldsModelSerializer
 from .models import User, Profile, Project
 from forum.models import Thread, Comment, BasePost
@@ -188,6 +187,31 @@ class LoginSerializer(serializers.ModelSerializer):
             raise AuthenticationFailed("Email has not been verified")
 
         return super().validate(attrs)
+
+
+class LogoutSerializer(serializers.Serializer):
+    """
+    Serializer for log-out
+    """
+
+    refresh = serializers.CharField()
+
+    default_error_messages = {"bad_token": "Token is invalid or expired."}
+
+    def __init__(self, instance=None, **kwargs):
+        super().__init__(instance, kwargs)
+        self.token = None
+
+    def validate(self, attrs):
+        self.token = attrs.get("refresh")
+        return attrs
+
+    def save(self):
+        try:
+            RefreshToken(self.token).blacklist()
+
+        except TokenError:
+            self.fail("error")
 
 
 class ChangePasswordSerializer(serializers.Serializer):
