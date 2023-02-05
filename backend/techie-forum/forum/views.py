@@ -31,31 +31,7 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
         return self.queryset
 
-    def create(self, request, *args, **kwargs):
-        tag_names = request.data.get("tags", [])
-
-        for name in tag_names:
-            Tag.objects.get_or_create(name=name)
-
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-    def perform_create(self, serializer):
-        serializer.save(author=serializer.data.get("author"))
-
     def perform_update(self, serializer):
-        tag_names = self.request.data.get("tag", [])
-        thread = self.queryset.get(id=self.request.query_params.get("thid", ""))
-
-        for name in tag_names:
-            tag, created = Tag.objects.get_or_create(name=name)
-
-            if created:
-                thread.tags.add(tag)
-
-        exclusion = thread.tags.filter(name=tag_names).exclude()
-
         serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
 
 
@@ -107,6 +83,7 @@ class LikeViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid()
+        serializer.save()
         post = BasePost.objects.get(id=serializer.data["post_id"])
         owner = Profile.objects.get(id=serializer.data["owner"])
         liked, created = Like.objects.get_or_create(post=post, owner=owner)

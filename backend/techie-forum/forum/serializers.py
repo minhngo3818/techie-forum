@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from user.models import Profile
 from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 from .choices import CATEGORIES
@@ -28,6 +27,9 @@ class TagSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("id", "created_at")
         list_serializer_class = TagListSerializer
+
+    def to_internal_value(self, data):
+        return data
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -108,7 +110,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class ThreadSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True, required=False)
     images = ImageSerializer(source="image_set", many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
     memorized = serializers.SerializerMethodField("is_memorized")
@@ -168,6 +170,38 @@ class ThreadSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("category is required")
 
         return attrs
+
+    def create(self, validated_data):
+        tags = validated_data.get("tags", [])
+        thread = Thread.objects.create(**validated_data)
+
+        for tag in tags:
+            tag_object, created = Tag.objects.get_or_create(name=tag)
+            thread.tags.add(tag_object)
+
+        return thread
+
+    def update(self, instance, validated_data):
+        new_tags = validated_data.pop("tags", None)
+
+        if new_tags is not None:
+            current_tags = instance.tags.all()
+            excluded_tags = current_tags.exclude(name__in=new_tags)
+            instance.tags.remove(*excluded_tags)
+
+            for new_tag in new_tags:
+                tag, created = Tag.objects.get_or_create(name=new_tag)
+                instance.tags.add(tag)
+
+        images = validated_data.pop("images", None)
+
+        if images is not None:
+            pass
+
+        instance = super().update(instance, validated_data)
+        instance.save()
+
+        return instance
 
     def to_representation(self, instance):
         if not instance.is_active:
