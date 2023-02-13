@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db import transaction
 from user.models import Profile
 from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 from .choices import CATEGORIES
@@ -36,6 +37,10 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = "__all__"
+        read_only_fields = ("post", "created_at")
+
+    def to_internal_value(self, data):
+        return data
 
 
 class LikeSerializer(serializers.ModelSerializer):
@@ -111,7 +116,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class ThreadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, required=False)
-    images = ImageSerializer(source="image_set", many=True, required=False)
+    images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
     memorized = serializers.SerializerMethodField("is_memorized")
     category = serializers.ChoiceField(choices=CATEGORIES, required=False)
@@ -134,7 +139,14 @@ class ThreadSerializer(serializers.ModelSerializer):
             "likes",
             "comment_counts",
         ]
-        read_only_fields = ("id", "category", "created_at", "likes", "comment_counts")
+        read_only_fields = (
+            "id",
+            "category",
+            "created_at",
+            "is_active",
+            "likes",
+            "comment_counts",
+        )
 
     def get_comment_counts(self, instance):
         request = self.context["request"]
@@ -172,17 +184,26 @@ class ThreadSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        tags = validated_data.get("tags", [])
+        tags = validated_data.pop("tags", None)
+        images = validated_data.pop("images", None)
         thread = Thread.objects.create(**validated_data)
 
-        for tag in tags:
-            tag_object, created = Tag.objects.get_or_create(name=tag)
-            thread.tags.add(tag_object)
+        if tags is not None:
+            with transaction.atomic():
+                for tag in tags:
+                    tag, created = Tag.objects.get_or_create(name=tag)
+                    thread.tags.add(tag)
+
+        if images is not None:
+            with transaction.atomic():
+                for image in images:
+                    Image.objects.create(post=thread, image=image)
 
         return thread
 
     def update(self, instance, validated_data):
         new_tags = validated_data.pop("tags", None)
+        images = validated_data.pop("images", None)
 
         if new_tags is not None:
             current_tags = instance.tags.all()
@@ -193,10 +214,11 @@ class ThreadSerializer(serializers.ModelSerializer):
                 tag, created = Tag.objects.get_or_create(name=new_tag)
                 instance.tags.add(tag)
 
-        images = validated_data.pop("images", None)
-
         if images is not None:
-            pass
+            Image.objects.filter(post=instance.id).delete()
+
+            for image in images:
+                Image.objects.create(post=instance.id, image=image)
 
         instance = super().update(instance, validated_data)
         instance.save()
@@ -210,6 +232,7 @@ class ThreadSerializer(serializers.ModelSerializer):
                 "author": instance.author.id,
                 "is_active": instance.is_active,
                 "category": instance.category,
+                "title": instance.title,
                 "created_at": instance.created_at,
                 "updated_at": instance.updated_at,
                 "likes": instance.get_likes,

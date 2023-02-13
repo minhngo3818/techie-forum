@@ -47,6 +47,10 @@ class Thread(BasePost):
     def __str__(self) -> str:
         return str(self.title)
 
+    @property
+    def get_images(self):
+        return self.objects.get(self.id).image_set
+
 
 class Comment(BasePost):
     cmt_thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
@@ -115,14 +119,29 @@ class Tag(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def __str__(self) -> str:
         return str(self.name)
 
 
 class Image(models.Model):
-    post = models.ForeignKey(BasePost, on_delete=models.CASCADE)
+    post = models.ForeignKey(BasePost, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="forum", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-post"]
+
     def __str__(self) -> str:
         return str(self.image.name)
+
+    @property
+    def image_url(self) -> str:
+        try:
+            img_url = self.image.url
+        except:
+            img_url = ""
+
+        return img_url
