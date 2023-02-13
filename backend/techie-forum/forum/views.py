@@ -6,13 +6,23 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 from rest_framework import status
 from user.models import Profile
-from .models import BasePost, Thread, Comment, ParentChildComment, Like, Memorize, Tag
+from .models import (
+    BasePost,
+    Thread,
+    Comment,
+    ParentChildComment,
+    Like,
+    Memorize,
+    Tag,
+    Image,
+)
 from .serializers import (
     ThreadSerializer,
     CommentSerializer,
     LikeSerializer,
     MemorizedSerializer,
     TagSerializer,
+    ImageSerializer,
 )
 from .pagination import PaginationHelper
 
@@ -22,6 +32,7 @@ class ThreadViewSet(viewsets.ModelViewSet):
     queryset = Thread.objects.all()
     permission_classes = [IsAuthenticated]
     pagination_class = PaginationHelper
+    lookup_field = "id"
 
     def get_queryset(self):
         category = self.request.query_params.get("category", "")
@@ -33,6 +44,20 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
+
+    @action(methods=["patch"], detail=True, url_path="remove", url_name="remove")
+    def remove_thread(self, request, pk):
+        thread = self.get_object()
+        thread.is_active = False
+        thread.save()
+        return Response({"success": "thread was removed successfully."})
+
+    @action(methods=["patch"], detail=True, url_path="recover", url_name="recover")
+    def recover_thread(self, request, pk):
+        thread = self.get_object()
+        thread.is_active = True
+        thread.save()
+        return Response({"success": "thread was recovered successfully."})
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -195,3 +220,8 @@ class TagViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
+
+
+class ImageViewSet(viewsets.ModelViewSet):
+    serializer_class = ImageSerializer
+    queryset = Image.objects.all()
