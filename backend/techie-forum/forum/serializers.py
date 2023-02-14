@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from django.db import transaction
 from user.models import Profile
-from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 from .choices import CATEGORIES
+from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 
 
 class TagListSerializer(serializers.ListSerializer):
@@ -33,11 +33,34 @@ class TagSerializer(serializers.ModelSerializer):
         return data
 
 
+class ImageListSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        request = self.context.get("request")
+        image_list = []
+        if data.__class__.__name__ == "list":
+            for image in data:
+                image_list.append(
+                    {
+                        "id": image.id,
+                        "image": request.build_absolute_uri(image.image.url),
+                        "post": str(image.post.id),
+                        "created_at": image.created_at,
+                    }
+                )
+
+        if data.__class__.__name__ == "RelatedManager":
+            for image in data.all():
+                image_list.append(request.build_absolute_uri(image.image.url))
+
+        return image_list
+
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = "__all__"
         read_only_fields = ("post", "created_at")
+        list_serializer_class = ImageListSerializer
 
     def to_internal_value(self, data):
         return data
@@ -169,7 +192,7 @@ class ThreadSerializer(serializers.ModelSerializer):
         return False
 
     def validate(self, attrs):
-        request = self.context["request"]
+        request = self.context.get("requests", None)
 
         if request.method == "POST":
             author = attrs.get("author", "")
@@ -218,7 +241,7 @@ class ThreadSerializer(serializers.ModelSerializer):
             Image.objects.filter(post=instance.id).delete()
 
             for image in images:
-                Image.objects.create(post=instance.id, image=image)
+                Image.objects.create(post=instance, image=image)
 
         instance = super().update(instance, validated_data)
         instance.save()
