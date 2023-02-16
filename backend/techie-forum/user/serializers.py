@@ -3,9 +3,8 @@ from abc import ABC
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import (
-    force_str,
-)
+from django.db.models import Count, Sum, Case, When
+from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import exceptions, serializers
 from rest_framework.validators import UniqueValidator
@@ -31,9 +30,9 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
     Serialize all related information of user profile
     """
 
-    # thread_counts = serializers.SerializerMethodField("get_thread_counts")
-    # comment_counts = serializers.SerializerMethodField("get_comment_counts")
-    # like_counts = serializers.SerializerMethodField("get_like_counts")
+    thread_counts = serializers.SerializerMethodField()
+    comment_counts = serializers.SerializerMethodField()
+    like_counts = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
@@ -48,22 +47,28 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             "stackoverflow_url",
             "linkedin_url",
             "indeed_url",
-            # "thread_counts",
-            # "comment_counts",
-            # "like_counts",
+            "thread_counts",
+            "comment_counts",
+            "like_counts",
         ]
 
-    # @classmethod
-    # def get_thread_counts(cls, profile):
-    #     return Thread.objects.filter(owner=profile.id).count()
-    #
-    # @classmethod
-    # def get_comment_counts(cls, profile):
-    #     return Comment.objects.filter(owner=profile.id).count()
-    #
-    # @classmethod
-    # def get_like_counts(cls, profile):
-    #     return BasePost.objects.filter(owner=profile.id).annotate(Count("liked"))
+    @classmethod
+    def get_thread_counts(cls, profile):
+        return Thread.objects.filter(author=profile.id).count()
+
+    @classmethod
+    def get_comment_counts(cls, profile):
+        return Comment.objects.filter(author=profile.id).count()
+
+    @classmethod
+    def get_like_counts(cls, profile):
+        count = (
+            BasePost.objects.filter(author=profile.id)
+            .values("liked")
+            .exclude(liked__isnull=True)
+            .count()
+        )
+        return count
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -105,16 +110,20 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if User.objects.filter(username=attrs["username"]).exists():
-            raise serializers.ValidationError("Username is already existed!")
+            raise serializers.ValidationError(
+                {"username": "Username is already existed!"}
+            )
 
         if User.objects.filter(username=attrs["email"]).exists():
-            raise serializers.ValidationError("Email is already existed!")
+            raise serializers.ValidationError({"email": "email is already existed!"})
 
         if not attrs["username"].isalnum():
-            raise serializers.ValidationError("Username cannot have special characters")
+            raise serializers.ValidationError(
+                {"username": "username cannot have special characters"}
+            )
 
         if attrs["password"] != attrs["password2"]:
-            raise serializers.ValidationError({"password": "Password didn't match!"})
+            raise serializers.ValidationError({"password": "password didn't match!"})
 
         # add all fields to create an instance
         return super().validate(attrs)
@@ -172,10 +181,10 @@ class LoginSerializer(serializers.ModelSerializer):
         user = authenticate(username=username, password=password)
 
         if username is None:
-            raise AuthenticationFailed("Username is required")
+            raise AuthenticationFailed({"username": "Username is required"})
 
         if password is None:
-            raise AuthenticationFailed("Password is required")
+            raise AuthenticationFailed({"password": "Password is required"})
 
         if user is None:
             raise AuthenticationFailed("User with username and password does not exist")
@@ -225,10 +234,14 @@ class ChangePasswordSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         if not self.context["request"].user.check_password(attrs["old_password"]):
-            raise serializers.ValidationError("old password is incorrect")
+            raise serializers.ValidationError(
+                {"old_password": "old password is incorrect"}
+            )
 
         if attrs["new_password"] != attrs["new_password2"]:
-            raise serializers.ValidationError("new password did not match")
+            raise serializers.ValidationError(
+                {"new_password": "new password did not match"}
+            )
 
         return attrs
 
@@ -265,7 +278,7 @@ class RequestResetPasswordSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         if not User.objects.filter(email=attrs["email"]).exists():
-            raise ValueError("email does not exist")
+            raise serializers.ValidationError({"email": "email does not exist"})
 
         return attrs
 
@@ -300,7 +313,9 @@ class ResetPasswordSerializer(serializers.Serializer):
         user = User.objects.get(id=user_id)
 
         if password != password2:
-            raise serializers.ValidationError("new password did not match")
+            raise serializers.ValidationError(
+                {"password": "new password did not match"}
+            )
 
         if not PasswordResetTokenGenerator().check_token(user, token):
             raise exceptions.AuthenticationFailed("Reset password url is invalid", 401)
