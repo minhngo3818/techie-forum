@@ -2,19 +2,29 @@ from rest_framework import serializers
 from django.db import transaction
 from user.models import Profile
 from .choices import CATEGORIES
+from forum.helper.serializer.image_serializer_helper import (
+    create_multiple_images,
+    update_multiple_images,
+)
 from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
 
 
 class TagListSerializer(serializers.ListSerializer):
+    """
+    Serialize a list of tags
+    """
+
     def to_representation(self, data):
         tag_list = []
 
+        # Represent tag objects if non-nested serializing
         if data.__class__.__name__ == "list":
             for tag in data:
                 tag_list.append(
                     {"id": tag.id, "name": tag.name, "created_at": tag.created_at}
                 )
 
+        # Represent tag names if nested serializing under a post
         if data.__class__.__name__ == "ManyRelatedManager":
             for tag in data.all():
                 tag_list.append(tag.name)
@@ -23,20 +33,31 @@ class TagListSerializer(serializers.ListSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
+    """
+    Serialize tag instance
+    """
+
     class Meta:
         model = Tag
         fields = "__all__"
         read_only_fields = ("id", "created_at")
         list_serializer_class = TagListSerializer
 
+    # Deserialize tag as string
     def to_internal_value(self, data):
         return data
 
 
 class ImageListSerializer(serializers.ListSerializer):
+    """
+    Serialize list of images
+    """
+
     def to_representation(self, data):
         request = self.context.get("request")
         image_list = []
+
+        # Represent images as a list of image objects
         if data.__class__.__name__ == "list":
             for image in data:
                 image_list.append(
@@ -48,6 +69,7 @@ class ImageListSerializer(serializers.ListSerializer):
                     }
                 )
 
+        # Represent images as a list of image urls
         if data.__class__.__name__ == "RelatedManager":
             for image in data.all():
                 image_list.append(request.build_absolute_uri(image.image.url))
@@ -56,17 +78,26 @@ class ImageListSerializer(serializers.ListSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    """
+    Serialize image instance
+    """
+
     class Meta:
         model = Image
         fields = "__all__"
         read_only_fields = ("post", "created_at")
         list_serializer_class = ImageListSerializer
 
+    # Deserialize image as a string
     def to_internal_value(self, data):
         return data
 
 
 class LikeSerializer(serializers.ModelSerializer):
+    """
+    Serialize like instance
+    """
+
     class Meta:
         model = Like
         fields = "__all__"
@@ -80,6 +111,10 @@ class LikeSerializer(serializers.ModelSerializer):
 
 
 class MemorizedSerializer(serializers.ModelSerializer):
+    """
+    Serialize memorize instance
+    """
+
     class Meta:
         model = Memorize
         fields = "__all__"
@@ -93,6 +128,10 @@ class MemorizedSerializer(serializers.ModelSerializer):
 
 
 class ParentChildCommentSerializer(serializers.ModelSerializer):
+    """
+    Serialize parent child comment relations
+    """
+
     class Meta:
         model = ParentChildComment
         fields = "__all__"
@@ -100,9 +139,12 @@ class ParentChildCommentSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    parent = ParentChildCommentSerializer(source="parent_set", read_only=True)
-    images = ImageSerializer(source="image_set", many=True, read_only=True)
-    likes = serializers.IntegerField(source="get_likes", read_only=True)
+    """
+    Serialize to view and manage comment instances
+    """
+
+    images = ImageSerializer(many=True, required=False)
+    likes = serializers.IntegerField(source="get_likes", required=False)
 
     class Meta:
         model = Comment
@@ -110,14 +152,15 @@ class CommentSerializer(serializers.ModelSerializer):
             "id",
             "author",
             "cmt_thread",
-            "parent",
             "is_active",
             "content",
             "images",
+            "depth",
             "created_at",
             "updated_at",
             "likes",
         ]
+        read_only_fields = ("id", "is_active", "created_at", "updated_at", "likes")
 
     def to_representation(self, instance):
         if not instance.is_active:
@@ -125,7 +168,6 @@ class CommentSerializer(serializers.ModelSerializer):
                 "id": instance.id,
                 "author": instance.author,
                 "cmt_thread": instance.cmt_thread,
-                "parent": instance.parent,
                 "is_active": instance.is_active,
                 "created_at": instance.create_at,
                 "updated_at": instance.updated_at,
@@ -136,13 +178,64 @@ class CommentSerializer(serializers.ModelSerializer):
         default_data = super(CommentSerializer, self).to_representation(instance)
         return default_data
 
+    def validate(self, attrs):
+        request = self.context.get("request", None)
+        author = attrs.get("author", None)
+        depth = attrs.get("depth", 0)
+        parent = request.data.get("parent", None)
+
+        errors = {}
+        if author is None or author == "":
+            errors["author"] = "author is required"
+
+        if Profile.objects.filter(id=author).exists():
+            errors["author"] = "author does not exist"
+
+        if parent == "" or parent is None:
+            errors["parent"] = "parent comment is required"
+
+        if depth == 0 and (parent != "" or parent):
+            errors["depth"] = "parent comment is provided but missing depth"
+
+        if depth > 0 and (parent == "" or parent is None):
+            errors["parent"] = "depth is provided but missing parent comment"
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return attrs
+
+    def create(self, validated_data):
+        parent_id = validated_data.get("parent", None)
+        images = validated_data.pop("images", None)
+        comment = Comment.objects.create(**validated_data)
+
+        if comment.depth > 0 and parent_id is not None:
+            parent = Comment.objects.get(id=parent_id)
+            ParentChildComment.objects.create(parent=parent, child=comment)
+
+        create_multiple_images(images, comment)
+
+        return comment
+
+    def update(self, instance, validated_data):
+        images = validated_data.pop("images", None)
+        update_multiple_images(images, instance)
+        instance = super().update(instance, validated_data)
+        instance.save()
+        return instance
+
 
 class ThreadSerializer(serializers.ModelSerializer):
+    """
+    Serialize to view and manage thread instances
+    """
+
     tags = TagSerializer(many=True, required=False)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
     memorized = serializers.SerializerMethodField("is_memorized")
-    category = serializers.ChoiceField(choices=CATEGORIES, required=False)
+    category = serializers.ChoiceField(choices=CATEGORIES, required=True)
     comment_counts = serializers.SerializerMethodField()
 
     class Meta:
@@ -192,17 +285,21 @@ class ThreadSerializer(serializers.ModelSerializer):
         return False
 
     def validate(self, attrs):
-        request = self.context.get("requests", None)
+        errors = {}
+        title = attrs.get("title", None)
+        content = attrs.get("content", None)
 
-        if request.method == "POST":
-            author = attrs.get("author", "")
-            category = attrs.get("category", "")
+        if title is None or title == "":
+            errors["title"] = "title is required"
 
-            if author == "":
-                raise serializers.ValidationError("author is required")
+        if Thread.objects.filter(title=title).exists():
+            errors["title"] = "title is already existed"
 
-            if category == "":
-                raise serializers.ValidationError("category is required")
+        if content is None or content == "":
+            errors["content"] = "content is required"
+
+        if errors:
+            raise serializers.ValidationError(errors)
 
         return attrs
 
@@ -217,10 +314,7 @@ class ThreadSerializer(serializers.ModelSerializer):
                     tag, created = Tag.objects.get_or_create(name=tag)
                     thread.tags.add(tag)
 
-        if images is not None:
-            with transaction.atomic():
-                for image in images:
-                    Image.objects.create(post=thread, image=image)
+        create_multiple_images(images, thread)
 
         return thread
 
@@ -237,12 +331,7 @@ class ThreadSerializer(serializers.ModelSerializer):
                 tag, created = Tag.objects.get_or_create(name=new_tag)
                 instance.tags.add(tag)
 
-        if images is not None:
-            Image.objects.filter(post=instance.id).delete()
-
-            for image in images:
-                Image.objects.create(post=instance, image=image)
-
+        update_multiple_images(images, instance)
         instance = super().update(instance, validated_data)
         instance.save()
 

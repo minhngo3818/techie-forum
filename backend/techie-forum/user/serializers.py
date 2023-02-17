@@ -1,12 +1,9 @@
-from abc import ABC
-
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.db.models import Count, Sum, Case, When
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from rest_framework import exceptions, serializers
+from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
@@ -38,6 +35,7 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
         model = Profile
         fields = [
             "id",
+            "owner",
             "profile_name",
             "about",
             "avatar",
@@ -109,21 +107,22 @@ class RegistrationSerializer(serializers.ModelSerializer):
         read_only_fields = ["tokens"]
 
     def validate(self, attrs):
+        errors = {}
+
         if User.objects.filter(username=attrs["username"]).exists():
-            raise serializers.ValidationError(
-                {"username": "Username is already existed!"}
-            )
+            errors["username"] = "Username is already existed!"
 
         if User.objects.filter(username=attrs["email"]).exists():
-            raise serializers.ValidationError({"email": "email is already existed!"})
+            errors["email"] = "email is already existed!"
 
         if not attrs["username"].isalnum():
-            raise serializers.ValidationError(
-                {"username": "username cannot have special characters"}
-            )
+            errors["username"] = "username cannot have special characters"
 
         if attrs["password"] != attrs["password2"]:
-            raise serializers.ValidationError({"password": "password didn't match!"})
+            errors["password"] = "password didn't match!"
+
+        if errors:
+            raise serializers.ValidationError(errors)
 
         # add all fields to create an instance
         return super().validate(attrs)
@@ -233,15 +232,16 @@ class ChangePasswordSerializer(serializers.Serializer):
     new_password2 = serializers.CharField(write_only=True, required=True)
 
     def validate(self, attrs):
+
+        errors = {}
         if not self.context["request"].user.check_password(attrs["old_password"]):
-            raise serializers.ValidationError(
-                {"old_password": "old password is incorrect"}
-            )
+            errors["old_password"] = "old password is incorrect"
 
         if attrs["new_password"] != attrs["new_password2"]:
-            raise serializers.ValidationError(
-                {"new_password": "new password did not match"}
-            )
+            errors["new_password"] = "new password did not match"
+
+        if errors:
+            raise serializers.ValidationError(errors)
 
         return attrs
 
@@ -318,7 +318,7 @@ class ResetPasswordSerializer(serializers.Serializer):
             )
 
         if not PasswordResetTokenGenerator().check_token(user, token):
-            raise exceptions.AuthenticationFailed("Reset password url is invalid", 401)
+            raise AuthenticationFailed("Reset password url is invalid", 401)
 
         user.set_password(password)
         user.save()
