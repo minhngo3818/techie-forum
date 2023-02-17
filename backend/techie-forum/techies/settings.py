@@ -204,13 +204,11 @@ COOKIES = {
 }
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "user.authenticate.CustomAuthentication",
-        # "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": ("user.authenticate.CustomAuthentication",),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
-    # TODO: Set up throttle aka limit api request
+    "NON_FIELD_ERRORS_KEY": "error",
+    "EXCEPTION_HANDLER": "utils.exception_handler.custom_exception_handler",
     # 'DEFAULT_THROTTLE_CLASSES': [
     #     'rest_framework.throttling.AnonRateThrottle',
     #     'rest_framework.throttling.UserRateThrottle'
