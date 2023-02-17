@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -10,7 +9,6 @@ from .models import (
     BasePost,
     Thread,
     Comment,
-    ParentChildComment,
     Like,
     Memorize,
     Tag,
@@ -28,6 +26,10 @@ from .pagination import PaginationHelper
 
 
 class ThreadViewSet(viewsets.ModelViewSet):
+    """
+    Fetch to view and manage thread
+    """
+
     serializer_class = ThreadSerializer
     queryset = Thread.objects.all()
     permission_classes = [IsAuthenticated]
@@ -45,6 +47,7 @@ class ThreadViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
 
+    # Remove thread: perform pseudo remove by setting inactive thread
     @action(methods=["patch"], detail=True, url_path="remove", url_name="remove")
     def remove_thread(self, request, pk):
         thread = self.get_object()
@@ -52,6 +55,7 @@ class ThreadViewSet(viewsets.ModelViewSet):
         thread.save()
         return Response({"success": "thread was removed successfully."})
 
+    # Recover thread: bring back thread to view if request
     @action(methods=["patch"], detail=True, url_path="recover", url_name="recover")
     def recover_thread(self, request, pk):
         thread = self.get_object()
@@ -61,42 +65,37 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    """
+    Fetch to view and manage comment
+    """
+
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     permission_classes = [IsAuthenticated]
     pagination_class = PaginationHelper
 
-    def get_queryset(self):
-        return Response(data=self.queryset, status=status.HTTP_200_OK)
-
+    # TODO: test comment filter query
+    # Comment filter: return level-0 comments or child comments if parent is provided
     def filter_queryset(self, queryset):
-        thid = self.request.query_params.get("thid", "")
-        pcid = self.request.query_params.get("pcid", "")
-        depth = self.request.query_params.get("depth")
-        parent_child_comments = ParentChildComment.objects.filter(parent=pcid)
+        thid = self.request.query_params.get("thid", None)
+        pcid = self.request.query_params.get("pcid", None)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=self.request.data)
-        serializer.is_valid()
-        serializer.save(owner=self.request.data["author"])
-        depth = serializer.data["depth"]
-        parent = serializer.data["parent"]
-
-        if depth > 0 and parent != "":
-            ParentChildComment.objects.create(
-                parent=parent, child=serializer.data.get("id")
+        if thid is not None and pcid is not None:
+            return queryset.filter(cmt_thread=thid).prefetch_related(
+                "parentchildcomment__parent"
             )
 
-        return Response(
-            data={"success": "Comment was created successfully"},
-            status=status.HTTP_201_CREATED,
-        )
+        if thid is not None:
+            return queryset.filter(cmt_thread=thid, depth=0)
 
-    def perform_update(self, serializer):
-        serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
+        return queryset
 
 
 class LikeViewSet(viewsets.ModelViewSet):
+    """
+    Fetch to perform like and unlike
+    """
+
     serializer_class = LikeSerializer
     queryset = Like.objects.all()
     permission_classes = [IsAuthenticated]
@@ -158,6 +157,10 @@ class LikeViewSet(viewsets.ModelViewSet):
 
 
 class MemorizeViewSet(viewsets.ModelViewSet):
+    """
+    Fetch to memorize a thread
+    """
+
     serializer_class = MemorizedSerializer
     queryset = Memorize.objects.all()
     permission_classes = [IsAuthenticated]
@@ -214,14 +217,22 @@ class MemorizeViewSet(viewsets.ModelViewSet):
 
 
 class TagViewSet(viewsets.ModelViewSet):
+    """
+    Fetch to view and manage tags
+    """
+
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
     permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save()
+    pagination_class = PaginationHelper
 
 
 class ImageViewSet(viewsets.ModelViewSet):
+    """
+    Fetch to view and manage post images
+    """
+
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
+    permission_classes = [IsAuthenticated]
+    pagination_class = PaginationHelper
