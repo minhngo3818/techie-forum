@@ -33,7 +33,7 @@ class Profile(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_name = models.CharField(max_length=255, null=True, blank=True)
     about = models.TextField(null=True, blank=True)
     avatar = models.ImageField(
@@ -55,7 +55,7 @@ class Profile(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return str(self.owner.username)
+        return str(self.profile_name)
 
     @property
     def image_url(self) -> str:

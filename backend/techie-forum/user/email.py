@@ -2,7 +2,7 @@ from django.core.mail import EmailMessage
 import threading
 
 
-# Create multi thread object for sending email concurrently
+# Create multi-threading object for sending email concurrently
 class EmailThread(threading.Thread):
     def __init__(self, email):
         threading.Thread.__init__(self)

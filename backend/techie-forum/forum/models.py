@@ -1,8 +1,8 @@
 from django.db import models
 from user.models import Profile
-import uuid
 from .choices import CATEGORIES
-from django.utils import timezone
+import uuid
+import os
 
 
 class BasePost(models.Model):
@@ -57,7 +57,9 @@ class Comment(BasePost):
     depth = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
-        return "{}-{}".format(self.author, self.thread_cmt.title)
+        return "comment: {} | thread: {}".format(
+            str(self.id)[:8], self.cmt_thread.title
+        )
 
 
 class ParentChildComment(models.Model):
@@ -78,7 +80,9 @@ class ParentChildComment(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return "{}-has-{}".format(self.parent, self.child)
+        return "parent: {} | child: {}".format(
+            str(self.parent.id)[:8], str(self.child.id)[:8]
+        )
 
 
 class Like(models.Model):
@@ -93,7 +97,9 @@ class Like(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return "{}-{}".format(self.owner, self.post)
+        return "user: {} | post: {}".format(
+            self.owner.profile_name, str(self.post.id)[:8]
+        )
 
 
 class Memorize(models.Model):
@@ -110,7 +116,7 @@ class Memorize(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return "{}-{}".format(self.owner, self.thread)
+        return "user: {} | thread {}".format(self.owner.profile_name, self.thread.title)
 
 
 class Tag(models.Model):
@@ -135,7 +141,9 @@ class Image(models.Model):
         ordering = ["-post"]
 
     def __str__(self) -> str:
-        return str(self.image.name)
+        return "id: {} | name: {}".format(
+            str(self.id), os.path.basename(self.image.name)
+        )
 
     @property
     def image_url(self) -> str:
