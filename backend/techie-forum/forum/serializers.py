@@ -143,6 +143,7 @@ class CommentSerializer(serializers.ModelSerializer):
     Serialize to view and manage comment instances
     """
 
+    parent = serializers.CharField(required=False, default=None)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
 
@@ -152,6 +153,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "id",
             "author",
             "cmt_thread",
+            "parent",
             "is_active",
             "content",
             "images",
@@ -163,11 +165,18 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "is_active", "created_at", "updated_at", "likes")
 
     def to_representation(self, instance):
+
+        parent = None
+
+        if ParentChildComment.objects.filter(child=instance).exists():
+            parent = ParentChildComment.objects.get(child=instance).parent.id
+
         if not instance.is_active:
             return {
                 "id": instance.id,
                 "author": instance.author,
                 "cmt_thread": instance.cmt_thread,
+                "parent": parent,
                 "is_active": instance.is_active,
                 "created_at": instance.create_at,
                 "updated_at": instance.updated_at,
@@ -176,29 +185,31 @@ class CommentSerializer(serializers.ModelSerializer):
             }
 
         default_data = super(CommentSerializer, self).to_representation(instance)
+        default_data["parent"] = parent
+        print(default_data)
+
         return default_data
 
     def validate(self, attrs):
-        request = self.context.get("request", None)
-        author = attrs.get("author", None)
+        author = attrs.get("author", None)  # Object of author profile
         depth = attrs.get("depth", 0)
-        parent = request.data.get("parent", None)
+        parent = attrs.get("parent", None)
 
         errors = {}
-        if author is None or author == "":
-            errors["author"] = "author is required"
 
-        if Profile.objects.filter(id=author).exists():
+        if not Profile.objects.filter(id=author.id).exists():
             errors["author"] = "author does not exist"
 
-        if parent == "" or parent is None:
-            errors["parent"] = "parent comment is required"
-
-        if depth == 0 and (parent != "" or parent):
-            errors["depth"] = "parent comment is provided but missing depth"
+        if not Comment.objects.filter(id=parent).exists():
+            errors["parent"] = "parent comment does not exist"
+        else:
+            attrs["parent"] = Comment.objects.get(id=parent)
 
         if depth > 0 and (parent == "" or parent is None):
             errors["parent"] = "depth is provided but missing parent comment"
+
+        if depth == 0 and parent:
+            errors["depth"] = "parent comment is provided but missing depth"
 
         if errors:
             raise serializers.ValidationError(errors)
@@ -206,12 +217,11 @@ class CommentSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        parent_id = validated_data.get("parent", None)
+        parent = validated_data.pop("parent", None)
         images = validated_data.pop("images", None)
         comment = Comment.objects.create(**validated_data)
 
-        if comment.depth > 0 and parent_id is not None:
-            parent = Comment.objects.get(id=parent_id)
+        if comment.depth > 0 and parent:
             ParentChildComment.objects.create(parent=parent, child=comment)
 
         create_multiple_images(images, comment)
