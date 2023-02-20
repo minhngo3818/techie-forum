@@ -11,6 +11,7 @@ from .models import (
     Comment,
     Like,
     Memorize,
+    ParentChildComment,
     Tag,
     Image,
 )
@@ -74,21 +75,25 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     pagination_class = PaginationHelper
 
-    # TODO: test comment filter query
-    # Comment filter: return level-0 comments or child comments if parent is provided
     def filter_queryset(self, queryset):
         thid = self.request.query_params.get("thid", None)
         pcid = self.request.query_params.get("pcid", None)
 
-        if thid is not None and pcid is not None:
-            return queryset.filter(cmt_thread=thid).prefetch_related(
-                "parentchildcomment__parent"
+        if thid and pcid:
+            child_comment_ids = ParentChildComment.objects.filter(parent=pcid).values(
+                "child"
             )
+            return queryset.filter(cmt_thread=thid, id__in=child_comment_ids)
 
-        if thid is not None:
+        if thid:
             return queryset.filter(cmt_thread=thid, depth=0)
 
         return queryset
+
+    def perform_destroy(self, instance):
+        related_instance = ParentChildComment.objects.get(child=instance.id)
+        related_instance.delete()
+        instance.delete()
 
 
 class LikeViewSet(viewsets.ModelViewSet):
@@ -100,9 +105,6 @@ class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     permission_classes = [IsAuthenticated]
     filter_fields = ("pid", "post_id")
-
-    def get_queryset(self):
-        return self.queryset
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
