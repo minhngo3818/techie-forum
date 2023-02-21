@@ -9,7 +9,7 @@ import "node_modules/react-tooltip/dist/react-tooltip.css";
 import styles from "./ProjectButton.module.css";
 
 interface RemoveBtnType {
-  id: number;
+  id: string;
   handleRemove: () => void;
 }
 

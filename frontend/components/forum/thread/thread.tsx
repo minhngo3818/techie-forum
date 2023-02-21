@@ -28,11 +28,13 @@ interface ThreadType extends ThreadInterface {
 export default function Thread(props: ThreadType) {
   let commentList: CommentInterface[] = [
     {
+      id: "123",
       thid: "1",
-      cid: "1",
+      pcid: "1",
       author: "Jotaro",
       authorId: "29038rsfasd",
       avatar: "/jotaro.jpg",
+      depth: 1,
       content:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
         tempor incididunt ut labore et dolore magna aliqua.\
@@ -45,11 +47,13 @@ export default function Thread(props: ThreadType) {
       likes: 0,
     },
     {
+      id: "1223",
       thid: "1",
-      cid: "2",
+      pcid: "2",
       author: "Josuke",
       authorId: "29038rsfasd",
       avatar: "/josuke.jpg",
+      depth: 2,
       content:
         "Excepteur sint occaecat cupidatat non proident, \
       sunt in culpa qui officia deserunt mollit anim id est laborum.",

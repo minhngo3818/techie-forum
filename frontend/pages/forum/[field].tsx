@@ -5,7 +5,10 @@ import Thread from "../../components/forum/thread/thread";
 const ThreadForm = dynamic(
   () => import("../../components/form/form-thread/thread-form")
 );
-import { TagInterface, ThreadInterface } from "../../interfaces/forum/post/post";
+import {
+  TagInterface,
+  ThreadInterface,
+} from "../../interfaces/forum/post/post";
 import searchFilterThread from "../../utils/searchFilterThread";
 import forumLinks from "../../page-paths/forum";
 import styles from "../../styles/Forum.module.css";
@@ -68,16 +71,16 @@ export default function Field() {
     setThreadForm(!isThreadForm);
   }, [isThreadForm]);
 
-  const threads = [] as ThreadInterface[]
+  const threads = [] as ThreadInterface[];
   const avatar = "/king-crimson.jpg";
   const images = [] as string[];
   const date = new Date(Date.now());
   const tags = new Set<TagInterface>();
-  tags.add({name: "Python"});
-  tags.add({name: "Typescript"});
-  tags.add({name: "C++"});
-  tags.add({name: "SQL"});
-  tags.add({name: "llvm"});
+  tags.add({ name: "Python" });
+  tags.add({ name: "Typescript" });
+  tags.add({ name: "C++" });
+  tags.add({ name: "SQL" });
+  tags.add({ name: "llvm" });
 
   return (
     <div className={styles.forumContainer}>

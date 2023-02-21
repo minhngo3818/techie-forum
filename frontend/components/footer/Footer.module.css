@@ -1,5 +1,6 @@
 .footer {
-  @apply w-full h-16 flex flex-col justify-center items-center p-12 z-20;
+  @apply w-full h-16 flex flex-col justify-center 
+  items-center p-12 z-20;
 }
 
 .footerText {

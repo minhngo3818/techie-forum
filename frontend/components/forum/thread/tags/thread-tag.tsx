@@ -5,7 +5,10 @@ import {
   useAddTag,
   useRemoveTag,
 } from "../../../form/field-tag/function/handleTag";
-import { ThreadBodyInterface, TagInterface } from "../../../../interfaces/forum/post/post";
+import {
+  ThreadBodyInterface,
+  TagInterface,
+} from "../../../../interfaces/forum/post/post";
 
 interface ThreadTagsType {
   isEdit: boolean;

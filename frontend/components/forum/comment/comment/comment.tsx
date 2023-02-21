@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import CommentHeader from "./header/comment-header";
 import CommentBody from "./body/comment-body";
-import CommentInterface from "../../../../interfaces/forum/comment/comment";
+import { CommentInterface } from "../../../../interfaces/forum/post/post";
 import styles from "./Comment.module.css";
 import { EventTargetNameValue } from "../../../../interfaces/forum/form/form-field";
 
@@ -12,13 +12,15 @@ interface CommentType extends CommentInterface {
 export default function Comment(props: CommentType) {
   const [comment, setComment] = useState<CommentInterface>({
     id: props.id,
+    thid: props.thid,
+    pcid: props.pcid,
     author: props.author,
     authorId: props.authorId,
     avatar: props.avatar,
     images: props.images,
     date: props.date,
     content: props.content,
-    numOfLikes: props.numOfLikes,
+    likes: props.likes,
   });
 
   const [isLike, setIsLike] = useState(false);
@@ -69,7 +71,7 @@ export default function Comment(props: CommentType) {
         handleIsEdit={{ isState: isEdit, setState: handleIsEdit }}
         handleIsComment={{ isState: isComment, setState: handleIsComment }}
         content={props.content}
-        stat={props.numOfLikes}
+        stat={props.likes}
         onChange={handleChangeComment}
         onSubmit={handleSubmitContent}
       />

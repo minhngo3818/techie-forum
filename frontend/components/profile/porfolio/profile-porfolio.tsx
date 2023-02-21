@@ -37,7 +37,7 @@ function ProfilePorfolio(props: { projects?: ProjectInterface[] }) {
             return (
               <Project
                 key={index}
-                id={index}
+                id={`${index}`}
                 title={project.title}
                 summary={project.summary}
                 repo={project.repo}
