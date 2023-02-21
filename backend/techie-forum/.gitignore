@@ -3,7 +3,6 @@
 .vscode/
 .env
 
-
 # django
 /techies/__pycache__
 /venv
@@ -31,5 +30,8 @@ db.sqlite3
 user/__pycache__/
 forum/__pycache__/
 utils/__pycache__/
+
+#staticfiles
+/static/media
 
 mockup/
