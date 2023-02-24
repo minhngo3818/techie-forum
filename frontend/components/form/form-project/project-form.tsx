@@ -19,7 +19,7 @@ export default function ProjectForm(props: ProjectFormType) {
     props.project
       ? props.project
       : {
-          id: 0,
+          id: "0",
           title: "",
           summary: "",
           demo: "",

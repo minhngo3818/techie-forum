@@ -5,7 +5,7 @@ import styles from "./Project.module.css";
 
 interface ProjectInnerType extends ProjectInterface {
   onChange: (
-    index: number,
+    id: string,
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
 }
