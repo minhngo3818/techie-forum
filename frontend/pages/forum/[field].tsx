@@ -20,7 +20,7 @@ function convertData(data: any) {
   for (let i = 0; i < data?.length; i += 1) {
     let dateObj = data[i].date.split("/");
     let thread: ThreadInterface = {
-      thid: data[i].id,
+      id: data[i].id,
       author: data[i].author,
       authorId: data[i].authorId,
       avatar: data[i].avatar,
@@ -125,7 +125,7 @@ export default function Field() {
             <Thread
               key={index}
               keyId={index}
-              thid={thread.thid}
+              id={thread.id}
               author={thread.author}
               authorId={thread.authorId}
               avatar={avatar}

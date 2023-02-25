@@ -9,7 +9,7 @@ import ProjectInterface from "../../../interfaces/project/project";
 import styles from "./ProfilePorfolio.module.css";
 import { AddSquare } from "../../icons/icons";
 
-function ProfilePorfolio(props: { projects?: ProjectInterface[] }) {
+function ProfilePorfolio(props: { projects: ProjectInterface[] }) {
   const [projects, setProjects] = useState<ProjectInterface[]>(
     props.projects || []
   );

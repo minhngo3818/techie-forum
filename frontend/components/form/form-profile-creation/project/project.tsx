@@ -17,12 +17,12 @@ import styles from "./Project.module.css";
 interface ProjectsType {
   isShow: boolean;
   projects: ProjectInterface[];
-  onAdd: (id: number) => void;
+  onAdd: (id: string) => void;
   onChange: (
-    id: number,
+    id: string,
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  onRemove: (id: number) => void;
+  onRemove: (id: string) => void;
   nextTab: () => void;
   prevTab: () => void;
 }
@@ -31,7 +31,7 @@ export default function Project(props: ProjectsType) {
   const [idIncrement, setIncrement] = useState(2);
 
   const handleAddProject = () => {
-    props.onAdd(idIncrement);
+    props.onAdd(`${idIncrement}`);
     setIncrement(idIncrement + 1);
   };
 

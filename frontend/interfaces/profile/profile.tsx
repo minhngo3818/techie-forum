@@ -1,13 +1,25 @@
 import ProjectInterface from "../project/project";
 import RefLinksInterface from "./ref-links";
 
-export default interface ProfileInterface extends RefLinksInterface {
-  id: string;
-  profileName: string;
-  avatar: string;
-  about: string;
-  threadCounts?: number;
-  commentCounts?: number;
-  likeCounts?: number;
-  projects: ProjectInterface[];
-}
+type ProfileId = { id: string };
+type ProfileName = { profileName: string };
+type Avatar = { avatar: string };
+type About = { about: string };
+type ThreadCounts = { threadCounts: number };
+type CommentCounts = { commentCounts: number };
+type LikeCounts = { likeCounts: number };
+type ProjectList = { projects: ProjectInterface[] };
+
+export interface ProfileCreationInterface
+  extends ProfileName,
+    Avatar,
+    About,
+    RefLinksInterface,
+    ProjectList {}
+
+export interface ProfileInterface
+  extends ProfileId,
+    ProfileCreationInterface,
+    ThreadCounts,
+    CommentCounts,
+    LikeCounts {}

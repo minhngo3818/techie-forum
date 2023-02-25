@@ -1,4 +1,4 @@
-import ThreadInterface from "../interfaces/forum/thread/thread";
+import { ThreadInterface } from "../interfaces/forum/post/post";
 
 export default function searchFilterThread(
   data: ThreadInterface,
@@ -7,7 +7,7 @@ export default function searchFilterThread(
 ) {
   // TODO: Filter by category
   if (filterKey) {
-    return data.memorize === true;
+    return data.memorized === true;
   }
 
   // TODO: Improvement search key from left to right

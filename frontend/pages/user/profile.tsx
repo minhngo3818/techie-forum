@@ -2,10 +2,11 @@ import { useState } from "react";
 import ProfileAbout from "../../components/profile/about/profile-about";
 import ProfileGeneral from "../../components/profile/general/profile-general-info";
 import ProfilePorfolio from "../../components/profile/porfolio/profile-porfolio";
-import ProfileInterface from "../../interfaces/profile/profile";
+import { ProfileInterface } from "../../interfaces/profile/profile";
 
 function Profile() {
-  const sampleProfile = {
+  const sampleProfile: ProfileInterface = {
+    id: "asdjkalkdjqw",
     profileName: "Made In Heaven",
     avatar: "/made-in-heaven.jpg",
     twitter: "https://twitter.com/konstancetine",
@@ -18,9 +19,12 @@ function Profile() {
     laboris nisi ut aliquip ex ea commodo consequat. \
     Duis aute irure dolor in reprehenderit in voluptate \
     velit esse cillum dolore eu fugiat nulla pariatur. ",
+    threadCounts: 0,
+    commentCounts: 0,
+    likeCounts: 0,
     projects: [
       {
-        id: 1,
+        id: "1",
         title: "Ooga Boogga",
         summary:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
@@ -28,7 +32,7 @@ function Profile() {
         repo: "https://github.com/giornodiobrando/",
       },
       {
-        id: 2,
+        id: "2",
         title: "Tarnish of Westernland",
         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed",
         demo: "https://dummyaijsdhfhsd.com",
@@ -37,9 +41,7 @@ function Profile() {
     ],
   };
 
-  const [profile, setProfile] = useState<ProfileInterface>(
-    sampleProfile as ProfileInterface
-  );
+  const [profile, setProfile] = useState<ProfileInterface>(sampleProfile);
 
   const handleChangeProfile = () => {};
 

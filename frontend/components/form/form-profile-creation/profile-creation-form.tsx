@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import ProjectInterface from "../../../interfaces/project/project";
-import ProfileInterface from "../../../interfaces/profile/profile";
+import { ProfileCreationInterface } from "../../../interfaces/profile/profile";
 import BasicInfo from "./basic-info/basic-info";
 import Reference from "./reference/reference";
 import Submission from "./submission/submission";
@@ -18,14 +18,14 @@ import Project from "./project/project";
 //    handle crop avatar
 //    add console.log demo request, remove any "" fields before sending data
 const initialProject = {
-  id: 1,
+  id: "0",
   title: "",
   summary: "",
   demo: "",
   repo: "",
 };
 
-const initialState: ProfileInterface = {
+const initialState: ProfileCreationInterface = {
   profileName: "",
   about: "",
   avatar: "",
@@ -61,7 +61,7 @@ function ProfileCreationForm() {
   );
 
   const handleAddProject = useCallback(
-    (id: number) => {
+    (id: string) => {
       let newProjectList = [...profile.projects];
       newProjectList.push({
         id: id,
@@ -76,7 +76,7 @@ function ProfileCreationForm() {
   );
 
   const handleRemoveProject = useCallback(
-    (id: number) => {
+    (id: string) => {
       let newProjectList = [...profile.projects];
       newProjectList = newProjectList.filter((item) => item.id !== id);
       setProfile({ ...profile, projects: newProjectList });
@@ -85,7 +85,7 @@ function ProfileCreationForm() {
   );
 
   const handleChangeProject = useCallback(
-    (id: number, { target: { name, value } }: EventTargetNameValue) => {
+    (id: string, { target: { name, value } }: EventTargetNameValue) => {
       let newProjectList = [...profile.projects] as Array<ProjectInterface>;
       let index = newProjectList.findIndex((item) => item.id === id);
       newProjectList[index] = { ...newProjectList[index], [name]: value };
