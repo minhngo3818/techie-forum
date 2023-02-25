@@ -1,4 +1,4 @@
-import ProfileInterface from "../../../interfaces/profile/profile";
+import { ProfileInterface } from "../../../interfaces/profile/profile";
 import { axiosInst } from "../../axios/axios-instance";
 
 export async function getProfileService() {
@@ -9,7 +9,7 @@ export async function getProfileService() {
   return response;
 }
 
-export async function createProfile(data: ProfileInterface) {
+export async function createProfileService(data: ProfileInterface) {
   const response = await axiosInst.post("user/profile-view", data, {
     withCredentials: true,
   });
@@ -24,3 +24,5 @@ export async function changeProfileService(data: ProfileInterface) {
 
   return response;
 }
+
+export async function removeAccountService() {}

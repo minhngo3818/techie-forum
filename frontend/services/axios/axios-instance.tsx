@@ -12,14 +12,12 @@ export const axiosInst = axios.create({
   },
 });
 
-
-
 axiosInst.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    console.log(error)
+    console.log(error);
     if (error.status === 401) {
       toast.error("Unauthorized or session expired", {
         position: toast.POSITION.TOP_CENTER,
