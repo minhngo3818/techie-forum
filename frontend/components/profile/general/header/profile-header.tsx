@@ -1,3 +1,4 @@
+import React from "react";
 import { Diamond } from "../../../icons/icons";
 import styles from "./ProfileHeader.module.css";
 

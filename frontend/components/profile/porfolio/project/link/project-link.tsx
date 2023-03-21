@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import projStyles from "../Project.module.css";
 import styles from "./ProjectLink.module.css";

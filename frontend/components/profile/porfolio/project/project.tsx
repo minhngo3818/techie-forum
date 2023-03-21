@@ -1,3 +1,4 @@
+import React from "react";
 import ProjectInterface from "../../../../interfaces/project/project";
 import ProjectTitle from "./title/project-title";
 import ProjectSummary from "./summary/project-sumary";

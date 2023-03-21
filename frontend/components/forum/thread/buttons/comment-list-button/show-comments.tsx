@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./ShowCommentsBtn.module.css";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";

@@ -1,3 +1,4 @@
+import React from "react";
 import LeftsideButtons, {
   LeftsideButtonsType,
 } from "../../buttons-leftside/leftside-buttons";

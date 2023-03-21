@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./ProjectTitle.module.css";
 
 export default function ProjectTitle(prop: { title: string }) {

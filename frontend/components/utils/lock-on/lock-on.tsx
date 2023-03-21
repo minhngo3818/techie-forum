@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./LockOn.module.css";
 
 interface LockOnWrapperType {

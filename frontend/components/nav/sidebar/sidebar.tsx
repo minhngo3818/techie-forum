@@ -2,7 +2,7 @@ import React, { useState, useContext, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Transition } from "@headlessui/react";
-import { AuthContext } from "../../../services/auth/auth-guard";
+import { AuthContext } from "../../../services/auth/auth-provider";
 import forumLinks from "../../../page-paths/forum";
 import styles from "./Sidebar.module.css";
 

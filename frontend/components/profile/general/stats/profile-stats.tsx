@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "../../../utils/box/box";
 import styles from "./ProfileStats.module.css";
 

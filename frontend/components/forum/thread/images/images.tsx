@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./ThreadImage.module.css";
 
 interface ThreadImageType {

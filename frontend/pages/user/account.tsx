@@ -1,3 +1,4 @@
+import React from "react";
 import PageTitle from "../../components/utils/page-title/page-title";
 import ChangeEmail from "../../components/account/change-email/change-email";
 import ChangePassword from "../../components/account/change-password/change-password";

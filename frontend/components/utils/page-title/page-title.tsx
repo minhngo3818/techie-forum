@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./PageTitle.module.css";
 
 interface PageTitleType {

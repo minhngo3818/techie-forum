@@ -1,3 +1,4 @@
+import React from "react";
 import { Warning } from "../icons/icons";
 
 export default function ErrorFallback(props: { error: string }) {

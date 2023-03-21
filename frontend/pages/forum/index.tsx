@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import PageTitle from "../../components/utils/page-title/page-title";
 import forumLinks from "../../page-paths/forum";

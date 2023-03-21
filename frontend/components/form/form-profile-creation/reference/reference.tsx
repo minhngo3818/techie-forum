@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 import HorzField from "../../field-horizontal/horizontal-field";
 import RefLinksInterface from "../../../../interfaces/profile/ref-links";
 import { Tab, Transition } from "@headlessui/react";

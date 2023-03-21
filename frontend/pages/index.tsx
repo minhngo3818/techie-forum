@@ -8,7 +8,6 @@ const ParticleBackground = dynamic(
 );
 import styles from "../styles/Home.module.css";
 
-// Add lock on animation for brand, and add particle background
 export default function Home() {
   return (
     <div className={styles.homeWrapper}>

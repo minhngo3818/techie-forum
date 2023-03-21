@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import CommentHeader from "./header/comment-header";
 import CommentBody from "./body/comment-body";
 import { CommentInterface } from "../../../../interfaces/forum/post/post";

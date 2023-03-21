@@ -2,8 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Menu } from "../../icons/icons";
 import Link from "next/link";
 import useShowComponent from "../../../hooks/useShowComponent";
-import useAuth from "../../../services/auth/auth-guard";
-import authService from "../../../services/auth/auth-services";
+import useAuth from "../../../services/auth/auth-provider";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./Navbar.module.css";
@@ -15,6 +14,7 @@ type NavbarProps = {
 };
 
 function NavUserBtn({ username }: { username: string }): JSX.Element {
+  const context = useAuth();
   const { dependentRef, ref, isShow, setIsShow } = useShowComponent(false);
 
   return (
@@ -54,7 +54,7 @@ function NavUserBtn({ username }: { username: string }): JSX.Element {
           <button
             className={`${styles.navDropdown} + ${styles.navDropdownLogout}`}
             role="button"
-            onMouseDown={authService.logout}
+            onMouseDown={context.logout}
           >
             Log Out
           </button>
@@ -71,7 +71,7 @@ export default function Navbar(props: NavbarProps) {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navWrapper}>
-        <div arial-label="brand" className={styles.navBrandWrapper}>
+        <div aria-label="brand" className={styles.navBrandWrapper}>
           <Link href="/" className={styles.navBrand}>
             Techies Forum
           </Link>

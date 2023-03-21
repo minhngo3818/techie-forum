@@ -1,5 +1,11 @@
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  ChangeEvent,
+  MouseEvent,
+} from "react";
 import Image from "next/image";
-import { useState, useCallback, useRef, ChangeEvent, MouseEvent } from "react";
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
 import {
   ThreadBodyInterface,
