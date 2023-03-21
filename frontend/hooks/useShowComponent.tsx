@@ -5,12 +5,10 @@ import { useState, useEffect, useRef } from "react";
 export default function useShowComponent(initialState: boolean) {
   const [isShow, setIsShow] = useState(initialState);
   const ref = useRef<HTMLButtonElement>(null);
+  const dependentRef = useRef<HTMLElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      ref.current !== null &&
-      !ref.current.contains(event.target as HTMLElement)
-    ) {
+    if (ref.current && !ref.current.contains(event.target as HTMLElement)) {
       setIsShow(false);
     }
   };
@@ -22,5 +20,5 @@ export default function useShowComponent(initialState: boolean) {
     };
   }, []);
 
-  return { ref, isShow, setIsShow };
+  return { dependentRef, ref, isShow, setIsShow };
 }
