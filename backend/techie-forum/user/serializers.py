@@ -3,13 +3,36 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from django.conf import settings
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from rest_framework_simplejwt.exceptions import InvalidToken
 from utils.dynamic_field_serializer import DynamicFieldsModelSerializer
 from .models import User, Profile, Project
 from forum.models import Thread, Comment, BasePost
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    """
+    Serialize project information and its owner
+    """
+
+    class Meta:
+        model = Project
+        fields = [
+            "id",
+            "owner",
+            "title",
+            "summary",
+            "demo",
+            "repo",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ("id", "owner", "created_at", "updated_at")
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -19,7 +42,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "username", "email"]
+        fields = ["id", "username", "email", "is_active"]
 
 
 class ProfileSerializer(DynamicFieldsModelSerializer):
@@ -27,6 +50,7 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
     Serialize all related information of user profile
     """
 
+    projects = ProjectSerializer(many=True)
     thread_counts = serializers.SerializerMethodField()
     comment_counts = serializers.SerializerMethodField()
     like_counts = serializers.SerializerMethodField()
@@ -45,6 +69,7 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             "stackoverflow_url",
             "linkedin_url",
             "indeed_url",
+            "projects",
             "thread_counts",
             "comment_counts",
             "like_counts",
@@ -67,18 +92,6 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             .count()
         )
         return count
-
-
-class ProjectSerializer(serializers.ModelSerializer):
-    """
-    Serialize project information and its owner
-    """
-
-    owner = ProfileSerializer(read_only=True, fields=["id", "profile_name"])
-
-    class Meta:
-        model = Project
-        fields = ["id", "owner", "title", "summary", "demo", "repo"]
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -150,12 +163,14 @@ class LoginSerializer(serializers.ModelSerializer):
 
     username = serializers.CharField(max_length=255, required=True)
     email = serializers.SerializerMethodField("get_email")
+    is_active = serializers.SerializerMethodField("get_is_active")
+    is_verified = serializers.SerializerMethodField("get_is_verified")
     password = serializers.CharField(max_length=128, write_only=True, required=True)
-    tokens = serializers.SerializerMethodField()
+    tokens = serializers.SerializerMethodField("get_tokens")
 
     class Meta:
         model = User
-        fields = ["username", "email", "password", "tokens"]
+        fields = ["username", "email", "is_active", "is_verified", "password", "tokens"]
 
     @classmethod
     def get_tokens(cls, attrs):
@@ -171,6 +186,14 @@ class LoginSerializer(serializers.ModelSerializer):
         user = User.objects.get(username=attrs["username"])
         email = user.email
         return email
+
+    @classmethod
+    def get_is_active(cls, attrs):
+        return User.objects.get(username=attrs["username"]).is_active
+
+    @classmethod
+    def get_is_verified(cls, attrs):
+        return User.objects.get(username=attrs["username"]).is_verified
 
     def validate(self, attrs):
         # Validate login input and return user object if succeed
@@ -210,8 +233,11 @@ class LogoutSerializer(serializers.Serializer):
         super().__init__(instance, kwargs)
         self.token = None
 
+    def to_internal_value(self, data):
+        return data
+
     def validate(self, attrs):
-        self.token = attrs.get("refresh")
+        self.token = attrs.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])
         return attrs
 
     def save(self):
@@ -219,7 +245,20 @@ class LogoutSerializer(serializers.Serializer):
             RefreshToken(self.token).blacklist()
 
         except TokenError:
-            self.fail("error")
+            self.fail("bad_token")
+
+
+class CookieTokenRefreshSerializer(TokenRefreshSerializer):
+    refresh = serializers.CharField()
+
+    def validate(self, attrs):
+        attrs["refresh"] = self.context["request"].COOKIES.get("refresh_token")
+        if attrs["refresh"]:
+            return super().validate(attrs)
+        else:
+            raise InvalidToken(
+                "No valid refresh token found in cookie"
+            )
 
 
 class ChangePasswordSerializer(serializers.Serializer):
