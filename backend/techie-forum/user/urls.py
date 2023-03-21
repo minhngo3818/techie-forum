@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+from rest_framework_simplejwt.views import TokenVerifyView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from .views import (
@@ -10,6 +10,7 @@ from .views import (
     EmailVerificationView,
     LoginView,
     LogoutView,
+    CookieTokenRefreshView,
     RequestResetPasswordView,
     ResetPasswordView,
     ConfirmResetPasswordUrlView,
@@ -44,7 +45,7 @@ urlpatterns = [
         EmailVerificationView.as_view(),
         name="email-verification",
     ),
-    path("user/auth/refresh", TokenRefreshView.as_view(), name="token_refresh_view"),
+    path("user/auth/refresh", CookieTokenRefreshView.as_view(), name="token_refresh_view"),
     path("user/auth/verify", TokenVerifyView.as_view(), name="token_verification"),
     path(
         "user/auth/change-password/<str:pk>",

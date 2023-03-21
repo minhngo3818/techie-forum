@@ -130,10 +130,9 @@ USE_TZ = True
 # CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
-    "http://127.0.0.1:8000",
     "https://techies-forum.vercel.app",
 ]
-
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 CORS_ALLOW_CREDENTIALS = True
 
 STATIC_URL = "/static/"
@@ -193,9 +192,14 @@ CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_SAMESITE = "LAX"
 CSRF_COOKIE_PATH = "/"
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:3000",
+    "https://techies-forum.vercel.app",
+]
 
 COOKIES = {
     "AUTH_COOKIE": "access_token",  # Cookie name. Enables cookies if value is set.
+    "AUTH_COOKIE_REFRESH": "refresh_token",
     "AUTH_COOKIE_DOMAIN": None,  # None for standard domain cookie, or specify a domain
     "AUTH_COOKIE_SECURE": False,  # Whether the auth cookies should be secure (https:// only).
     "AUTH_COOKIE_HTTP_ONLY": True,

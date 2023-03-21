@@ -12,10 +12,8 @@ from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.generics import GenericAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import (
-    RefreshToken,
-    TokenError,
-)
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework_simplejwt.views import TokenRefreshView
 from .email import EmailSender
 from .models import User, Profile, Project
 from .serializers import (
@@ -23,6 +21,7 @@ from .serializers import (
     RegistrationSerializer,
     LoginSerializer,
     LogoutSerializer,
+    CookieTokenRefreshSerializer,
     EmailVerificationSerializer,
     ChangePasswordSerializer,
     RequestResetPasswordSerializer,
@@ -143,7 +142,7 @@ class LoginView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         response = Response(
-            data={"success": "login successfully", "data": serializer.data},
+            data=serializer.data,
             status=status.HTTP_200_OK,
         )
         response.set_cookie(
@@ -155,7 +154,16 @@ class LoginView(GenericAPIView):
             httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
             samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
         )
-        csrf.get_token(request)
+        response.set_cookie(
+            value=serializer.data.get("tokens").get("refresh"),
+            expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+            key=settings.COOKIES["AUTH_COOKIE_REFRESH"],
+            secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+            path=settings.COOKIES["AUTH_COOKIE_PATH"],
+            httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
+            samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
+        )
+        response["X-CSRFToken"] = csrf.get_token(request)
         return response
 
 
@@ -168,17 +176,35 @@ class LogoutView(CreateAPIView):
     serializer_class = LogoutSerializer
 
     def post(self, request, *args, **kwargs):
-        try:
-            refresh = request.data.get("refresh")
-            token = RefreshToken(refresh)
-            token.blacklist()
-            return Response(status=status.HTTP_200_OK)
+        print(request)
+        refresh_token = {"refresh": request.COOKIES.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])}
+        serializer = self.serializer_class(
+            data=refresh_token
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        except TokenError:
-            return Response(
-                data={"error": "Failed to blacklist token"},
-                status=status.HTTP_400_BAD_REQUEST,
+        return Response(status=status.HTTP_200_OK, data={"success": "You have logged out!"})
+
+
+class CookieTokenRefreshView(TokenRefreshView):
+    serializer_class = CookieTokenRefreshSerializer
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        if response.data.get("refresh"):
+            response.set_cookie(
+                value=response.data.get("refresh"),
+                expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+                key=settings.COOKIES["AUTH_COOKIE_REFRESH"],
+                secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+                path=settings.COOKIES["AUTH_COOKIE_PATH"],
+                httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
+                samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
             )
+
+            del response.data["refresh"]
+        response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
+        return super().finalize_response(request, response, *args, **kwargs)
 
 
 class ChangePasswordView(UpdateAPIView):
