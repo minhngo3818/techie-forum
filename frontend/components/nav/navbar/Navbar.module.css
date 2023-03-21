@@ -17,27 +17,23 @@
 
 .navLoginBtn {
   @apply flex justify-center items-center 
-  w-36 h-8 mr-4 font-semibold border-2 duration-300;
+  w-36 h-8 mr-4 font-semibold border-2 border-gray duration-300;
 }
 
 .navLoginLink {
   @apply text-gray 
   hover:text-white 
-  border-gray bg-white
+  bg-white
   hover:bg-gray;
 }
 
-.navLoginUser {
+.navLoginBtn.navLoginUser {
   @apply border-none text-black bg-smoke
   hover:text-white hover:bg-black;
 }
 
-.navLoginUserActive {
-  @apply text-white bg-black;
-}
-
-.navLoginUser:active {
-  @apply text-white bg-smoke;
+.navLoginBtn.navLoginUser.navUserDropdwnActive {
+  @apply bg-black text-white;
 }
 
 .navSidebarToggler {

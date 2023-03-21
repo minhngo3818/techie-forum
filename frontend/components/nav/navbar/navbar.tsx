@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Menu } from "../../icons/icons";
 import Link from "next/link";
 import useShowComponent from "../../../hooks/useShowComponent";
-import { AuthContext } from "../../../services/auth/auth-guard";
+import useAuth from "../../../services/auth/auth-guard";
+import authService from "../../../services/auth/auth-services";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./Navbar.module.css";
+import UserInterface from "../../../interfaces/user/user-interface";
 
 type NavbarProps = {
   isToggled: Boolean;
@@ -13,7 +15,7 @@ type NavbarProps = {
 };
 
 function NavUserBtn({ username }: { username: string }): JSX.Element {
-  const { ref, isShow, setIsShow } = useShowComponent(false);
+  const { dependentRef, ref, isShow, setIsShow } = useShowComponent(false);
 
   return (
     <div className="relative w-36 h-8 mr-4">
@@ -21,7 +23,7 @@ function NavUserBtn({ username }: { username: string }): JSX.Element {
         id="user-dropdowns"
         type="button"
         className={`${styles.navLoginBtn} ${styles.navLoginUser} ${
-          isShow && styles.navLoginUserActive
+          isShow && styles.navUserDropdwnActive
         }`}
         ref={ref}
         onClick={() => setIsShow(!isShow)}
@@ -49,20 +51,22 @@ function NavUserBtn({ username }: { username: string }): JSX.Element {
             Account
           </Link>
           <hr className="w-5/6" />
-          <Link
-            href="/"
+          <button
             className={`${styles.navDropdown} + ${styles.navDropdownLogout}`}
+            role="button"
+            onMouseDown={authService.logout}
           >
             Log Out
-          </Link>
+          </button>
         </div>
       )}
     </div>
   );
 }
 
+// TODO: login user does not display on navbar
 export default function Navbar(props: NavbarProps) {
-  const context = useContext(AuthContext);
+  const context = useAuth();
 
   return (
     <nav className={styles.navbar}>
@@ -72,15 +76,23 @@ export default function Navbar(props: NavbarProps) {
             Techies Forum
           </Link>
         </div>
-        {!context?.user ? (
-          <Link
-            href="/login"
-            className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
-          >
-            Login
-          </Link>
+        {context?.user !== undefined ? (
+          <React.Fragment>
+            <Link
+              href="/login"
+              className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
+            >
+              Login
+            </Link>
+            <Link
+              href="/register"
+              className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
+            >
+              Register
+            </Link>
+          </React.Fragment>
         ) : (
-          <NavUserBtn username={context?.user.username} />
+          <NavUserBtn username={""} />
         )}
         <button
           id="sidebar-toggle"
