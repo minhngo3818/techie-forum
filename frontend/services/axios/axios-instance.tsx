@@ -2,15 +2,14 @@ import { APIConfig } from "../api-config/api-config";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-// axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-// axios.defaults.xsrfCookieName = "csrftoken";
-
-export const axiosInst = axios.create({
+const axiosInst = axios.create({
   baseURL: APIConfig.devApi,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+axiosInst.defaults.withCredentials = true
 
 axiosInst.interceptors.response.use(
   (response) => {
@@ -39,3 +38,5 @@ axiosInst.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default axiosInst;

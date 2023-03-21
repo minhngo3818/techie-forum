@@ -1,5 +1,5 @@
 import ProjectInterface from "../../../interfaces/project/project";
-import { axiosInst } from "../../axios/axios-instance";
+import axiosInst from "../../axios/axios-instance";
 
 // Return project list by searching user id
 export async function getProjectService(pid: string) {

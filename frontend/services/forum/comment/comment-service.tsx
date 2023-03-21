@@ -1,5 +1,5 @@
 import { CommentInterface } from "../../../interfaces/forum/post/post";
-import { axiosInst } from "../../axios/axios-instance";
+import axiosInst from "../../axios/axios-instance";
 
 export async function getAllCommentsService(tid: string, parent?: string) {
   const response = await axiosInst.get(

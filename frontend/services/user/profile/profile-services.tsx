@@ -1,5 +1,5 @@
 import { ProfileInterface } from "../../../interfaces/profile/profile";
-import { axiosInst } from "../../axios/axios-instance";
+import axiosInst from "../../axios/axios-instance";
 
 export async function getProfileService() {
   const response = await axiosInst.get("user/profile-view/", {

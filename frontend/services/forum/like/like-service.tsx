@@ -1,4 +1,4 @@
-import { axiosInst } from "../../axios/axios-instance";
+import axiosInst from "../../axios/axios-instance";
 
 export async function likeService(pid: string, tid: string) {
   const response = await axiosInst.patch(`/like-view/?pid=${pid}&?tid=${tid}/`);

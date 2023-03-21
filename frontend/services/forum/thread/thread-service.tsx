@@ -1,5 +1,5 @@
 import ThreadInterface from "../../../interfaces/forum/post/post";
-import { axiosInst } from "../../axios/axios-instance";
+import axiosInst from "../../axios/axios-instance";
 
 export async function getPaginatedThreadsService() {
   const response = await axiosInst.get("forum/thread");
