@@ -137,7 +137,6 @@ class LoginView(GenericAPIView):
     queryset = User.objects.all()
     serializer_class = LoginSerializer
 
-    @csrf_exempt
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -163,7 +162,7 @@ class LoginView(GenericAPIView):
             httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
             samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
         )
-        response["X-CSRFToken"] = csrf.get_token(request)
+        response["X-CSRFTOKEN"] = csrf.get_token(request)
         return response
 
 
@@ -176,15 +175,17 @@ class LogoutView(CreateAPIView):
     serializer_class = LogoutSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request)
         refresh_token = {"refresh": request.COOKIES.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])}
         serializer = self.serializer_class(
             data=refresh_token
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
-        return Response(status=status.HTTP_200_OK, data={"success": "You have logged out!"})
+        response = Response(status=status.HTTP_200_OK, data={"success": "You have logged out!"})
+        response.delete_cookie(settings.COOKIES["AUTH_COOKIE"])
+        response.delete_cookie(settings.COOKIES["AUTH_COOKIE_REFRESH"])
+        response.delete_cookie("csrftoken")
+        return response
 
 
 class CookieTokenRefreshView(TokenRefreshView):

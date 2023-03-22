@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import Link from "next/link";
 import PageTitle from "../components/utils/page-title/page-title";
@@ -7,7 +8,7 @@ import {
   FormEvent,
 } from "../interfaces/forum/form/form-field";
 import styles from "../styles/Login.module.css";
-import { AuthContext } from "../services/auth/auth-guard";
+import useAuth from "../services/auth/auth-provider";
 
 const initialState = {
   username: "",
@@ -15,7 +16,7 @@ const initialState = {
 };
 
 function Login() {
-  const context = useContext(AuthContext);
+  const context = useAuth();
   const [loginValues, setLoginValues] = useState(initialState);
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);

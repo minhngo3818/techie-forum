@@ -209,7 +209,7 @@ class LoginSerializer(serializers.ModelSerializer):
             raise AuthenticationFailed({"password": "Password is required"})
 
         if user is None:
-            raise AuthenticationFailed("User with username and password does not exist")
+            raise AuthenticationFailed("User does not exist or incorrect login inputs")
 
         if not user.is_active:
             raise AuthenticationFailed("User is not active")
