@@ -1,10 +1,10 @@
-import { axiosInst } from "../axios/axios-instance";
-import { LoginInterface } from "../../interfaces/user/login-interface";
-import { RegisterInterface } from "../../interfaces/user/register-interface";
-import { ResetPasswordInterface } from "../../interfaces/user/password-interface";
-import { ChangePasswordInterface } from "../../interfaces/user/password-interface";
-import { UserInterface } from "../../interfaces/user/user-interface";
-import { toast } from "react-toastify";
+import axiosInst from "../axios/axios-instance";
+import {
+  LoginInterface,
+  RegisterInterface,
+  ResetPasswordInterface,
+  ChangePasswordInterface,
+} from "../../interfaces/user/auth-interface";
 import "react-toastify/dist/ReactToastify.css";
 
 // Hanle login logic and retrieve user data

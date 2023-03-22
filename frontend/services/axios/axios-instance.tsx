@@ -9,7 +9,9 @@ const axiosInst = axios.create({
   },
 });
 
-axiosInst.defaults.withCredentials = true
+axiosInst.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = "csrftoken";
+axiosInst.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
 axiosInst.interceptors.response.use(
   (response) => {
