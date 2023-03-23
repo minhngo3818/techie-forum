@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import useAuth from "../services/auth/auth-provider";
 import PageTitle from "../components/utils/page-title/page-title";
 import BaseField from "../components/form/field-base/base-field";
+import { FadeLoader } from "react-spinners";
 import {
   EventTargetNameValue,
   FormEvent,
@@ -19,6 +21,8 @@ const initialState = {
 };
 
 function Register() {
+  const { register, loading } = useAuth();
+
   const [regValues, setRegValues] = useState(initialState);
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -29,9 +33,6 @@ function Register() {
   const [isValidName, setIsValidName] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isPasswordMatch, setPasswordMatch] = useState(false);
-
-  // Check successful request
-  const [success, setSuccess] = useState(false);
 
   // Focus on username field when the page first initialize
   useEffect(() => {
@@ -57,25 +58,31 @@ function Register() {
   );
 
   const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       if (isPasswordMatch) {
-        console.log({
+        await register({
           username: regValues.username,
           email: regValues.email,
           password: regValues.password,
           password2: regValues.password2,
         });
       }
-      setSuccess(true);
+
       // Refresh signUp state
       setRegValues(initialState);
-
-      alert("Requested account registration");
     },
-    [regValues, isPasswordMatch]
+    [regValues, isPasswordMatch, register]
   );
+
+  if (loading) {
+    return (
+      <div className="flex w-full  items-center justify-center">
+        <FadeLoader color="#ffffff" />
+      </div>
+    );
+  }
 
   return (
     <form className={styles.registerWrapper} onSubmit={handleSubmit}>

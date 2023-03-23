@@ -23,4 +23,5 @@ export default interface AuthContextInterface {
   logout: () => Promise<void>;
   register: (data: RegisterInterface) => Promise<void>;
   changePassword: (data: ChangePasswordInterface) => Promise<void>;
+  loading: boolean;
 }

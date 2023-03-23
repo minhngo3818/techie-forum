@@ -3,7 +3,6 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
-from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.http import HttpResponsePermanentRedirect
 from django.middleware import csrf
@@ -48,10 +47,10 @@ class UserViewSet(ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
-class UserRegisterView(CreateAPIView):
+class UserRegisterView(GenericAPIView):
     """
-    Fetch to create user and add to database
-    Response with jwt token pair
+    Fetch to create user account
+    Send a follow-up email verification
     """
 
     queryset = User.objects.all()
@@ -62,31 +61,9 @@ class UserRegisterView(CreateAPIView):
         serializer = self.serializer_class(data=user_input)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         user = User.objects.get(email=serializer.data["email"])
         token = RefreshToken.for_user(user).access_token
-        current_site = get_current_site(request).domain
-        path = reverse("email-verification")
-        email_verification_url = (
-            "http://" + current_site + path + "?token=" + str(token)
-        )
-
-        email_subject = "Email Verification"
-        email_body = (
-            "Welcome {} to our lair, \n\n".format(user.username)
-            + "Just one more step. Access the link below to verify your email:\n\n"
-            + email_verification_url
-            + "\n\n"
-            + "Best,\n"
-            + "The Techies Forum Team"
-        )
-
-        data = {
-            "email_subject": email_subject,
-            "email_body": email_body,
-            "to_email": user.email,
-        }
-
+        data = EmailSender.compose_verification_email(request, user, token)
         EmailSender.send_email(data)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)

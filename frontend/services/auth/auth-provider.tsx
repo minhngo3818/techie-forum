@@ -18,6 +18,7 @@ export const AuthContext = createContext<AuthContextInterface>({
   logout: async () => {},
   register: async () => {},
   changePassword: async () => {},
+  loading: false,
 });
 
 export function AuthProvider({ children }: { children: ReactElement }) {
@@ -59,10 +60,13 @@ export function AuthProvider({ children }: { children: ReactElement }) {
         router.push("forum");
       })
       .catch((error) => {
-        toast.error(error.message + " - " + error.response.data.details.detail , {
-          position: "top-center",
-          hideProgressBar: true,
-        });
+        toast.error(
+          error.message + " - " + error.response.data.details.detail,
+          {
+            position: "top-center",
+            hideProgressBar: true,
+          }
+        );
       })
       .finally(() => setLoading(false));
   }
@@ -86,10 +90,12 @@ export function AuthProvider({ children }: { children: ReactElement }) {
           position: "top-center",
           hideProgressBar: true,
         });
-        router.replace("/");
+        router.replace("");
       })
       .catch((error) => {
-        toast.error(error.message + error.details.detail, { position: "top-center" });
+        toast.error(error.message + error.details.detail, {
+          position: "top-center",
+        });
       })
       .finally(() => setLoading(false));
   }
@@ -98,7 +104,25 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    * Register a new user account
    * @param data registration inputs
    */
-  async function register(data: RegisterInterface) {}
+  async function register(data: RegisterInterface) {
+    setLoading(true);
+    await axiosInst
+      .post("user/register", data)
+      .then((res) => {
+        toast.success("Your account was created successfully!", {
+          position: "top-center",
+          hideProgressBar: true,
+        });
+        router.push("verify-email");
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: "top-center",
+          hideProgressBar: true,
+        });
+      })
+      .finally(() => setLoading(false));
+  }
 
   /**
    * Change user password with authentication
