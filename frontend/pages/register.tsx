@@ -23,16 +23,18 @@ const initialState = {
 function Register() {
   const { register, loading } = useAuth();
 
+  // States
   const [regValues, setRegValues] = useState(initialState);
+  const [isValidName, setIsValidName] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [isPasswordMatch, setPasswordMatch] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  // Input Refs
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const password2Ref = useRef<HTMLInputElement>(null);
-
-  // Validate inputs
-  const [isValidName, setIsValidName] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
-  const [isPasswordMatch, setPasswordMatch] = useState(false);
 
   // Focus on username field when the page first initialize
   useEffect(() => {
@@ -62,12 +64,13 @@ function Register() {
       e.preventDefault();
 
       if (isPasswordMatch) {
-        await register({
+        const success = await register({
           username: regValues.username,
           email: regValues.email,
           password: regValues.password,
           password2: regValues.password2,
         });
+        setIsSuccess(success);
       }
 
       // Refresh signUp state
@@ -80,6 +83,22 @@ function Register() {
     return (
       <div className="flex w-full  items-center justify-center">
         <FadeLoader color="#ffffff" />
+      </div>
+    );
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="flex flex-col justify-center">
+        <h2 className="text-2xl text-white font-bold my-3">
+          Account was created successfully!
+        </h2>
+        <p className="text-lg text-smoke">
+          Just one more step before joining our fellowship.
+        </p>
+        <p className="text-lg text-smoke">
+          Please check your email to verify your new account.
+        </p>
       </div>
     );
   }

@@ -16,7 +16,7 @@ export const AuthContext = createContext<AuthContextInterface>({
   csrfToken: null,
   login: async () => {},
   logout: async () => {},
-  register: async () => {},
+  register: async () => false,
   changePassword: async () => {},
   loading: false,
 });
@@ -105,6 +105,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    * @param data registration inputs
    */
   async function register(data: RegisterInterface) {
+    let isSuccess = false;
     setLoading(true);
     await axiosInst
       .post("user/register", data)
@@ -113,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
           position: "top-center",
           hideProgressBar: true,
         });
-        router.push("verify-email");
+        isSuccess = true;
       })
       .catch((error) => {
         toast.error(error.message, {
@@ -122,6 +123,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
         });
       })
       .finally(() => setLoading(false));
+    return isSuccess;
   }
 
   /**

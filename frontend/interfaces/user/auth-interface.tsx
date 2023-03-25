@@ -21,7 +21,7 @@ export default interface AuthContextInterface {
   csrfToken: string | null;
   login: (data: LoginInterface) => Promise<void>;
   logout: () => Promise<void>;
-  register: (data: RegisterInterface) => Promise<void>;
+  register: (data: RegisterInterface) => Promise<boolean>;
   changePassword: (data: ChangePasswordInterface) => Promise<void>;
   loading: boolean;
 }
