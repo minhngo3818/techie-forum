@@ -63,10 +63,14 @@ class UserRegisterView(GenericAPIView):
         serializer.save()
         user = User.objects.get(email=serializer.data["email"])
         token = RefreshToken.for_user(user).access_token
-        data = EmailSender.compose_verification_email(request, user, token)
+        frontend_url = os.environ.get("FRONTEND_URL_DEV")
+        data = EmailSender.compose_verification_email(frontend_url, user, token)
         EmailSender.send_email(data)
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {"username": serializer.data["username"], "email": serializer.data["email"]},
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class EmailVerificationView(GenericAPIView):
@@ -83,17 +87,13 @@ class EmailVerificationView(GenericAPIView):
             payload = jwt.decode(
                 jwt=token, key=settings.SECRET_KEY, algorithms=["HS256"]
             )
-            print(payload)
             user = User.objects.get(id=payload["user_id"])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
-                redirect_url = (
-                    str(os.environ.get("FRONTEND_URL")) + "?email_verify=True"
-                )
-                return CustomRedirect(redirect_url)
+                return Response({"message": "Email was verified successfully"}, status=status.HTTP_200_OK)
             else:
-                return Response({"message": "Email was verified"})
+                return Response({"message": "Email was verified long ago"}, status=status.HTTP_200_OK)
 
         except jwt.ExpiredSignatureError:
             return Response(
@@ -152,13 +152,15 @@ class LogoutView(CreateAPIView):
     serializer_class = LogoutSerializer
 
     def post(self, request, *args, **kwargs):
-        refresh_token = {"refresh": request.COOKIES.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])}
-        serializer = self.serializer_class(
-            data=refresh_token
-        )
+        refresh_token = {
+            "refresh": request.COOKIES.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])
+        }
+        serializer = self.serializer_class(data=refresh_token)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        response = Response(status=status.HTTP_200_OK, data={"success": "You have logged out!"})
+        response = Response(
+            status=status.HTTP_200_OK, data={"success": "You have logged out!"}
+        )
         response.delete_cookie(settings.COOKIES["AUTH_COOKIE"])
         response.delete_cookie(settings.COOKIES["AUTH_COOKIE_REFRESH"])
         response.delete_cookie("csrftoken")

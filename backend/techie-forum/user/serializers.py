@@ -117,7 +117,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email", "username", "password", "password2", "tokens"]
-        read_only_fields = ["tokens"]
 
     def validate(self, attrs):
         errors = {}
@@ -211,12 +210,6 @@ class LoginSerializer(serializers.ModelSerializer):
         if user is None:
             raise AuthenticationFailed("User does not exist or incorrect login inputs")
 
-        if not user.is_active:
-            raise AuthenticationFailed("User is not active")
-
-        if not user.is_verified:
-            raise AuthenticationFailed("Email has not been verified")
-
         return super().validate(attrs)
 
 
@@ -256,9 +249,7 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
         if attrs["refresh"]:
             return super().validate(attrs)
         else:
-            raise InvalidToken(
-                "No valid refresh token found in cookie"
-            )
+            raise InvalidToken("No valid refresh token found in cookie")
 
 
 class ChangePasswordSerializer(serializers.Serializer):

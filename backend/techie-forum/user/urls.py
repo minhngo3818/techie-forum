@@ -45,7 +45,9 @@ urlpatterns = [
         EmailVerificationView.as_view(),
         name="email-verification",
     ),
-    path("user/auth/refresh", CookieTokenRefreshView.as_view(), name="token_refresh_view"),
+    path(
+        "user/auth/refresh", CookieTokenRefreshView.as_view(), name="token_refresh_view"
+    ),
     path("user/auth/verify", TokenVerifyView.as_view(), name="token_verification"),
     path(
         "user/auth/change-password/<str:pk>",

@@ -1,0 +1,25 @@
+.veNonSuccessWrapper {
+  @apply flex w-full items-center justify-center;
+}
+
+.veMessageWrapper {
+  @apply flex flex-col justify-center items-center;
+}
+
+.veTextWrapper {
+  @apply h-auto py-5 px-3;
+}
+
+.veText {
+  @apply text-lg text-smoke;
+}
+
+.veHeader {
+  @apply text-2xl font-bold text-white my-3;
+}
+
+.veLoginLink {
+  @apply flex px-3 py-1 text-lg font-medium
+  bg-white text-black hover:bg-gray
+  hover:text-white duration-300;
+}

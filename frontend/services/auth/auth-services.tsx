@@ -32,11 +32,14 @@ export async function registerService(data: RegisterInterface) {
   return response;
 }
 
-// Handle user email verification
-export async function verifyEmailService() {
-  const response = await axiosInst.get("user/email-verification");
-
-  return response;
+/**
+ * Perform get request to verify user email
+ * Use wrap function in order to be consumed by useQuery hook
+ * @param token an email verification token
+ * @returns axios get function
+ */
+export function verifyEmail(token: string) {
+  return axiosInst.get(`user/email-verification?token=${token}`);
 }
 
 // Handle forgot password and send email to reset password

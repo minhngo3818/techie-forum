@@ -1,6 +1,4 @@
 from django.core.mail import EmailMessage
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
 import threading
 
 
@@ -26,21 +24,19 @@ class EmailSender:
         EmailThread(email).start()
 
     @staticmethod
-    def compose_verification_email(request, user, token):
-        current_site = get_current_site(request).domain
-        path = reverse("email-verification")
+    def compose_verification_email( route, user, token):
         email_verification_url = (
-                "http://" + current_site + path + "?token=" + str(token)
+            route + "verify-email/" + user.username + "?token=" + str(token)
         )
 
         email_subject = "Email Verification"
         email_body = (
-                "Welcome {} to our lair, \n\n".format(user.username)
-                + "Just one more step. Access the link below to verify your email:\n\n"
-                + email_verification_url
-                + "\n\n"
-                + "Best,\n"
-                + "The Techies Forum Team"
+            "Welcome {} to our lair, \n\n".format(user.username)
+            + "Just one more step. Access the link below to verify your email:\n\n"
+            + email_verification_url
+            + "\n\n"
+            + "Best,\n"
+            + "The Techies Forum Team"
         )
 
         return {
