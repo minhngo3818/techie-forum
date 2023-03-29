@@ -12,7 +12,8 @@ from rest_framework.generics import GenericAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+from rest_framework_simplejwt.exceptions import InvalidToken
 from .email import EmailSender
 from .models import User, Profile, Project
 from .serializers import (
@@ -21,6 +22,7 @@ from .serializers import (
     LoginSerializer,
     LogoutSerializer,
     CookieTokenRefreshSerializer,
+    CookieTokenVerifySerializer,
     EmailVerificationSerializer,
     ChangePasswordSerializer,
     RequestResetPasswordSerializer,
@@ -68,7 +70,10 @@ class UserRegisterView(GenericAPIView):
         EmailSender.send_email(data)
 
         return Response(
-            {"username": serializer.data["username"], "email": serializer.data["email"]},
+            {
+                "username": serializer.data["username"],
+                "email": serializer.data["email"],
+            },
             status=status.HTTP_201_CREATED,
         )
 
@@ -91,9 +96,15 @@ class EmailVerificationView(GenericAPIView):
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
-                return Response({"message": "Email was verified successfully"}, status=status.HTTP_200_OK)
+                return Response(
+                    {"message": "Email was verified successfully"},
+                    status=status.HTTP_200_OK,
+                )
             else:
-                return Response({"message": "Email was verified long ago"}, status=status.HTTP_200_OK)
+                return Response(
+                    {"message": "Email was verified long ago"},
+                    status=status.HTTP_200_OK,
+                )
 
         except jwt.ExpiredSignatureError:
             return Response(
@@ -185,6 +196,32 @@ class CookieTokenRefreshView(TokenRefreshView):
             del response.data["refresh"]
         response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
         return super().finalize_response(request, response, *args, **kwargs)
+
+
+class CookieTokenVerifyView(TokenVerifyView):
+    serializer_class = CookieTokenVerifySerializer
+
+    def post(self, request, *args, **kwargs):
+        access_token = request.COOKIES.get(settings.COOKIES["AUTH_COOKIE"])
+
+        if not access_token:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={"error": "Cookie contains no access token"},
+            )
+
+        serializer = self.serializer_class(data=access_token)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as error:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, data={"error": error.args[0]}
+            )
+
+        return Response(
+            status=status.HTTP_200_OK, data={"message": "Access verified successfully"}
+        )
 
 
 class ChangePasswordView(UpdateAPIView):

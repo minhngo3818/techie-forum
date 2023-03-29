@@ -1,4 +1,5 @@
 import React from "react";
+import authGuard from "../../services/auth/auth-guard";
 import PageTitle from "../../components/utils/page-title/page-title";
 import ChangeEmail from "../../components/account/change-email/change-email";
 import ChangePassword from "../../components/account/change-password/change-password";
@@ -27,7 +28,4 @@ function Account() {
     </div>
   );
 }
-export default Account;
-
-{
-}
+export default authGuard(Account);

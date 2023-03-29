@@ -11,6 +11,7 @@ from .views import (
     LoginView,
     LogoutView,
     CookieTokenRefreshView,
+    CookieTokenVerifyView,
     RequestResetPasswordView,
     ResetPasswordView,
     ConfirmResetPasswordUrlView,
@@ -48,7 +49,9 @@ urlpatterns = [
     path(
         "user/auth/refresh", CookieTokenRefreshView.as_view(), name="token_refresh_view"
     ),
-    path("user/auth/verify", TokenVerifyView.as_view(), name="token_verification"),
+    path(
+        "user/auth/verify", CookieTokenVerifyView.as_view(), name="token_verification"
+    ),
     path(
         "user/auth/change-password/<str:pk>",
         ChangePasswordView.as_view(),

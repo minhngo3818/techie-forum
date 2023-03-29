@@ -17,6 +17,7 @@ export const AuthContext = createContext<AuthContextInterface>({
   login: async () => {},
   logout: async () => {},
   register: async () => false,
+  verifyUser: async () => false,
   changePassword: async () => {},
   loading: false,
 });
@@ -25,18 +26,18 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   const [user, setUser] = useState<UserInterface | null>(null);
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   // Persist user information if page refreshs
   useEffect(() => {
+    if (!router.isReady) return;
     let userTraits = sessionStorage.getItem("techie:traits");
 
     if (userTraits) {
       let userObject = JSON.parse(userTraits);
       setUser(userObject);
     }
-  }, []);
-
-  const router = useRouter();
+  }, [router, router.isReady]);
 
   /**
    * Resolve login response and set auth states, notify an error if happens
@@ -127,6 +128,26 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   }
 
   /**
+   * Verify current authorized user
+   */
+  async function verifyUser() {
+    let isVerified = false;
+    setLoading(true);
+    await axiosInst
+      .post(`/user/auth/verify`, null)
+      .then((res) => {
+        isVerified = true;
+      })
+      .catch((error) => {
+        toast.error(error.message + error.details.detail, {
+          position: "top-center",
+        });
+      })
+      .finally(() => setLoading(false));
+    return isVerified;
+  }
+
+  /**
    * Change user password with authentication
    * @param data password inputs
    */
@@ -139,6 +160,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
       login: login,
       logout: logout,
       register: register,
+      verifyUser: verifyUser,
       changePassword: changePassword,
       loading: loading,
     }),

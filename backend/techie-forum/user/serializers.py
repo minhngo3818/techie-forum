@@ -8,7 +8,10 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import (
+    TokenRefreshSerializer,
+    TokenVerifySerializer,
+)
 from rest_framework_simplejwt.exceptions import InvalidToken
 from utils.dynamic_field_serializer import DynamicFieldsModelSerializer
 from .models import User, Profile, Project
@@ -250,6 +253,18 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
             return super().validate(attrs)
         else:
             raise InvalidToken("No valid refresh token found in cookie")
+
+
+class CookieTokenVerifySerializer(TokenVerifySerializer):
+    def to_internal_value(self, data):
+        return {"token": data}
+
+    def validate(self, attrs):
+
+        if attrs["token"]:
+            return super().validate(attrs)
+        else:
+            raise InvalidToken("No valid access token token found in cookie")
 
 
 class ChangePasswordSerializer(serializers.Serializer):
