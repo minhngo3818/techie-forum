@@ -10,10 +10,10 @@ import {
 import axiosInst from "../axios/axios-instance";
 import UserInterface from "../../interfaces/user/user-interface";
 import { toast } from "react-toastify";
+import { getCsrfToken } from "./auth-services";
 
 export const AuthContext = createContext<AuthContextInterface>({
   user: null,
-  csrfToken: null,
   login: async () => {},
   logout: async () => {},
   register: async () => false,
@@ -24,7 +24,6 @@ export const AuthContext = createContext<AuthContextInterface>({
 
 export function AuthProvider({ children }: { children: ReactElement }) {
   const [user, setUser] = useState<UserInterface | null>(null);
-  const [csrfToken, setCsrfToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -47,8 +46,14 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    */
   async function login(data: LoginInterface) {
     setLoading(true);
-    await axiosInst
-      .post("user/login", data)
+    await getCsrfToken()
+      .then((token) => {
+        return axiosInst.post("user/login", data, {
+          headers: {
+            "x-csrftoken": token,
+          },
+        });
+      })
       .then((res) => {
         toast.success("Authorization succeeded!", {
           position: "top-center",
@@ -57,46 +62,46 @@ export function AuthProvider({ children }: { children: ReactElement }) {
         let userObj = { username: res.data.username, email: res.data.email };
         setUser(userObj);
         sessionStorage.setItem("techie:traits", JSON.stringify(userObj));
-        setCsrfToken(res.headers["x-csrftoken"] ?? null);
         router.push("forum");
       })
       .catch((error) => {
-        toast.error(
-          error.message + " - " + error.response.data.details.detail,
-          {
-            position: "top-center",
-            hideProgressBar: true,
-          }
-        );
+        toast.error(error.message, {
+          position: "top-center",
+          hideProgressBar: true,
+        });
       })
       .finally(() => setLoading(false));
   }
 
   /**
-   * Remove all login states and redirect to homepage
+   * Handle logout procedure
+   * Pre-request a token before post request
+   * Remove all user credentials once success
    */
   async function logout() {
     setLoading(true);
-    await axiosInst
-      .post("user/logout", null, {
-        headers: {
-          "x-csrftoken": csrfToken,
-        },
+    await getCsrfToken()
+      .then((token) => {
+        return axiosInst.post("user/logout", null, {
+          headers: {
+            "x-csrftoken": token,
+          },
+        });
       })
-      .then(() => {
+      .then((res) => {
         setUser(null);
         sessionStorage.removeItem("techie:traits");
-        setCsrfToken(null);
         toast.success("You have logged out!", {
           position: "top-center",
           hideProgressBar: true,
         });
-        router.replace("");
+        router.replace("/");
       })
       .catch((error) => {
-        toast.error(error.message + error.details.detail, {
+        toast.error(error.message, {
           position: "top-center",
         });
+        setLoading(false);
       })
       .finally(() => setLoading(false));
   }
@@ -104,12 +109,19 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   /**
    * Register a new user account
    * @param data registration inputs
+   * @return boolean
    */
   async function register(data: RegisterInterface) {
     let isSuccess = false;
     setLoading(true);
-    await axiosInst
-      .post("user/register", data)
+    await getCsrfToken()
+      .then((token) => {
+        return axiosInst.post("user/register", data, {
+          headers: {
+            "x-csrftoken": token,
+          },
+        });
+      })
       .then((res) => {
         toast.success("Your account was created successfully!", {
           position: "top-center",
@@ -156,7 +168,6 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   const context = useMemo(
     () => ({
       user: user,
-      csrfToken: csrfToken,
       login: login,
       logout: logout,
       register: register,

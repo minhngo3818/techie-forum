@@ -5,6 +5,7 @@ import {
   ResetPasswordInterface,
   ChangePasswordInterface,
 } from "../../interfaces/user/auth-interface";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Hanle login logic and retrieve user data
@@ -30,6 +31,21 @@ export async function registerService(data: RegisterInterface) {
   const response = await axiosInst.post("user/register", data);
 
   return response;
+}
+
+/**
+ * Fetch to get csrftoken for any post requests
+ */
+export async function getCsrfToken() {
+  return await axiosInst
+    .get("user/csrf")
+    .then((res) => res.data.csrftoken)
+    .catch((error) => {
+      toast.error(error.message, {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    });
 }
 
 /**

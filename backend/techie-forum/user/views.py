@@ -6,14 +6,15 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.http import HttpResponsePermanentRedirect
 from django.middleware import csrf
+from .authenticate import enforce_csrf
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.generics import GenericAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
-from rest_framework_simplejwt.exceptions import InvalidToken
 from .email import EmailSender
 from .models import User, Profile, Project
 from .serializers import (
@@ -59,6 +60,7 @@ class UserRegisterView(GenericAPIView):
     serializer_class = RegistrationSerializer
 
     def post(self, request, *args, **kwargs):
+        enforce_csrf(request)  # Check cross site token
         user_input = request.data
         serializer = self.serializer_class(data=user_input)
         serializer.is_valid(raise_exception=True)
@@ -117,15 +119,28 @@ class EmailVerificationView(GenericAPIView):
             )
 
 
+class CsrfTokenView(APIView):
+    """
+    Fetch to get csrf token before perform
+    requests that change in the database
+    """
+
+    def get(self, request):
+        csrf_token = csrf.get_token(request)
+        response = Response(status=status.HTTP_200_OK, data={"csrftoken": csrf_token})
+        return response
+
+
 class LoginView(GenericAPIView):
     """
-    Fetch to allow user login
+    Fetch to allow user login. Set auth tokens in cookie
     """
 
     queryset = User.objects.all()
     serializer_class = LoginSerializer
 
     def post(self, request):
+        enforce_csrf(request)  # Check cross-site token
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         response = Response(
@@ -150,7 +165,6 @@ class LoginView(GenericAPIView):
             httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
             samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
         )
-        response["X-CSRFTOKEN"] = csrf.get_token(request)
         return response
 
 
@@ -194,7 +208,7 @@ class CookieTokenRefreshView(TokenRefreshView):
             )
 
             del response.data["refresh"]
-        response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
+        # response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
         return super().finalize_response(request, response, *args, **kwargs)
 
 

@@ -18,7 +18,6 @@ export interface RegisterInterface extends UserInterface, Password, Password2 {}
 
 export default interface AuthContextInterface {
   user: UserInterface | null;
-  csrfToken: string | null;
   login: (data: LoginInterface) => Promise<void>;
   logout: () => Promise<void>;
   register: (data: RegisterInterface) => Promise<boolean>;
