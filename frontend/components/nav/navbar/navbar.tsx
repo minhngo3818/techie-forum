@@ -13,7 +13,7 @@ type NavbarProps = {
 };
 
 export default function Navbar(props: NavbarProps) {
-  const context = useAuth();
+  const { user, logout } = useAuth();
   const { dependentRef, ref, isShow, setIsShow } = useShowComponent(false);
 
   return (
@@ -24,7 +24,7 @@ export default function Navbar(props: NavbarProps) {
             Techies Forum
           </Link>
         </div>
-        {!context.user ? (
+        {!user ? (
           <React.Fragment>
             <Link
               href="/login"
@@ -50,7 +50,7 @@ export default function Navbar(props: NavbarProps) {
               ref={ref}
               onClick={() => setIsShow(!isShow)}
             >
-              {context.user.username}
+              {user.username}
             </button>
             <Tooltip
               anchorId="user-dropdowns"
@@ -76,7 +76,7 @@ export default function Navbar(props: NavbarProps) {
                 <button
                   className={`${styles.navDropdown} + ${styles.navDropdownLogout}`}
                   role="button"
-                  onMouseDown={context.logout}
+                  onMouseDown={logout}
                 >
                   Log Out
                 </button>

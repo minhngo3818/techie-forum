@@ -1,7 +1,8 @@
 import React, { ReactElement, useState } from "react";
-import Navbar from "../nav/navbar/navbar";
+import dynamic from "next/dynamic";
 import Sidebar from "../nav/sidebar/sidebar";
 import Footer from "../footer/footer";
+const Navbar = dynamic(() => import("../nav/navbar/navbar"), { ssr: false });
 
 // Add hide bar and implement callback hook
 export function Layout({ children }: { children: ReactElement }) {
