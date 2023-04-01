@@ -24,7 +24,7 @@ class EmailSender:
         EmailThread(email).start()
 
     @staticmethod
-    def compose_verification_email( route, user, token):
+    def compose_verification_email(route, user, token):
         email_verification_url = (
             route + "verify-email/" + user.username + "?token=" + str(token)
         )
