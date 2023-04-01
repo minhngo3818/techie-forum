@@ -160,42 +160,28 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.ModelSerializer):
     """
-    Serializer for log-in, return auth tokens
+    Serializer for login. Retrieve auth tokens and user information
     """
 
     username = serializers.CharField(max_length=255, required=True)
-    email = serializers.SerializerMethodField("get_email")
-    is_active = serializers.SerializerMethodField("get_is_active")
-    is_verified = serializers.SerializerMethodField("get_is_verified")
     password = serializers.CharField(max_length=128, write_only=True, required=True)
-    tokens = serializers.SerializerMethodField("get_tokens")
+    email = serializers.EmailField(read_only=True)
+    profile_name = serializers.CharField(read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
+    is_verified = serializers.BooleanField(read_only=True)
+    tokens = serializers.DictField(child=serializers.CharField(), read_only=True)
 
     class Meta:
         model = User
-        fields = ["username", "email", "is_active", "is_verified", "password", "tokens"]
-
-    @classmethod
-    def get_tokens(cls, attrs):
-        # Return a token pair in response when calling serializer
-
-        user = User.objects.get(username=attrs["username"])
-        refresh = user.get_tokens["refresh"]
-        access = user.get_tokens["access"]
-        return {"refresh": refresh, "access": access}
-
-    @classmethod
-    def get_email(cls, attrs):
-        user = User.objects.get(username=attrs["username"])
-        email = user.email
-        return email
-
-    @classmethod
-    def get_is_active(cls, attrs):
-        return User.objects.get(username=attrs["username"]).is_active
-
-    @classmethod
-    def get_is_verified(cls, attrs):
-        return User.objects.get(username=attrs["username"]).is_verified
+        fields = [
+            "username",
+            "profile_name",
+            "email",
+            "is_active",
+            "is_verified",
+            "password",
+            "tokens",
+        ]
 
     def validate(self, attrs):
         # Validate login input and return user object if succeed
@@ -210,10 +196,29 @@ class LoginSerializer(serializers.ModelSerializer):
         if password is None:
             raise AuthenticationFailed({"password": "Password is required"})
 
-        if user is None:
+        self.instance = User.objects.get(username=attrs["username"])
+
+        if self.instance is None:
             raise AuthenticationFailed("User does not exist or incorrect login inputs")
 
         return super().validate(attrs)
+
+    def to_representation(self, instance):
+        tokens = instance.get_tokens
+        profile_name = (
+            Profile.objects.get(owner=instance.id).profile_name
+            if Profile.objects.filter(owner=instance.id).exists()
+            else None
+        )
+
+        return {
+            "username": instance.username,
+            "profile_name": profile_name,
+            "email": instance.email,
+            "is_active": instance.is_active,
+            "is_verified": instance.is_verified,
+            "tokens": tokens,
+        }
 
 
 class LogoutSerializer(serializers.Serializer):
