@@ -7,6 +7,7 @@ from .views import (
     UserViewSet,
     UserRegisterView,
     EmailVerificationView,
+    RequestEmailVerificationView,
     LoginView,
     LogoutView,
     CsrfTokenView,
@@ -46,6 +47,11 @@ urlpatterns = [
         "user/email-verification",
         EmailVerificationView.as_view(),
         name="email-verification",
+    ),
+    path(
+        "user/email-verification/request/<udsf>",
+        RequestEmailVerificationView.as_view(),
+        name="request-email-verification",
     ),
     path(
         "user/auth/refresh", CookieTokenRefreshView.as_view(), name="token_refresh_view"

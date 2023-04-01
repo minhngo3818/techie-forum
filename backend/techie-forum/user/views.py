@@ -3,9 +3,9 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
 from django.http import HttpResponsePermanentRedirect
 from django.middleware import csrf
+from django.shortcuts import reverse
 from .authenticate import enforce_csrf
 from rest_framework import status
 from rest_framework.views import APIView
@@ -80,6 +80,25 @@ class UserRegisterView(GenericAPIView):
         )
 
 
+class RequestEmailVerificationView(GenericAPIView):
+
+    queryset = User.objects.all()
+
+    @classmethod
+    def get(cls, request, udsf):
+        username = smart_str(urlsafe_base64_decode(udsf))
+        user = User.objects.get(username=username)
+        tokens = user.get_tokens
+        data = EmailSender.compose_verification_email(
+            os.environ.get("FRONTEND_URL_DEV"),
+            user,
+            tokens["access"],
+        )
+        EmailSender.send_email(data)
+
+        return Response(status=status.HTTP_200_OK)
+
+
 class EmailVerificationView(GenericAPIView):
     """
     Fetch to send email verification for new user
@@ -133,7 +152,9 @@ class CsrfTokenView(APIView):
 
 class LoginView(GenericAPIView):
     """
-    Fetch to allow user login. Set auth tokens in cookie
+    Fetch to allow user login. Set auth tokens in cookie on success
+    Response with account status if it is not active
+    Send an email verification if user has not verified email
     """
 
     queryset = User.objects.all()
@@ -143,6 +164,31 @@ class LoginView(GenericAPIView):
         enforce_csrf(request)  # Check cross-site token
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        if not serializer.data["is_active"]:
+            return Response(
+                status=status.HTTP_200_OK,
+                data={"username": serializer.data["username"], "is_active": False},
+            )
+
+        if not serializer.data["is_verified"]:
+            data = EmailSender.compose_verification_email(
+                os.environ.get("FRONTEND_URL_DEV"),
+                serializer.instance,
+                serializer.data["tokens"]["access"],
+            )
+            EmailSender.send_email(data)
+
+            return Response(
+                status=status.HTTP_200_OK,
+                data={
+                    "is_verified": False,
+                    "udsf": urlsafe_base64_encode(
+                        smart_bytes(serializer.data["username"])
+                    ),
+                },
+            )
+
         response = Response(
             data=serializer.data,
             status=status.HTTP_200_OK,

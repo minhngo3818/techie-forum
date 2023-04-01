@@ -55,14 +55,37 @@ export function AuthProvider({ children }: { children: ReactElement }) {
         });
       })
       .then((res) => {
-        toast.success("Authorization succeeded!", {
-          position: "top-center",
-          hideProgressBar: true,
-        });
-        let userObj = { username: res.data.username, email: res.data.email };
-        setUser(userObj);
-        sessionStorage.setItem("techie:traits", JSON.stringify(userObj));
-        router.push("forum");
+        if (res.data.is_active === false) {
+          toast.info(
+            "Your account is inactive. Redirect to account recovery url.",
+            {
+              position: "top-center",
+              hideProgressBar: true,
+            }
+          );
+        } else if (res.data.is_verified === false) {
+          toast.info("Email has not been verified!", {
+            position: "top-center",
+            hideProgressBar: true,
+          });
+          // sessionStorage.setItem("udsf", JSON.stringify(res.data.udsf));
+          router.replace("/verify-email/not-verify");
+        } else {
+          toast.success("Authorization succeeded!", {
+            position: "top-center",
+            hideProgressBar: true,
+          });
+
+          let userObj = { username: res.data.username, email: res.data.email };
+          setUser(userObj);
+          sessionStorage.setItem("techie:traits", JSON.stringify(userObj));
+
+          if (!res.data.profile_name) {
+            router.push("/profile/create");
+          } else {
+            router.push("/forum");
+          }
+        }
       })
       .catch((error) => {
         toast.error(error.message, {

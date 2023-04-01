@@ -9,7 +9,11 @@ import styles from "../../styles/VerifyEmail.module.css";
 
 function useVerifyEmail() {
   return useMutation<{ message: string }, AxiosError | Error, string>(
-    (token: string) => verifyEmail(token).then((res) => res.data),
+    (token: string) =>
+      verifyEmail(token).then((res) => {
+        sessionStorage.removeItem("udsf");
+        return res.data;
+      }),
     {
       retry: false,
     }
