@@ -40,9 +40,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("", include(router.urls)),
     path("user/login", LoginView.as_view(), name="login"),
-    path("user/csrf", CsrfTokenView.as_view(), name="user_csrf"),
+    path("user/csrf", CsrfTokenView.as_view(), name="user-csrf"),
     path("user/logout", LogoutView.as_view(), name="logout"),
-    path("user/register", UserRegisterView.as_view(), name="user_register"),
+    path("user/register", UserRegisterView.as_view(), name="user-register"),
     path(
         "user/email-verification",
         EmailVerificationView.as_view(),
@@ -54,15 +54,15 @@ urlpatterns = [
         name="request-email-verification",
     ),
     path(
-        "user/auth/refresh", CookieTokenRefreshView.as_view(), name="token_refresh_view"
+        "user/auth/refresh", CookieTokenRefreshView.as_view(), name="token-refresh-view"
     ),
     path(
-        "user/auth/verify", CookieTokenVerifyView.as_view(), name="token_verification"
+        "user/auth/verify", CookieTokenVerifyView.as_view(), name="token-verification"
     ),
     path(
         "user/auth/change-password/<str:pk>",
         ChangePasswordView.as_view(),
-        name="change_password",
+        name="change-password",
     ),
     path(
         "user/password-reset-request",
