@@ -34,7 +34,7 @@ class Profile(models.Model):
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_name = models.CharField(max_length=255, null=True, blank=True)
+    profile_name = models.CharField(max_length=255, unique=True, null=True, blank=True)
     about = models.TextField(null=True, blank=True)
     avatar = models.ImageField(
         default=os.path.join("avatar", "default-avatar.png"),

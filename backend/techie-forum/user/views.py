@@ -11,7 +11,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.generics import GenericAPIView, CreateAPIView, UpdateAPIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
@@ -428,8 +432,23 @@ class ProfileViewSet(ModelViewSet):
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = "owner"
+
+    def create(self, request, *args, **kwargs):
+        converted_data = request.data.copy()
+
+        # Check if profile name is None
+        if request.data.get("profile_name", None) is None:
+            converted_data["profile_name"] = request.user.username
+
+        serializer = self.serializer_class(data=converted_data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
     def perform_update(self, serializer):
         serializer.save(updated_date=timezone.now(), owner=self.request.user)

@@ -27,7 +27,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = [
             "id",
-            "owner",
             "title",
             "summary",
             "demo",
@@ -35,7 +34,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ("id", "owner", "created_at", "updated_at")
+        read_only_fields = ("id", "created_at", "updated_at")
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -53,7 +52,7 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
     Serialize all related information of user profile
     """
 
-    projects = ProjectSerializer(many=True)
+    projects = ProjectSerializer(many=True, required=False)
     thread_counts = serializers.SerializerMethodField()
     comment_counts = serializers.SerializerMethodField()
     like_counts = serializers.SerializerMethodField()
@@ -62,7 +61,6 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
         model = Profile
         fields = [
             "id",
-            "owner",
             "profile_name",
             "about",
             "avatar",
