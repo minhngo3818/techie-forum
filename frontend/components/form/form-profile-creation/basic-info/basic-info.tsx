@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { ChangeEvent, useState, useRef, useCallback } from "react";
 import { Tab, Transition } from "@headlessui/react";
 import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
 import HorzField from "../../field-horizontal/horizontal-field";
@@ -37,14 +31,8 @@ function BasicInfo(props: BasicInfoType) {
         setAvatar(avatarUrl);
       }
     },
-    []
+    [avatar]
   );
-
-  useEffect(() => {
-    if (nameRef.current) {
-      nameRef.current.focus();
-    }
-  }, []);
 
   return (
     <Tab.Panel as="div">
@@ -71,13 +59,12 @@ function BasicInfo(props: BasicInfoType) {
               <HorzField
                 innerRef={nameRef}
                 label="Profile Name"
-                name="name"
+                name="profile_name"
                 type="text"
                 placeholder="Enter profile name"
                 value={props.name}
                 onChange={props.onChange}
                 fieldType="input"
-                required={true}
               />
             </Transition.Child>
             <Transition.Child
