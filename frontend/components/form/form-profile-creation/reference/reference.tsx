@@ -40,7 +40,7 @@ export default function RefLinks(props: ProfileRefType) {
               <HorzField
                 label="Twitter"
                 name="twitter"
-                type="text"
+                type="url"
                 placeholder="https://twitter.com/CeasarZeppeli"
                 value={props.twitter}
                 onChange={props.onChange}
@@ -57,7 +57,7 @@ export default function RefLinks(props: ProfileRefType) {
               <HorzField
                 label="Linkedin"
                 name="linkedin"
-                type="text"
+                type="url"
                 placeholder="https://linkedin.com/jotarok"
                 value={props.linkedin}
                 onChange={props.onChange}
@@ -74,7 +74,7 @@ export default function RefLinks(props: ProfileRefType) {
               <HorzField
                 label="Indeed"
                 name="indeed"
-                type="text"
+                type="url"
                 placeholder="https://indeed.com/speedwagon"
                 value={props.indeed}
                 onChange={props.onChange}
@@ -91,7 +91,7 @@ export default function RefLinks(props: ProfileRefType) {
               <HorzField
                 label="Github"
                 name="github"
-                type="text"
+                type="url"
                 placeholder="https://github.com/emporio"
                 value={props.github}
                 onChange={props.onChange}
@@ -108,7 +108,7 @@ export default function RefLinks(props: ProfileRefType) {
               <HorzField
                 label="Reddit"
                 name="reddit"
-                type="text"
+                type="url"
                 placeholder="https://reddit.com/bruno-buchiarati"
                 value={props.reddit}
                 onChange={props.onChange}
@@ -125,7 +125,7 @@ export default function RefLinks(props: ProfileRefType) {
               <HorzField
                 label="Stackoverflow"
                 name="stackoverflow"
-                type="text"
+                type="url"
                 placeholder="https://stackoverflow.com/yosuke-higashikata"
                 value={props.stackoverflow}
                 onChange={props.onChange}
