@@ -16,7 +16,7 @@
 }
 
 .submitBtn {
-  @apply w-[160px] h-10 text-lg font-semibold
+  @apply w-[160px] h-10 text-lg font-medium
   my-4 text-black bg-white 
   hover:text-white hover:bg-gray
   duration-200;

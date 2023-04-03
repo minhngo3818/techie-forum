@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { Tab, Transition } from "@headlessui/react";
 import generalStyles from "../ProfileCreationForm.module.css";
 import styles from "./Submission.module.css";
