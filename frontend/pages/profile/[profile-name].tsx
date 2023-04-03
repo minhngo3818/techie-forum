@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useQuery } from "react-query";
 import ProfileAbout from "../../components/profile/about/profile-about";
 import ProfileGeneral from "../../components/profile/general/profile-general-info";
 import ProfilePorfolio from "../../components/profile/porfolio/profile-porfolio";

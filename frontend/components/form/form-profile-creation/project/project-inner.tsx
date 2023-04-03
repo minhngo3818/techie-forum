@@ -4,8 +4,9 @@ import HorzField from "../../field-horizontal/horizontal-field";
 import styles from "./Project.module.css";
 
 interface ProjectInnerType extends ProjectInterface {
+  index: number;
   onChange: (
-    id: string,
+    index: number,
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
 }
@@ -25,7 +26,7 @@ export default function ProjectInner(props: ProjectInnerType) {
         type="text"
         placeholder="Enter project title"
         value={props.title}
-        onChange={(event) => props.onChange(props.id, event)}
+        onChange={(event) => props.onChange(props.index, event)}
         fieldType="input"
       />
       <HorzField
@@ -34,7 +35,7 @@ export default function ProjectInner(props: ProjectInnerType) {
         name="summary"
         placeholder="Enter project summary"
         value={props.summary}
-        onChange={(event) => props.onChange(props.id, event)}
+        onChange={(event) => props.onChange(props.index, event)}
         fieldType="textarea"
         rows={4}
       />
@@ -42,20 +43,20 @@ export default function ProjectInner(props: ProjectInnerType) {
         innerRef={demoRef}
         label="Demo"
         name="demo"
-        type="text"
+        type="url"
         placeholder="https://made-in-heaven.com"
         value={props.demo}
-        onChange={(event) => props.onChange(props.id, event)}
+        onChange={(event) => props.onChange(props.index, event)}
         fieldType="input"
       />
       <HorzField
         innerRef={repoRef}
         label="Repository"
         name="repo"
-        type="text"
+        type="url"
         placeholder="https://github.com/jotarok/made-in-heaven"
         value={props.repo}
-        onChange={(event) => props.onChange(props.id, event)}
+        onChange={(event) => props.onChange(props.index, event)}
         fieldType="input"
       />
     </div>

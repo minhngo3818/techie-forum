@@ -19,10 +19,10 @@ interface ProjectsType {
   projects: ProjectInterface[];
   onAdd: (id: string) => void;
   onChange: (
-    id: string,
+    index: number,
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  onRemove: (id: string) => void;
+  onRemove: (index: number) => void;
   nextTab: () => void;
   prevTab: () => void;
 }
@@ -61,7 +61,7 @@ export default function Project(props: ProjectsType) {
                       <button
                         type="button"
                         className={styles.projectDeleteBtn}
-                        onClick={() => props.onRemove(project.id)}
+                        onClick={() => props.onRemove(index)}
                       >
                         <Delete className="text-lg" />
                       </button>
@@ -78,7 +78,7 @@ export default function Project(props: ProjectsType) {
                     leaveTo="opacity-0 scale-0"
                   >
                     <ProjectInner
-                      id={project.id}
+                      index={index}
                       title={project.title}
                       summary={project.summary}
                       demo={project.demo}
