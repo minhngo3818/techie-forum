@@ -5,12 +5,10 @@ import ChangeEmail from "../../components/account/change-email/change-email";
 import ChangePassword from "../../components/account/change-password/change-password";
 import DeleteAccount from "../../components/account/delete-account/delete-account";
 import styles from "../../styles/Account.module.css";
+import useAuth from "../../services/auth/auth-provider";
 
 function Account() {
-  // Data retrieval
-  const User = {
-    email: "jotarokujo@gmail.com",
-  };
+  const { user } = useAuth();
 
   return (
     <div className={styles.accountWrapper}>
@@ -21,7 +19,7 @@ function Account() {
         </div>
       </div>
       <div className={styles.accountSections}>
-        <ChangeEmail email={User.email} />
+        <ChangeEmail email={user ? user.email : ""} />
         <ChangePassword />
         <DeleteAccount />
       </div>
