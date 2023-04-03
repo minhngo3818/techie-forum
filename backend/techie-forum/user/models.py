@@ -42,12 +42,13 @@ class Profile(models.Model):
         null=True,
         blank=True,
     )
-    twitter_url = models.URLField(null=True, blank=True)
-    reddit_url = models.URLField(null=True, blank=True)
-    github_url = models.URLField(null=True, blank=True)
-    stackoverflow_url = models.URLField(null=True, blank=True)
-    linkedin_url = models.URLField(null=True, blank=True)
-    indeed_url = models.URLField(null=True, blank=True)
+    projects = models.ForeignKey("Project", on_delete=models.CASCADE, null=True, blank=True)
+    twitter = models.URLField(null=True, blank=True)
+    reddit = models.URLField(null=True, blank=True)
+    github = models.URLField(null=True, blank=True)
+    stackoverflow = models.URLField(null=True, blank=True)
+    linkedin = models.URLField(null=True, blank=True)
+    indeed = models.URLField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
