@@ -45,7 +45,7 @@ interface FieldProps<E, F, V>
 
 export interface InputProps
   extends FieldProps<HTMLInputElement, "input", string> {
-  type: "text" | "password" | "email" | "file";
+  type: "text" | "password" | "email" | "file" | "url";
 }
 
 export interface TextareaProps
