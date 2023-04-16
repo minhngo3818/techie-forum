@@ -53,7 +53,7 @@ bg-black;
 
 .procreChangeTabBtn {
   @apply flex justify-center items-center w-auto h-full bg-white hover:bg-gray
-  text-black hover:text-white font-semibold px-2 ml-2 duration-200;
+  text-black hover:text-white font-medium px-2 ml-2 duration-200;
 }
 
 .procreChangeTabIcon {

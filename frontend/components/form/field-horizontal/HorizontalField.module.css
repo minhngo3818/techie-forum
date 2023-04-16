@@ -4,7 +4,7 @@
 
 .horzFieldLabel {
   @apply col-span-1 flex justify-center items-center max-w-[120px] w-full h-9
-  text-black font-semibold bg-white px-2 py-1;
+  text-black font-medium bg-white px-2 py-1;
 }
 
 .horzField {

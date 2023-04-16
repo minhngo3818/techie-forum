@@ -7,3 +7,65 @@
   @apply flex justify-center mb-8
   max-w-[360px] w-full h-12 border-2 border-white;
 }
+
+.procreContainer {
+  @apply flex justify-center 
+  max-w-[720px] w-full min-h-[680px] h-full py-8
+bg-black;
+}
+
+.procreTabs {
+  @apply relative flex justify-between items-center w-5/6 h-7;
+}
+
+.procreTabs::before {
+  @apply absolute flex justify-center items-center
+  w-full h-0.5 bg-white content-[""] z-0;
+}
+
+.procreTab {
+  @apply relative max-w-[120px] w-full h-full 
+  border border-white 
+  flex justify-center items-center
+  outline-none font-semibold duration-200 z-10;
+}
+
+.procreTabActive {
+  @apply text-black bg-white;
+}
+
+.procreTabDisabled {
+  @apply text-white bg-gray;
+}
+
+.procreTabInactive {
+  @apply text-white bg-black;
+}
+
+.procreForm {
+  @apply w-full min-h-[560px] h-full mt-8;
+}
+
+.procrePanel {
+  @apply relative flex flex-col justify-start items-center 
+  w-full min-h-[560px] h-full border-white border-2
+  p-8;
+}
+
+.procrePanelWrapper {
+  @apply flex-grow relative flex flex-col justify-start items-center
+  w-full h-full;
+}
+
+.procreChangeTabWrapper {
+  @apply relative flex justify-end items-center h-6 w-full;
+}
+
+.procreChangeTabBtn {
+  @apply flex justify-center items-center w-auto h-full bg-white hover:bg-gray
+  text-black hover:text-white font-semibold px-2 ml-2 duration-200;
+}
+
+.procreChangeTabIcon {
+  @apply text-xl;
+}
