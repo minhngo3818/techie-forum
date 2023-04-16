@@ -42,7 +42,6 @@ class Profile(models.Model):
         null=True,
         blank=True,
     )
-    projects = models.ForeignKey("Project", on_delete=models.CASCADE, null=True, blank=True)
     twitter = models.URLField(null=True, blank=True)
     reddit = models.URLField(null=True, blank=True)
     github = models.URLField(null=True, blank=True)

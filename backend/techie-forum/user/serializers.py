@@ -4,6 +4,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.conf import settings
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import AuthenticationFailed
@@ -25,15 +26,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = [
-            "id",
-            "title",
-            "summary",
-            "demo",
-            "repo",
-            "created_at",
-            "updated_at",
-        ]
+        fields = "__all__"
         read_only_fields = ("id", "created_at", "updated_at")
 
 
@@ -64,12 +57,12 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             "profile_name",
             "about",
             "avatar",
-            "twitter_url",
-            "reddit_url",
-            "github_url",
-            "stackoverflow_url",
-            "linkedin_url",
-            "indeed_url",
+            "twitter",
+            "reddit",
+            "github",
+            "stackoverflow",
+            "linkedin",
+            "indeed",
             "projects",
             "thread_counts",
             "comment_counts",
@@ -93,6 +86,32 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             .count()
         )
         return count
+
+    def create(self, validated_data):
+        projects = validated_data.pop("projects", None)
+
+        with transaction.atomic():
+            profile_inst = Profile.objects.create(**validated_data)
+            project_inst = ProjectSerializer(data=projects, many=True)
+            project_inst.is_valid(raise_exception=True)
+            project_inst.save(owner=profile_inst)
+
+        return profile_inst
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        projects = Project.objects.filter(owner=instance.id).values()
+        projects_to_represent = []
+
+        for project in projects:
+            project.pop("owner_id")
+            project.pop("created_at")
+            project.pop("updated_at")
+            projects_to_represent.append(project)
+
+        data["projects"] = projects_to_represent
+
+        return data
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

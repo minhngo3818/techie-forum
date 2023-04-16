@@ -433,13 +433,12 @@ class ProfileViewSet(ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    lookup_field = "owner"
-
     def create(self, request, *args, **kwargs):
         converted_data = request.data.copy()
 
         # Check if profile name is None
-        if request.data.get("profile_name", None) is None:
+        profile_name = request.data.get("profile_name", None)
+        if profile_name is None:
             converted_data["profile_name"] = request.user.username
 
         serializer = self.serializer_class(data=converted_data)
