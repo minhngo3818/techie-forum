@@ -17,7 +17,7 @@
 
 .navLoginBtn {
   @apply flex justify-center items-center 
-  w-36 h-8 mr-4 font-semibold border-2 border-gray duration-300;
+  w-36 h-8 mr-4 font-medium border-2 border-gray duration-300;
 }
 
 .navLoginLink {
