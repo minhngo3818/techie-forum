@@ -4,7 +4,7 @@ import EditButton from "../../utils/buttons/edit-button/edit-button";
 import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea";
 import styles from "./ProfileAbout.module.css";
 
-function ProfileAbout(props: { about: string }) {
+function ProfileAbout(props: { about?: string; isSameUser: boolean }) {
   const [about, setAbout] = useState(props.about);
   const [isEdit, setEdit] = useState(false);
   const aboutRef = useRef<HTMLTextAreaElement>(null);
@@ -17,12 +17,9 @@ function ProfileAbout(props: { about: string }) {
     }
   });
 
-  const handleChangeAbout = useCallback(
-    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setAbout(event.target.value);
-    },
-    []
-  );
+  const handleChangeAbout = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setAbout(event.target.value);
+  };
 
   return (
     <Box
@@ -57,11 +54,13 @@ function ProfileAbout(props: { about: string }) {
             />
           </Box>
         </div>
-        <div className={styles.aboutEditWrapper}>
-          <div className={styles.aboutEditBtn}>
-            <EditButton isEdit={isEdit} onClick={() => setEdit(!isEdit)} />
+        {!props.isSameUser ? null : (
+          <div className={styles.aboutEditWrapper}>
+            <div className={styles.aboutEditBtn}>
+              <EditButton isEdit={isEdit} onClick={() => setEdit(!isEdit)} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </Box>
   );

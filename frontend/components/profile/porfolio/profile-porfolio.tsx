@@ -9,7 +9,10 @@ import ProjectInterface from "../../../interfaces/project/project";
 import styles from "./ProfilePorfolio.module.css";
 import { AddSquare } from "../../icons/icons";
 
-function ProfilePorfolio(props: { projects: ProjectInterface[] }) {
+function ProfilePorfolio(props: {
+  isSameUser: boolean;
+  projects?: ProjectInterface[];
+}) {
   const [projects, setProjects] = useState<ProjectInterface[]>(
     props.projects || []
   );
@@ -36,6 +39,7 @@ function ProfilePorfolio(props: { projects: ProjectInterface[] }) {
           {projects.map((project, index) => {
             return (
               <Project
+                isSameUser={props.isSameUser}
                 key={index}
                 id={`${index}`}
                 title={project.title}
@@ -48,18 +52,28 @@ function ProfilePorfolio(props: { projects: ProjectInterface[] }) {
             );
           })}
         </div>
-        <div className={styles.porAddButtonWrapper}>
-          <button className={styles.porAddButton} onClick={handleIsAddProject}>
-            <AddSquare className="mx-2 text-lg" />
-            Add Project
-          </button>
-        </div>
-        <ProjectForm
-          headerTitle="ADD PROJECT"
-          icon="robot"
-          handleIsShow={{ isState: isAddProject, setState: handleIsAddProject }}
-          handleSubmit={handleAddProject}
-        />
+        {!props.isSameUser ? null : (
+          <React.Fragment>
+            <div className={styles.porAddButtonWrapper}>
+              <button
+                className={styles.porAddButton}
+                onClick={handleIsAddProject}
+              >
+                <AddSquare className="mx-2 text-lg" />
+                Add Project
+              </button>
+            </div>
+            <ProjectForm
+              headerTitle="ADD PROJECT"
+              icon="robot"
+              handleIsShow={{
+                isState: isAddProject,
+                setState: handleIsAddProject,
+              }}
+              handleSubmit={handleAddProject}
+            />
+          </React.Fragment>
+        )}
       </div>
     </Box>
   );

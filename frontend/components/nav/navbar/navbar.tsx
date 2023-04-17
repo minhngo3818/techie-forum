@@ -60,7 +60,7 @@ export default function Navbar(props: NavbarProps) {
             {isShow && (
               <div className={styles.navDropdownWrapper}>
                 <Link
-                  href="/user/profile"
+                  href={`/profile/${user.profile_name}`}
                   className={`${styles.navDropdown} + ${styles.navDropdownLink}`}
                 >
                   Profile

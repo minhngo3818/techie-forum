@@ -8,6 +8,7 @@ import ProjectBtnRemove from "./buttons/project-btn-remove";
 import styles from "./Project.module.css";
 
 interface ProjectComponentType extends ProjectInterface {
+  isSameUser: boolean;
   handleEditProject: () => void;
   handleRemoveProject: () => void;
 }
@@ -27,20 +28,22 @@ export default function Project(props: ProjectComponentType) {
           </div>
         </div>
       </div>
-      <div className={styles.projectNarrowCol}>
-        <ProjectBtnEdit
-          id={props.id}
-          title={props.title}
-          summary={props.summary}
-          demo={props.demo}
-          repo={props.repo}
-          handleEditProject={props.handleEditProject}
-        />
-        <ProjectBtnRemove
-          id={props.id}
-          handleRemove={props.handleRemoveProject}
-        />
-      </div>
+      {!props.isSameUser ? null : (
+        <div className={styles.projectNarrowCol}>
+          <ProjectBtnEdit
+            id={props.id}
+            title={props.title}
+            summary={props.summary}
+            demo={props.demo}
+            repo={props.repo}
+            handleEditProject={props.handleEditProject}
+          />
+          <ProjectBtnRemove
+            id={props.id ?? ""}
+            handleRemove={props.handleRemoveProject}
+          />
+        </div>
+      )}
     </div>
   );
 }

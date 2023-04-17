@@ -433,6 +433,8 @@ class ProfileViewSet(ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    lookup_field = "profile_name"
+
     def create(self, request, *args, **kwargs):
         converted_data = request.data.copy()
 

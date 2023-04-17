@@ -24,15 +24,12 @@ function BasicInfo(props: BasicInfoType) {
   // Avatar editor
   const [avatar, setAvatar] = useState("");
 
-  const handleChangeImage = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      if (event.target.files) {
-        let avatarUrl = URL.createObjectURL(event.target.files[0]);
-        setAvatar(avatarUrl);
-      }
-    },
-    [avatar]
-  );
+  const handleChangeImage = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      let avatarUrl = URL.createObjectURL(event.target.files[0]);
+      setAvatar(avatarUrl);
+    }
+  };
 
   return (
     <Tab.Panel as="div">

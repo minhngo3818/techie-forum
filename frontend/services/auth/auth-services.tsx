@@ -1,10 +1,4 @@
 import axiosInst from "../axios/axios-instance";
-import {
-  LoginInterface,
-  RegisterInterface,
-  ResetPasswordInterface,
-  ChangePasswordInterface,
-} from "../../interfaces/user/auth-interface";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

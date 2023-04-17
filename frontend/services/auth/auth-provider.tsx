@@ -76,7 +76,11 @@ export function AuthProvider({ children }: { children: ReactElement }) {
             hideProgressBar: true,
           });
 
-          let userObj = { username: res.data.username, email: res.data.email };
+          let userObj = {
+            username: res.data.username,
+            email: res.data.email,
+            profile_name: res.data.profile_name,
+          };
           setUser(userObj);
           sessionStorage.setItem("techie:traits", JSON.stringify(userObj));
 

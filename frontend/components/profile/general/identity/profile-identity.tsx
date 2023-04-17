@@ -7,8 +7,8 @@ import styles from "./ProfileIdentity.module.css";
 
 interface ProfileIdentityType {
   isEdit: boolean;
-  profileName: string;
-  avatar: string;
+  profileName: string | undefined;
+  avatar: string | undefined;
   handleChange: () => void;
 }
 
@@ -30,7 +30,12 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
         disabled={!props.isEdit}
         onClick={handleIsEditAvatar}
       >
-        <Image src={props.avatar} width={180} height={180} alt="avatar" />
+        <Image
+          src={props.avatar ? props.avatar : "/default_avatar.png"}
+          width={180}
+          height={180}
+          alt="avatar"
+        />
       </button>
       <PopupLayout
         headerTitle="EDIT AVATAR"
@@ -40,7 +45,10 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
         handleSubmit={props.handleChange}
       >
         <div className={styles.genChangeAvatarWrapper}>
-          <AvatarEditor isCenter={true} avatar={props.avatar} />
+          <AvatarEditor
+            isCenter={true}
+            avatar={props.avatar ? props.avatar : "/default_avatar.png"}
+          />
         </div>
       </PopupLayout>
       <input

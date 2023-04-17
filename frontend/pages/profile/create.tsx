@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import PageTitle from "../../components/utils/page-title/page-title";
-import {
-  ProfileCreationInterface,
-  ProfileInterface,
-} from "../../interfaces/profile/profile";
+import { ProfileCreationInterface } from "../../interfaces/profile/profile";
 import ProjectInterface from "../../interfaces/project/project";
 import {
   EventTargetNameValue,
@@ -81,12 +78,11 @@ export default function ProfileCreation() {
   /**
    * Update profile inputs, exclude projects
    */
-  const handleChangeProfile = useCallback(
-    ({ target: { name, value } }: EventTargetNameValue) => {
-      setProfile((object) => ({ ...object, [name]: value }));
-    },
-    [profile]
-  );
+  const handleChangeProfile = ({
+    target: { name, value },
+  }: EventTargetNameValue) => {
+    setProfile((object) => ({ ...object, [name]: value }));
+  };
 
   /**
    * Add an empty project to the project list of profile
