@@ -3,7 +3,7 @@ import { StateDuo } from "../../../interfaces/utils/button";
 import { Dialog, Transition } from "@headlessui/react";
 import useCurrentScollY from "../../../hooks/useCurrentScrollY";
 import PopupButtons from "./popup-buttons";
-import { Delete, Edit, Robot, Warning } from "../../icons/icons";
+import { Delete, Edit, Robot, Warning, AboutAdmin } from "../../icons/icons";
 import styles from "./PopupLayout.module.css";
 
 interface PopupLayoutType {
@@ -24,6 +24,7 @@ export default function PopupLayout(props: PopupLayoutType) {
     robot: <Robot />,
     warning: <Warning />,
     delete: <Delete />,
+    about: <AboutAdmin />,
   };
 
   return (

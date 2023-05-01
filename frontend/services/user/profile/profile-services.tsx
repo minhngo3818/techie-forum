@@ -40,12 +40,30 @@ export async function createProfile(data: ProfileCreationInterface) {
     });
 }
 
-export async function changeProfileService(data: ProfileInterface) {
-  const response = await axiosInst.post("user/profile/", data, {
-    withCredentials: true,
-  });
-
-  return response;
+export async function updateProfile(
+  profileName: string,
+  data: Partial<ProfileInterface>
+) {
+  return await getCsrfToken()
+    .then((token) => {
+      axiosInst.patch(`/profile-view/${profileName}/`, data, {
+        headers: {
+          "x-csrftoken": token,
+        },
+      });
+    })
+    .then((res) => {
+      toast.success("Your profile was updated successfully!", {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    })
+    .catch((error) => {
+      toast.error(error.message, {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    });
 }
 
 export async function removeAccountService() {}
