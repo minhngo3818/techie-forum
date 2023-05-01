@@ -452,7 +452,7 @@ class ProfileViewSet(ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(updated_date=timezone.now(), owner=self.request.user)
+        serializer.save(updated_at=timezone.now(), owner=self.request.user)
 
 
 class ProjectViewSet(ModelViewSet):
