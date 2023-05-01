@@ -1,25 +1,20 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import Box from "../../utils/box/box";
-import EditButton from "../../utils/buttons/edit-button/edit-button";
-import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea";
+import AboutForm from "../../form/form-about/about-form";
 import styles from "./ProfileAbout.module.css";
 
-function ProfileAbout(props: { about?: string; isSameUser: boolean }) {
-  const [about, setAbout] = useState(props.about);
-  const [isEdit, setEdit] = useState(false);
-  const aboutRef = useRef<HTMLTextAreaElement>(null);
+function ProfileAbout(props: {
+  profileName?: string;
+  about?: string;
+  isSameUser: boolean;
+}) {
+  const [isEdit, setIsEdit] = useState(false);
 
-  useAutosizeTextArea(aboutRef.current, about);
+  const handleSetEdit = () => setIsEdit(!isEdit);
 
-  useEffect(() => {
-    if (isEdit && aboutRef.current !== null) {
-      aboutRef.current.focus();
-    }
-  });
-
-  const handleChangeAbout = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setAbout(event.target.value);
-  };
+  if (!props.about && !props.isSameUser) {
+    return <></>;
+  }
 
   return (
     <Box
@@ -38,28 +33,37 @@ function ProfileAbout(props: { about?: string; isSameUser: boolean }) {
         </div>
         <div className={styles.aboutContentWrapper}>
           <Box
-            width={760}
+            width={820}
             height={120}
             borderWidth={1}
-            borderColor={isEdit ? "bg-white" : "bg-gray"}
+            borderColor={"bg-gray"}
             clipType="clip-opposite-corners-right"
           >
-            <textarea
-              className={styles.aboutContent}
-              style={{ verticalAlign: "middle" }}
-              ref={aboutRef}
-              defaultValue={about}
-              onChange={handleChangeAbout}
-              disabled={!isEdit}
-            />
+            <p className={styles.aboutContent}>
+              {props.about !== null
+                ? props.about
+                : "<Let them know more about you>"}
+            </p>
           </Box>
         </div>
         {!props.isSameUser ? null : (
-          <div className={styles.aboutEditWrapper}>
-            <div className={styles.aboutEditBtn}>
-              <EditButton isEdit={isEdit} onClick={() => setEdit(!isEdit)} />
+          <React.Fragment>
+            <div className={styles.aboutEditWrapper}>
+              <button
+                className={styles.aboutEditBtn}
+                onClick={() => setIsEdit(!isEdit)}
+              >
+                Edit
+              </button>
             </div>
-          </div>
+            <AboutForm
+              headerTitle="About"
+              icon="about"
+              handleIsShow={{ isState: isEdit, setState: handleSetEdit }}
+              profileName={props.profileName}
+              about={props.about}
+            />
+          </React.Fragment>
         )}
       </div>
     </Box>

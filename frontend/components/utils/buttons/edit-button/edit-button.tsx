@@ -15,8 +15,8 @@ function EditButton(props: EditButton) {
         {props.isEdit ? (
           <>
             <button
-              type="submit"
-              onSubmit={props.onSubmit}
+              type="button"
+              onClick={props.onSubmit}
               className={`${styles.editBtnSubmit} ${styles.editBtn} `}
             >
               ✓

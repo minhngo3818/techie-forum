@@ -11,7 +11,7 @@ import styles from "./ProfileGeneralInfo.module.css";
 interface ProfileGeneralInfoType extends ProfileInterface {
   isSameUser: boolean;
   handleChange: () => void;
-  handleSubmit: () => void;
+  handleSubmit: (e: React.SyntheticEvent) => void;
 }
 
 export default function ProfileGeneralInfo(props: ProfileGeneralInfoType) {
@@ -23,8 +23,6 @@ export default function ProfileGeneralInfo(props: ProfileGeneralInfoType) {
       linkRef.current.focus();
     }
   });
-
-  const handleChange = () => {};
 
   return (
     <Box
@@ -58,7 +56,7 @@ export default function ProfileGeneralInfo(props: ProfileGeneralInfoType) {
               isEdit={isEdit}
               profileName={props.profile_name}
               avatar={props.avatar}
-              handleChange={handleChange}
+              handleChange={props.handleChange}
             />
           </div>
           <div className={styles.genDetailCol}>

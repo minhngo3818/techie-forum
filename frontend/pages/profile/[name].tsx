@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Router, useRouter } from "next/router";
 import ProfileAbout from "../../components/profile/about/profile-about";
 import ProfileGeneral from "../../components/profile/general/profile-general-info";
@@ -7,16 +7,33 @@ import { ProfileInterface } from "../../interfaces/profile/profile";
 import { getProfile } from "../../services/user/profile/profile-services";
 import { GetServerSidePropsContext } from "next";
 import useAuth from "../../services/auth/auth-provider";
-import { useQuery } from "react-query";
+import { updateProfile } from "../../services/user/profile/profile-services";
 
 function Profile(data: ProfileInterface) {
+  const router = useRouter();
   const { user } = useAuth();
-  let profile = data;
+  const [profile, setProfile] = useState<ProfileInterface>(data);
   let isSameUser = profile.profile_name === user?.profile_name;
 
-  const handleChangeProfile = () => {};
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
-  const handleSubmitProfile = () => {};
+  // may replace not use for all child components
+  // consider to remove and apply useRef instead
+  const handleChangeProfile = useCallback(() => {
+    setProfile({ ...profile });
+  }, [profile]);
+
+  const handleSubmitProfile = useCallback(
+    async (event: React.SyntheticEvent) => {
+      event.preventDefault();
+      await updateProfile(profile.id, profile);
+
+      refreshData();
+    },
+    [profile]
+  );
 
   return (
     <div className="w-screen h-full flex flex-col justify-start items-center p-20">
@@ -34,7 +51,11 @@ function Profile(data: ProfileInterface) {
         handleChange={handleChangeProfile}
         handleSubmit={handleSubmitProfile}
       />
-      <ProfileAbout about={profile.about} isSameUser={isSameUser} />
+      <ProfileAbout
+        about={profile.about}
+        profileName={profile.profile_name}
+        isSameUser={isSameUser}
+      />
       <ProfilePorfolio projects={profile.projects} isSameUser={isSameUser} />
     </div>
   );

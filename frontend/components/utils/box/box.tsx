@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import React, { ReactElement } from "react";
 import styles from "./Box.module.css";
 
 // Notes: cannot use dynamic style changing with current tailwind
