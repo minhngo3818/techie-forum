@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Box from "../../utils/box/box";
-import AboutForm from "../../form/form-about/about-form";
+import AboutForm from "../../form/form-profile-about/about-form";
 import styles from "./ProfileAbout.module.css";
 
 function ProfileAbout(props: {
