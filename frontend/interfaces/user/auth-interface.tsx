@@ -2,6 +2,7 @@ import UserInterface from "./user-interface";
 
 // All field names match with the serializers
 type UserName = { username: string };
+type Email = { email: string };
 type OldPassword = { old_password: string };
 type Password = { password: string };
 type Password2 = { password2: string };
@@ -14,7 +15,11 @@ export interface ChangePasswordInterface
   extends OldPassword,
     ResetPasswordInterface {}
 
-export interface RegisterInterface extends UserInterface, Password, Password2 {}
+export interface RegisterInterface
+  extends UserName,
+    Email,
+    Password,
+    Password2 {}
 
 export default interface AuthContextInterface {
   user: UserInterface | null;
