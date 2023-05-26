@@ -13,9 +13,9 @@
 .sidebarLink {
   @apply w-[160px] flex justify-center 
   items-center h-10 my-2 text-gray 
-  border-transparent hover:text-black 
-  hover:font-semibold hover:border-2
-  hover:border-black duration-200 ease-in-out;
+  outline-none hover:text-black 
+  hover:font-semibold hover:outline-2
+  hover:outline-black duration-100 ease-in-out;
 }
 
 .sidebarLinkActive {
