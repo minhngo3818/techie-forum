@@ -300,6 +300,23 @@ export function Stackoverflow(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function FramePerson(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M18 19H6q-.425 0-.713-.288T5 18v-2.35q0-.5.213-.925t.612-.7q1.275-.95 2.938-1.488T12 12q1.575 0 3.238.537t2.937 1.488q.4.275.613.7t.212.925V18q0 .425-.288.713T18 19Zm-6-8q-1.65 0-2.825-1.175T8 7q0-1.65 1.175-2.825T12 3q1.65 0 2.825 1.175T16 7q0 1.65-1.175 2.825T12 11ZM5 3H3v2q0 .425-.288.713T2 6q-.425 0-.713-.288T1 5V3q0-.825.588-1.413T3 1h2q.425 0 .713.288T6 2q0 .425-.288.713T5 3ZM3 23q-.825 0-1.413-.588T1 21v-2q0-.425.288-.713T2 18q.425 0 .713.288T3 19v2h2q.425 0 .713.288T6 22q0 .425-.288.713T5 23H3Zm18 0h-2q-.425 0-.713-.288T18 22q0-.425.288-.713T19 21h2v-2q0-.425.288-.713T22 18q.425 0 .713.288T23 19v2q0 .825-.588 1.413T21 23ZM19 3q-.425 0-.713-.288T18 2q0-.425.288-.713T19 1h2q.825 0 1.413.588T23 3v2q0 .425-.288.713T22 6q-.425 0-.713-.288T21 5V3h-2Z"
+      ></path>
+    </svg>
+  );
+}
+
 export function AboutAdmin(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
