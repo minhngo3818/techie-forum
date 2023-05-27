@@ -27,13 +27,11 @@ export default function ProjectBtnRemove(props: RemoveBtnType) {
         id={`project-remove-${props.id}`}
         className={styles.projectButton}
         onClick={handleIsForm}
+        data-tooltip-id={`project-edit-${props.id}`}
+        data-tooltip-content="Edit"
       >
         <Delete />
-        <Tooltip
-          anchorId={`project-remove-${props.id}`}
-          content="Remove"
-          events={["hover"]}
-        />
+        <Tooltip id={`project-remove-${props.id}`} />
       </button>
       <PopupLayout
         headerTitle="REMOVE PROJECT"

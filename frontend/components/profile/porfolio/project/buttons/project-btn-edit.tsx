@@ -34,13 +34,11 @@ export default function ProjectBtnEdit(props: EditBtnType) {
         id={`project-edit-${props.id}`}
         className={styles.projectButton}
         onClick={handleIsForm}
+        data-tooltip-id={`project-edit-${props.id}`}
+        data-tooltip-content="Edit"
       >
         <Edit />
-        <Tooltip
-          anchorId={`project-edit-${props.id}`}
-          content="Edit"
-          events={["hover"]}
-        />
+        <Tooltip id={`project-edit-${props.id}`} />
       </button>
       <ProjectForm
         headerTitle="EDIT PROJECT"
