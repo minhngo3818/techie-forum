@@ -1,28 +1,24 @@
+import dynamic from "next/dynamic";
 import React, { useState, useRef, useEffect } from "react";
 import Box from "../../utils/box/box";
 import ProfileHeader from "./header/profile-header";
 import ProfileIdentity from "./identity/profile-identity";
 import ProfileStats from "./stats/profile-stats";
-import ProfileRefLinksForward from "./ref-links/profile-reflinks";
 import { ProfileInterface } from "../../../interfaces/profile/profile";
-import EditButton from "../../utils/buttons/edit-button/edit-button";
+const ProfileGeneralsForm = dynamic(
+  () => import("../../form/form-profile-generals/profile-general-form")
+);
 import styles from "./ProfileGeneralInfo.module.css";
+import ProfileRefLinks from "./ref-links/profile-reflinks";
 
 interface ProfileGeneralInfoType extends ProfileInterface {
   isSameUser: boolean;
-  handleChange: () => void;
-  handleSubmit: (e: React.SyntheticEvent) => void;
 }
 
 export default function ProfileGeneralInfo(props: ProfileGeneralInfoType) {
   const [isEdit, setEdit] = useState(false);
-  const linkRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (isEdit && linkRef.current != null) {
-      linkRef.current.focus();
-    }
-  });
+  const handleSetEdit = () => setEdit(!isEdit);
 
   return (
     <Box
@@ -44,24 +40,40 @@ export default function ProfileGeneralInfo(props: ProfileGeneralInfoType) {
             {!props.isSameUser ? (
               <></>
             ) : (
-              <EditButton
-                isEdit={isEdit}
-                onClick={() => setEdit(!isEdit)}
-                onSubmit={props.handleSubmit}
-              />
+              <React.Fragment>
+                <div className={styles.aboutEditWrapper}>
+                  <button
+                    className={styles.generalEditBtn}
+                    onClick={handleSetEdit}
+                  >
+                    Edit
+                  </button>
+                </div>
+                <ProfileGeneralsForm
+                  profileName={props.profile_name}
+                  twitter={props.twitter}
+                  linkedin={props.linkedin}
+                  github={props.github}
+                  indeed={props.indeed}
+                  reddit={props.reddit}
+                  stackoverflow={props.stackoverflow}
+                  headerTitle="General Infos"
+                  icon="person"
+                  handleIsShow={{ isState: isEdit, setState: handleSetEdit }}
+                  // handleStateSubmit={props.handleChange}
+                />
+              </React.Fragment>
             )}
           </div>
           <div className={styles.genDetailCol}>
             <ProfileIdentity
-              isEdit={isEdit}
               profileName={props.profile_name}
               avatar={props.avatar}
-              handleChange={props.handleChange}
+              // handleChange={props.handleChange}
             />
           </div>
           <div className={styles.genDetailCol}>
-            <ProfileRefLinksForward
-              ref={linkRef}
+            <ProfileRefLinks
               isEdit={isEdit}
               twitter={props.twitter}
               github={props.github}

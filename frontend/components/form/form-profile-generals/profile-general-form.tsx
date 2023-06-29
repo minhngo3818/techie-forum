@@ -1,11 +1,15 @@
 import React, { useState, useRef, ChangeEvent } from "react";
+import { useRouter } from "next/router";
 import Router from "next/router";
 import { StateDuo } from "../../../interfaces/utils/button";
 import BaseField from "../field-base/base-field";
 import PopupLayout from "../../utils/popup-layout/popup-layout";
 import { updateProfile } from "../../../services/user/profile/profile-services";
 
-interface ProfileGeneralInfo {
+interface ProfileGeneralsType {
+  headerTitle?: string;
+  icon?: string;
+  handleIsShow: StateDuo;
   profileName?: string;
   twitter?: string;
   linkedin?: string;
@@ -15,15 +19,11 @@ interface ProfileGeneralInfo {
   stackoverflow?: string;
 }
 
-interface ProfileGeneralsType extends ProfileGeneralInfo {
-  headerTitle?: string;
-  icon?: string;
-  handleIsShow: StateDuo;
-}
-
 export default function ProfileGeneralsForm(props: ProfileGeneralsType) {
+  const router = useRouter();
+
   const [generalsInfo, setGeneralInfo] = useState({
-    profileName: props.profileName,
+    profile_name: props.profileName,
     twitter: props.twitter,
     linkedin: props.linkedin,
     indeed: props.indeed,
@@ -35,7 +35,6 @@ export default function ProfileGeneralsForm(props: ProfileGeneralsType) {
   const profileNameRef = useRef<HTMLInputElement>(null);
   const twitterRef = useRef<HTMLInputElement>(null);
   const linkedinRef = useRef<HTMLInputElement>(null);
-  const indeedRef = useRef<HTMLInputElement>(null);
   const githubRef = useRef<HTMLInputElement>(null);
   const redditRef = useRef<HTMLInputElement>(null);
   const stackoverflowRef = useRef<HTMLInputElement>(null);
@@ -44,10 +43,12 @@ export default function ProfileGeneralsForm(props: ProfileGeneralsType) {
     setGeneralInfo({ ...generalsInfo, [e.target.name]: e.target.value });
   };
 
-  const handleUpdateAbout = async () => {
-    await updateProfile(props.profileName ?? "", generalsInfo);
+  const handleUpdateInfo = async () => {
+    let profileName = props.profileName ?? "";
+    await updateProfile(profileName, generalsInfo);
     props.handleIsShow.setState();
-    Router.reload();
+    let newProfileName = generalsInfo.profile_name;
+    router.push(`/profile/${newProfileName}`);
   };
 
   return (
@@ -55,82 +56,71 @@ export default function ProfileGeneralsForm(props: ProfileGeneralsType) {
       headerTitle={props.headerTitle}
       icon={props.icon}
       handleShow={props.handleIsShow}
-      handleSubmit={handleUpdateAbout}
+      handleSubmit={handleUpdateInfo}
     >
       <React.Fragment>
         <BaseField
           name="profile_name"
+          label="Profile Name"
           innerRef={profileNameRef}
           isLightMode={true}
           placeholder="Lisa Guho"
-          value={generalsInfo.profileName}
-          defaultValue={generalsInfo.profileName}
+          value={generalsInfo.profile_name}
           onChange={handleChange}
           type="text"
           fieldType="input"
         />
         <BaseField
           name="twitter"
+          label="Twitter"
           innerRef={twitterRef}
           isLightMode={true}
           placeholder="https://twitter.com/adamsmith"
           value={generalsInfo.twitter}
-          defaultValue={generalsInfo.twitter}
           onChange={handleChange}
           type="url"
           fieldType="input"
         />
         <BaseField
           name="linkedin"
+          label="Linkedin"
           innerRef={linkedinRef}
           isLightMode={true}
-          placeholder="https://www.linkedin.com/adam-smith/"
+          placeholder="https://www.linkedin.com/adamsmith"
           value={generalsInfo.linkedin}
-          defaultValue={generalsInfo.linkedin}
-          onChange={handleChange}
-          type="url"
-          fieldType="input"
-        />
-        <BaseField
-          name="indeed"
-          innerRef={indeedRef}
-          isLightMode={true}
-          placeholder="probablyyourcompany"
-          value={generalsInfo.indeed}
-          defaultValue={generalsInfo.indeed}
           onChange={handleChange}
           type="url"
           fieldType="input"
         />
         <BaseField
           name="github"
+          label="Github"
           innerRef={githubRef}
           isLightMode={true}
           placeholder="https://github.com/adamsmith"
           value={generalsInfo.github}
-          defaultValue={generalsInfo.github}
           onChange={handleChange}
           type="url"
           fieldType="input"
         />
         <BaseField
           name="reddit"
+          label="Reddit"
           innerRef={redditRef}
           isLightMode={true}
-          placeholder="https://www.reddit.com/user/Adam-Smith/"
+          placeholder="https://www.reddit.com/user/adamsmith"
           value={generalsInfo.reddit}
-          defaultValue={generalsInfo.reddit}
           onChange={handleChange}
           type="url"
           fieldType="input"
         />
         <BaseField
           name="stackoverflow"
+          label="StackOverflow"
           innerRef={stackoverflowRef}
           isLightMode={true}
-          placeholder="https://stackoverflow.com/users/124232/adamsmith"
+          placeholder="https://stackoverflow.com/adamsmith"
           value={generalsInfo.stackoverflow}
-          defaultValue={generalsInfo.stackoverflow}
           onChange={handleChange}
           type="url"
           fieldType="input"

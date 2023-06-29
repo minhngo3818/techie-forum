@@ -40,27 +40,7 @@ function RenderLink({ item }: { item: LinkType }): JSX.Element {
   );
 }
 
-function EditLink({
-  item,
-  ref,
-}: {
-  item: LinkType;
-  ref: React.Ref<HTMLInputElement>;
-}) {
-  return (
-    <input
-      ref={ref}
-      className={styles.refLinkInput + ` ${!item.link && "italic"}`}
-      defaultValue={item?.link}
-      placeholder={item.name + " Url..."}
-    />
-  );
-}
-
-function ProfileRefLinks(
-  props: RefLinksType,
-  ref: React.Ref<HTMLInputElement>
-) {
+export default function ProfileRefLinks(props: RefLinksType) {
   const links = [
     {
       name: "Twitter",
@@ -71,11 +51,6 @@ function ProfileRefLinks(
       name: "Linkedin",
       link: props.linkedin,
       icon: <Linkedin className={styles.refLinkIcon} />,
-    },
-    {
-      name: "Indeed",
-      link: props.indeed,
-      icon: <Indeed className={styles.refLinkIcon} />,
     },
     {
       name: "Github",
@@ -107,8 +82,7 @@ function ProfileRefLinks(
         {links.map((link: LinkType) => {
           return (
             <div key={link.name} className={styles.refLinkRow}>
-              {!props.isEdit && <RenderLink item={link} />}
-              {props.isEdit && <EditLink item={link} ref={ref} />}
+              <RenderLink item={link} />
             </div>
           );
         })}
@@ -116,6 +90,3 @@ function ProfileRefLinks(
     </Box>
   );
 }
-const RefLinksForward = React.forwardRef(ProfileRefLinks);
-
-export default RefLinksForward;

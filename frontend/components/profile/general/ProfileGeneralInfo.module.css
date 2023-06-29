@@ -18,3 +18,9 @@
 .genOnEdit {
   @apply text-black bg-white border-black;
 }
+
+.generalEditBtn {
+  @apply block w-48 h-full justify-start items-center px-2  text-black
+  text-lg bg-white hover:bg-gray hover:text-white duration-200
+  border-2 border-white;
+}

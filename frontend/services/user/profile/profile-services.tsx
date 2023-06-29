@@ -53,6 +53,14 @@ export async function updateProfile(
       });
     })
     .then((res) => {
+      let userTraits = sessionStorage.getItem("techie:traits");
+      if (userTraits) {
+        let userTraitsObj = JSON.parse(userTraits);
+        userTraitsObj.profile_name = !data.profile_name
+          ? profileName
+          : data.profile_name;
+        sessionStorage.setItem("techie:traits", JSON.stringify(userTraitsObj));
+      }
       toast.success("Your profile was updated successfully!", {
         position: "top-center",
         hideProgressBar: true,
