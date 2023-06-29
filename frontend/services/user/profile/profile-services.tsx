@@ -42,7 +42,7 @@ export async function createProfile(data: ProfileCreationInterface) {
 
 export async function updateProfile(
   profileName: string,
-  data: Partial<ProfileInterface>
+  data: Partial<ProfileCreationInterface>
 ) {
   return await getCsrfToken()
     .then((token) => {
@@ -74,4 +74,26 @@ export async function updateProfile(
     });
 }
 
-export async function removeAccountService() {}
+export async function uploadAvatar(profileName: string, formData: FormData) {
+  return await getCsrfToken()
+    .then((token) => {
+      axiosInst.patch(`/profile-view/${profileName}/`, formData, {
+        headers: {
+          "x-csrftoken": token,
+          "content-type": "multipart/form-data",
+        },
+      });
+    })
+    .then((res) => {
+      toast.success("Your avatar was updated successfully!", {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    })
+    .catch((error) => {
+      toast.error(error.message, {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    });
+}

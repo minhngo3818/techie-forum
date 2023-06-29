@@ -68,8 +68,8 @@ export default function ProfileGeneralInfo(props: ProfileGeneralInfoType) {
           <div className={styles.genDetailCol}>
             <ProfileIdentity
               profileName={props.profile_name}
-              avatar={props.avatar}
-              // handleChange={props.handleChange}
+              avatar={props.avatar ?? "/default_avatar.png"}
+              isEdit={isEdit}
             />
           </div>
           <div className={styles.genDetailCol}>

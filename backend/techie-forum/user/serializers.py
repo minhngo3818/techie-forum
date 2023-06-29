@@ -49,6 +49,7 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
     thread_counts = serializers.SerializerMethodField()
     comment_counts = serializers.SerializerMethodField()
     like_counts = serializers.SerializerMethodField()
+    avatar = serializers.ImageField(required=False)
 
     class Meta:
         model = Profile

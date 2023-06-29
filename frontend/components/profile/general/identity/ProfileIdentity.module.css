@@ -1,11 +1,11 @@
 .genName {
-  @apply max-w-[180px] w-full h-9 mb-7 focus:outline-none 
-  border-l-2 border-r-2 text-xl text-center 
-  font-semibold;
+  @apply max-w-[180px] w-full h-9 mb-7 flex justify-center items-center
+  bg-white text-xl text-black
+  font-medium;
 }
 
 .genAvatar {
-  @apply max-w-[180px] w-full h-[180px] border-2 mb-7;
+  @apply max-w-[180px] w-full h-[180px] border-2 border-gray mb-7;
 }
 
 .genAvatar:active {
