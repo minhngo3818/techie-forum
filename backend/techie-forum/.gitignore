@@ -23,6 +23,7 @@ db.sqlite3
 
 /forum/migrations/*.py
 /forum/__pycache__
+/forum/helper/serializer/__pycache__
 !/forum/migrations/__init__.py
 /forum/migrations/__pycache__
 
