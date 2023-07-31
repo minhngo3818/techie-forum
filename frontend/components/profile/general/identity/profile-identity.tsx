@@ -1,11 +1,13 @@
-import React, { ChangeEvent, useState, useRef } from "react";
+import React, { ChangeEvent, useState, useCallback } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import PopupLayout from "../../../utils/popup-layout/popup-layout";
 import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
+import { Point } from "react-easy-crop";
+import getCroppedImg from "../../../utils/avatar-editor/crop-image-helper";
+import { ImageArea } from "../../../utils/avatar-editor/crop-image-helper";
 import { uploadAvatar } from "../../../../services/user/profile/profile-services";
 import styles from "./ProfileIdentity.module.css";
-import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 interface ProfileIdentityType {
   isEdit: boolean;
@@ -17,39 +19,52 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
   const router = useRouter();
   const originalAvatar = props.avatar;
   const [avatar, setAvatar] = useState<string>(props.avatar);
-  const [avatarFile, setAvatarFile] = useState<File>();
-  const avatarRef = useRef<HTMLInputElement>(null);
   const [isEditAvatar, setIsEditAvatar] = useState(false);
+
+  // Avatar Cropper
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [rotation, setRotation] = useState(0);
+  const [croppedArea, setCroppedArea] = useState<ImageArea | null>(null);
 
   const handleIsEditAvatar = () => {
     setIsEditAvatar((isEditAvatar) => {
       if (isEditAvatar) {
         setAvatar(originalAvatar);
       }
-
       return !isEditAvatar;
     });
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setRotation(0);
+    setCroppedArea(null);
   };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = event.target.files as FileList;
-    let avatarUrl = URL.createObjectURL(selectedFiles?.[0]);
-    setAvatar(avatarUrl);
-    setAvatarFile(selectedFiles?.[0]);
-  };
+  const handleSelectedAvatar = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0];
+        let avatarUrl = URL.createObjectURL(file);
+        setAvatar(avatarUrl);
+      }
+    },
+    [props.avatar]
+  );
 
-  // TODO: Working with change image scale, rotation
   const handleSubmit = async () => {
-    let profileName = props.profileName ?? "";
-    if (avatarFile) {
+    try {
+      if (!props.profileName) throw new Error("Missing profile name");
+      if (!croppedArea) throw new Error("Blank cropped area");
+      const croppedAvatar = await getCroppedImg(avatar, croppedArea, rotation);
+      if (!croppedAvatar) throw new Error("Failed to crop image");
       const fd = new FormData();
-      fd.append("avatar", avatarFile, avatarFile.name);
-      await uploadAvatar(profileName, fd);
+      fd.append("avatar", croppedAvatar.file, croppedAvatar.file.name);
+      await uploadAvatar(props.profileName, fd);
       setTimeout(() => {
         router.reload();
       }, 1500);
-    } else {
-      toast.error("Invalid image file");
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -67,20 +82,23 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
       <PopupLayout
         headerTitle="EDIT AVATAR"
         icon="edit"
-        submitBtnName="CHANGE"
+        submitBtnName="Upload"
         handleShow={{ isState: isEditAvatar, setState: handleIsEditAvatar }}
         handleSubmit={handleSubmit}
       >
         <div className={styles.genChangeAvatarWrapper}>
-          <AvatarEditor isCenter={true} avatar={avatar} />
-          <p>Something</p>
-          <input
-            className="border border-white w-3/4 h-7 text-white"
-            name="avatar"
-            accept="image/jpeg,image/png,image"
-            type="file"
-            ref={avatarRef}
-            onChange={handleChange}
+          <AvatarEditor
+            isCenter={true}
+            avatar={avatar}
+            zoom={zoom}
+            setZoom={setZoom}
+            rotation={rotation}
+            setRotation={setRotation}
+            crop={crop}
+            setCrop={setCrop}
+            croppedArea={croppedArea}
+            setCroppedArea={setCroppedArea}
+            handleSelectedAvatar={handleSelectedAvatar}
           />
         </div>
       </PopupLayout>

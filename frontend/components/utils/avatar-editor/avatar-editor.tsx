@@ -1,25 +1,40 @@
-import React, { useState, useCallback, ChangeEvent } from "react";
+import React, { useRef, useCallback, ChangeEvent } from "react";
 import Cropper from "react-easy-crop";
 import { Point, Area } from "react-easy-crop";
+import { ImageArea } from "./crop-image-helper";
 import styles from "./AvatarEditor.module.css";
 
 interface AvatarEditorType {
   isCenter?: boolean;
   avatar: string;
+  zoom: number;
+  setZoom: (value: number) => void;
+  rotation: number;
+  setRotation: (value: number) => void;
+  crop: Point;
+  setCrop: (value: Point) => void;
+  croppedArea: ImageArea | null;
+  setCroppedArea: (value: ImageArea | null) => void;
+  handleSelectedAvatar: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function AvatarEditor(props: AvatarEditorType) {
-  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [rotation, setRotation] = useState(0);
+  const avatarRef = useRef<HTMLInputElement>(null);
 
-  const handleZoom = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setZoom(Number(e.target.value));
-  }, []);
+  const handleZoom = (e: ChangeEvent<HTMLInputElement>) => {
+    props.setZoom(Number(e.target.value));
+  };
 
-  const handleRotation = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setRotation(Number(e.target.value));
-  }, []);
+  const handleRotation = (e: ChangeEvent<HTMLInputElement>) => {
+    props.setRotation(Number(e.target.value));
+  };
+
+  const handleCropComplete = useCallback(
+    (croppedArea: Area, croppedAreaPixels: Area) => {
+      props.setCroppedArea(croppedAreaPixels);
+    },
+    []
+  );
 
   return (
     <>
@@ -33,12 +48,13 @@ export default function AvatarEditor(props: AvatarEditorType) {
             <div className={styles.avEditorCropper}>
               <Cropper
                 image={props.avatar}
-                crop={crop}
-                zoom={zoom}
-                rotation={rotation}
+                crop={props.crop}
+                zoom={props.zoom}
+                rotation={props.rotation}
                 aspect={1 / 1}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
+                onCropChange={props.setCrop}
+                onZoomChange={props.setZoom}
+                onCropComplete={handleCropComplete}
               />
             </div>
           </div>
@@ -55,7 +71,7 @@ export default function AvatarEditor(props: AvatarEditorType) {
                 min={1}
                 max={3}
                 step={0.05}
-                value={zoom}
+                value={props.zoom}
                 onChange={handleZoom}
               />
             </div>
@@ -67,8 +83,18 @@ export default function AvatarEditor(props: AvatarEditorType) {
                 min={0}
                 max={360}
                 step={0.05}
-                value={rotation}
+                value={props.rotation}
                 onChange={handleRotation}
+              />
+            </div>
+            <div className={styles.avEditorTool}>
+              <input
+                className="border border-white w-3/4 h-7 text-white"
+                name="avatar"
+                accept="image/jpeg,image/png,image/jpg"
+                type="file"
+                ref={avatarRef}
+                onChange={props.handleSelectedAvatar}
               />
             </div>
           </div>
