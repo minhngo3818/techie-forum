@@ -3,21 +3,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 /**
- * Fetch to get csrftoken for any post requests
- */
-export async function getCsrfToken() {
-  return await axiosInst
-    .get("user/csrf")
-    .then((res) => res.data.csrftoken)
-    .catch((error) => {
-      toast.error(error.message, {
-        position: "top-center",
-        hideProgressBar: true,
-      });
-    });
-}
-
-/**
  * Request an verification email if user don't receive an email
  * @param email an email verification token
  * @returns axios get function

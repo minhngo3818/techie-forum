@@ -10,7 +10,6 @@ import {
 import axiosInst from "../axios/axios-instance";
 import UserInterface from "../../interfaces/user/user-interface";
 import { toast } from "react-toastify";
-import { getCsrfToken } from "./auth-services";
 
 export const AuthContext = createContext<AuthContextInterface>({
   user: null,
@@ -46,14 +45,8 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    */
   async function login(data: LoginInterface) {
     setLoading(true);
-    await getCsrfToken()
-      .then((token) => {
-        return axiosInst.post("user/login", data, {
-          headers: {
-            "x-csrftoken": token,
-          },
-        });
-      })
+    await axiosInst
+      .post("user/login", data)
       .then((res) => {
         if (res.data.is_active === false) {
           toast.info(
@@ -103,18 +96,12 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   /**
    * Handle logout procedure
    * Pre-request a token before post request
-   * Remove all user credentials once success
+   * Remove all user credentials on success
    */
   async function logout() {
     setLoading(true);
-    await getCsrfToken()
-      .then((token) => {
-        return axiosInst.post("user/logout", null, {
-          headers: {
-            "x-csrftoken": token,
-          },
-        });
-      })
+    await axiosInst
+      .post("user/logout", null)
       .then((res) => {
         setUser(null);
         sessionStorage.removeItem("techie:traits");
@@ -141,14 +128,8 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   async function register(data: RegisterInterface) {
     let isSuccess = false;
     setLoading(true);
-    await getCsrfToken()
-      .then((token) => {
-        return axiosInst.post("user/register", data, {
-          headers: {
-            "x-csrftoken": token,
-          },
-        });
-      })
+    await axiosInst
+      .post("user/register", data)
       .then((res) => {
         toast.success("Your account was created successfully!", {
           position: "top-center",
@@ -167,7 +148,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   }
 
   /**
-   * Verify current authorized user
+   * Verify authorized user
    */
   async function verifyUser() {
     let isVerified = false;
