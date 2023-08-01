@@ -3,23 +3,29 @@ import RefLinksInterface from "./ref-links";
 
 type ProfileId = { id: string };
 type ProfileName = { profile_name?: string };
-type Avatar = { avatar?: string };
+type Avatar = { avatar?: string | Blob };
 type About = { about?: string };
 type ThreadCounts = { threadCounts: number };
 type CommentCounts = { commentCounts: number };
 type LikeCounts = { likeCounts: number };
 type ProjectList = { projects?: ProjectInterface[] };
 
-export interface ProfileCreationInterface
+/**
+ * Used for creating and updating profile information
+ */
+export interface IProfileForm
   extends ProfileName,
     Avatar,
     About,
     RefLinksInterface,
     ProjectList {}
 
-export interface ProfileInterface
+/**
+ * Used for displaying profile information
+ */
+export interface IProfile
   extends ProfileId,
-    ProfileCreationInterface,
+    IProfileForm,
     ThreadCounts,
     CommentCounts,
     LikeCounts {}

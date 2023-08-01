@@ -4,14 +4,14 @@ import Box from "../../utils/box/box";
 import ProfileHeader from "./header/profile-header";
 import ProfileIdentity from "./identity/profile-identity";
 import ProfileStats from "./stats/profile-stats";
-import { ProfileInterface } from "../../../interfaces/profile/profile";
+import { IProfile } from "../../../interfaces/profile/profile";
 const ProfileGeneralsForm = dynamic(
   () => import("../../form/form-profile-generals/profile-general-form")
 );
 import styles from "./ProfileGeneralInfo.module.css";
 import ProfileRefLinks from "./ref-links/profile-reflinks";
 
-interface ProfileGeneralInfoType extends ProfileInterface {
+interface ProfileGeneralInfoType extends IProfile {
   isSameUser: boolean;
 }
 
@@ -68,7 +68,9 @@ export default function ProfileGeneralInfo(props: ProfileGeneralInfoType) {
           <div className={styles.genDetailCol}>
             <ProfileIdentity
               profileName={props.profile_name}
-              avatar={props.avatar ?? "/default_avatar.png"}
+              avatar={
+                !props.avatar ? "/default_avatar.png" : (props.avatar as string)
+              }
               isEdit={isEdit}
             />
           </div>

@@ -1,28 +1,23 @@
 import React, { useState, useRef, ChangeEvent } from "react";
 import { useRouter } from "next/router";
-import Router from "next/router";
 import { StateDuo } from "../../../interfaces/utils/button";
 import BaseField from "../field-base/base-field";
 import PopupLayout from "../../utils/popup-layout/popup-layout";
 import { updateProfile } from "../../../services/user/profile/profile-services";
+import { IProfileForm } from "../../../interfaces/profile/profile";
+import RefLinksInterface from "../../../interfaces/profile/ref-links";
 
-interface ProfileGeneralsType {
+interface ProfileGeneralsFormType extends RefLinksInterface {
   headerTitle?: string;
   icon?: string;
   handleIsShow: StateDuo;
   profileName?: string;
-  twitter?: string;
-  linkedin?: string;
-  github?: string;
-  indeed?: string;
-  reddit?: string;
-  stackoverflow?: string;
 }
 
-export default function ProfileGeneralsForm(props: ProfileGeneralsType) {
+export default function ProfileGeneralsForm(props: ProfileGeneralsFormType) {
   const router = useRouter();
 
-  const [generalsInfo, setGeneralInfo] = useState({
+  const [generalsInfo, setGeneralInfo] = useState<IProfileForm>({
     profile_name: props.profileName,
     twitter: props.twitter,
     linkedin: props.linkedin,
@@ -49,6 +44,17 @@ export default function ProfileGeneralsForm(props: ProfileGeneralsType) {
     props.handleIsShow.setState();
     let newProfileName = generalsInfo.profile_name;
     router.push(`/profile/${newProfileName}`);
+
+    const fd = new FormData();
+    for (var key in generalsInfo) {
+      let value = generalsInfo[key as keyof IProfileForm];
+      if (
+        (typeof value === "string" && value !== "") ||
+        value instanceof Blob
+      ) {
+        fd.append(key, value);
+      }
+    }
   };
 
   return (
