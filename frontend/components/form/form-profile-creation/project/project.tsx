@@ -6,7 +6,7 @@ import React, {
   Dispatch,
   ChangeEvent,
 } from "react";
-import ProjectInterface from "../../../../interfaces/project/project";
+import IProject from "../../../../interfaces/project/project";
 import ProjectInner from "./project-inner";
 import { Tab, Transition } from "@headlessui/react";
 import { Delete } from "../../../icons/icons";
@@ -16,7 +16,7 @@ import styles from "./Project.module.css";
 
 interface ProjectsType {
   isShow: boolean;
-  projects: ProjectInterface[];
+  projects: IProject[];
   onAdd: (id: string) => void;
   onChange: (
     index: number,

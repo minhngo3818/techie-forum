@@ -1,4 +1,4 @@
-import ProjectInterface from "../../../interfaces/project/project";
+import IProject from "../../../interfaces/project/project";
 import axiosInst from "../../axios/axios-instance";
 
 // Return project list by searching user id
@@ -9,7 +9,7 @@ export async function getProjectService(pid: string) {
 }
 
 // Create a project
-export async function createProjectService(data: ProjectInterface) {
+export async function createProjectService(data: IProject) {
   const response = await axiosInst.post("project-view/", data, {
     withCredentials: true,
   });
@@ -18,7 +18,7 @@ export async function createProjectService(data: ProjectInterface) {
 }
 
 // Hanle change project
-export async function changeProjectService(data: ProjectInterface) {
+export async function changeProjectService(data: IProject) {
   const response = await axiosInst.patch("project-view/", data, {
     withCredentials: true,
   });

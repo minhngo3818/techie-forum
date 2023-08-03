@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectInterface from "../../../../interfaces/project/project";
+import IProject from "../../../../interfaces/project/project";
 import ProjectTitle from "./title/project-title";
 import ProjectSummary from "./summary/project-sumary";
 import ProjectLink from "./link/project-link";
@@ -7,7 +7,7 @@ import ProjectBtnEdit from "./buttons/project-btn-edit";
 import ProjectBtnRemove from "./buttons/project-btn-remove";
 import styles from "./Project.module.css";
 
-interface ProjectComponentType extends ProjectInterface {
+interface ProjectComponentType extends IProject {
   isSameUser: boolean;
   handleEditProject: () => void;
   handleRemoveProject: () => void;

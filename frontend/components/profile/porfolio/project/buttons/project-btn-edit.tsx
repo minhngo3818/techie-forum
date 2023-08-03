@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
-import ProjectInterface from "../../../../../interfaces/project/project";
+import IProject from "../../../../../interfaces/project/project";
 import { Edit } from "../../../../icons/icons";
 import { Tooltip } from "react-tooltip";
 const ProjectForm = dynamic(
@@ -9,18 +9,18 @@ const ProjectForm = dynamic(
 import "node_modules/react-tooltip/dist/react-tooltip.css";
 import styles from "./ProjectButton.module.css";
 
-interface EditBtnType extends ProjectInterface {
+interface EditBtnType extends IProject {
   handleEditProject: () => void;
 }
 
 export default function ProjectBtnEdit(props: EditBtnType) {
   const [isForm, setIsForm] = useState(false);
-  const [project, setProject] = useState<ProjectInterface>({
+  const [project, setProject] = useState<IProject>({
     title: props.title,
     summary: props.summary,
     demo: props.demo,
     repo: props.repo,
-  } as ProjectInterface);
+  } as IProject);
 
   const handleIsForm = useCallback(() => {
     setIsForm((isForm) => !isForm);

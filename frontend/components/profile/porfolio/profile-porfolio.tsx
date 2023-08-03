@@ -5,17 +5,15 @@ import Project from "./project/project";
 const ProjectForm = dynamic(
   () => import("../../form/form-project/project-form")
 );
-import ProjectInterface from "../../../interfaces/project/project";
+import IProject from "../../../interfaces/project/project";
 import styles from "./ProfilePorfolio.module.css";
 import { AddSquare } from "../../icons/icons";
 
 function ProfilePorfolio(props: {
   isSameUser: boolean;
-  projects?: ProjectInterface[];
+  projects?: IProject[];
 }) {
-  const [projects, setProjects] = useState<ProjectInterface[]>(
-    props.projects || []
-  );
+  const [projects, setProjects] = useState<IProject[]>(props.projects || []);
   const [isAddProject, setIsAddProject] = useState(false);
 
   const handleIsAddProject = useCallback(() => {
