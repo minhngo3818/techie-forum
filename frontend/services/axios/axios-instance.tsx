@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { toast } from "react-toastify";
+import { toastResponse } from "../../utils/toast-helper";
 
 // API CONFIGS
 const DEV_API = "http://127.0.0.1:8000/api/";
@@ -26,7 +27,7 @@ axiosInst.interceptors.response.use(
   },
   (error) => {
     if (error.status === 401) {
-      showError("Unauthorized or session expired");
+      toastResponse("error", "Unauthorized or session expired");
       let redirectProcess = setTimeout(() => {
         window.location.assign("/");
         window.clearTimeout(redirectProcess);
@@ -35,7 +36,7 @@ axiosInst.interceptors.response.use(
     }
 
     if (error.status === 500) {
-      showError("Internal server error");
+      toastResponse("error", "Internal server error");
       return;
     }
 
@@ -73,10 +74,3 @@ axiosInst.interceptors.request.use(
 );
 
 export default axiosInst;
-
-// Helper functions
-function showError(error: string) {
-  toast.error(error, {
-    position: toast.POSITION.TOP_CENTER,
-  });
-}

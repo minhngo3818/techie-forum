@@ -1,6 +1,5 @@
 import axiosInst from "../axios/axios-instance";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toastResponse } from "../../utils/toast-helper";
 
 /**
  * Request an verification email if user don't receive an email
@@ -12,16 +11,10 @@ export async function requestVerifyEmail() {
   return axiosInst
     .get(`user/email-verification/request/${udsf}`)
     .then(() => {
-      toast.success("Request was sent", {
-        position: "top-center",
-        hideProgressBar: true,
-      });
+      toastResponse("success", "Email verificationr request was sent");
     })
     .catch((error) => {
-      toast.error(error.message, {
-        position: "top-center",
-        hideProgressBar: true,
-      });
+      toastResponse("error", error.message);
     });
 }
 

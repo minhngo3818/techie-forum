@@ -9,7 +9,7 @@ import {
 } from "../../interfaces/user/auth-interface";
 import axiosInst from "../axios/axios-instance";
 import UserInterface from "../../interfaces/user/user-interface";
-import { toast } from "react-toastify";
+import { toastResponse } from "../../utils/toast-helper";
 
 export const AuthContext = createContext<AuthContextInterface>({
   user: null,
@@ -49,26 +49,15 @@ export function AuthProvider({ children }: { children: ReactElement }) {
       .post("user/login", data)
       .then((res) => {
         if (res.data.is_active === false) {
-          toast.info(
-            "Your account is inactive. Redirect to account recovery url.",
-            {
-              position: "top-center",
-              hideProgressBar: true,
-            }
+          toastResponse(
+            "success",
+            "Your account is inactive. Redirect to account recovery url."
           );
         } else if (res.data.is_verified === false) {
-          toast.info("Email has not been verified!", {
-            position: "top-center",
-            hideProgressBar: true,
-          });
+          toastResponse("info", "Email has not been verified!");
           // sessionStorage.setItem("udsf", JSON.stringify(res.data.udsf));
           router.replace("/verify-email/not-verify");
         } else {
-          toast.success("Authorization succeeded!", {
-            position: "top-center",
-            hideProgressBar: true,
-          });
-
           let userObj = {
             username: res.data.username,
             email: res.data.email,
@@ -82,13 +71,11 @@ export function AuthProvider({ children }: { children: ReactElement }) {
           } else {
             router.push("/forum");
           }
+          toastResponse("success", "Authorization succeeded!");
         }
       })
       .catch((error) => {
-        toast.error(error.message, {
-          position: "top-center",
-          hideProgressBar: true,
-        });
+        toastResponse("error", error.message);
       })
       .finally(() => setLoading(false));
   }
@@ -105,16 +92,11 @@ export function AuthProvider({ children }: { children: ReactElement }) {
       .then((res) => {
         setUser(null);
         sessionStorage.removeItem("techie:traits");
-        toast.success("You have logged out!", {
-          position: "top-center",
-          hideProgressBar: true,
-        });
+        toastResponse("success", "You have logged out!");
         router.replace("/");
       })
       .catch((error) => {
-        toast.error(error.message, {
-          position: "top-center",
-        });
+        toastResponse("error", error.message);
         setLoading(false);
       })
       .finally(() => setLoading(false));
@@ -131,17 +113,11 @@ export function AuthProvider({ children }: { children: ReactElement }) {
     await axiosInst
       .post("user/register", data)
       .then((res) => {
-        toast.success("Your account was created successfully!", {
-          position: "top-center",
-          hideProgressBar: true,
-        });
+        toastResponse("success", "Your account was created successfully!");
         isSuccess = true;
       })
       .catch((error) => {
-        toast.error(error.message, {
-          position: "top-center",
-          hideProgressBar: true,
-        });
+        toastResponse("error", error.message);
       })
       .finally(() => setLoading(false));
     return isSuccess;
@@ -159,9 +135,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
         isVerified = true;
       })
       .catch((error) => {
-        toast.error(error.message + error.details.detail, {
-          position: "top-center",
-        });
+        toastResponse("error", error.message);
       })
       .finally(() => setLoading(false));
     return isVerified;

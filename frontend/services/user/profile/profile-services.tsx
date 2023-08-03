@@ -1,7 +1,6 @@
 import { IProfileForm } from "../../../interfaces/profile/profile";
 import axiosInst from "../../axios/axios-instance";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toastResponse } from "../../../utils/toast-helper";
 
 /**
  * Retrieve a user profile data by collect profile name in the url
@@ -16,17 +15,9 @@ export async function createProfile(data: IProfileForm) {
   return await axiosInst
     .post("profile-view/", data)
     .then((res) => {
-      toast.success("Your profile was created successfully!", {
-        position: "top-center",
-        hideProgressBar: true,
-      });
+      toastResponse("success", "Your profile was created successfully!");
     })
-    .catch((error) => {
-      toast.error(error.message, {
-        position: "top-center",
-        hideProgressBar: true,
-      });
-    });
+    .catch((error) => {});
 }
 
 export async function updateProfile(
@@ -44,16 +35,10 @@ export async function updateProfile(
           : data.profile_name;
         sessionStorage.setItem("techie:traits", JSON.stringify(userTraitsObj));
       }
-      toast.success("Your profile was updated successfully!", {
-        position: "top-center",
-        hideProgressBar: true,
-      });
+      toastResponse("success", "Your profile was updated successfully!");
     })
     .catch((error) => {
-      toast.error(error.message, {
-        position: "top-center",
-        hideProgressBar: true,
-      });
+      toastResponse("error", error.message);
     });
 }
 
@@ -61,15 +46,9 @@ export async function uploadAvatar(profileName: string, formData: FormData) {
   return await axiosInst
     .patch(`/profile-view/${profileName}/`, formData)
     .then((res) => {
-      toast.success("Your avatar was updated successfully!", {
-        position: "top-center",
-        hideProgressBar: true,
-      });
+      toastResponse("success", "Your avatar was updated successfully!");
     })
     .catch((error) => {
-      toast.error(error.message, {
-        position: "top-center",
-        hideProgressBar: true,
-      });
+      toastResponse("error", error.message);
     });
 }
