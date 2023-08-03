@@ -17,12 +17,14 @@ from .views import (
     ResetPasswordView,
     ConfirmResetPasswordUrlView,
     ProfileViewSet,
+    ProjectViewSet,
     ChangePasswordView,
 )
 
 router = DefaultRouter()
 router.register(r"user-view", UserViewSet)
 router.register(r"profile-view", ProfileViewSet)
+router.register(r"project-view", ProjectViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(

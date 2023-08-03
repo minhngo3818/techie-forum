@@ -1,7 +1,13 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
+import Router from "next/router";
+import { useRouter } from "next/router";
 import { StateDuo } from "../../../interfaces/utils/button";
 import BaseField from "../field-base/base-field";
-import ProjectInterface from "../../../interfaces/project/project";
+import IProject from "../../../interfaces/project/project";
+import {
+  createProjectService,
+  updateProjectService,
+} from "../../../services/user/project/project-service";
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
 import PopupLayout from "../../utils/popup-layout/popup-layout";
 
@@ -9,21 +15,19 @@ interface ProjectFormType {
   headerTitle?: string;
   icon?: string;
   handleIsShow: StateDuo;
-  handleSubmit: () => void;
-  project?: ProjectInterface;
+  project?: IProject;
 }
 
 export default function ProjectForm(props: ProjectFormType) {
-  const [project, setProject] = useState<ProjectInterface>(
+  const [project, setProject] = useState<IProject>(
     props.project
       ? props.project
-      : {
-          id: "0",
+      : ({
           title: "",
           summary: "",
           demo: "",
           repo: "",
-        }
+        } as IProject)
   );
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -38,17 +42,30 @@ export default function ProjectForm(props: ProjectFormType) {
     []
   );
 
+  const handleSubmit = async () => {
+    if (!project.id) {
+      console.log("No id", project);
+      await createProjectService(project);
+    } else {
+      console.log(project);
+      await updateProjectService(project);
+    }
+    setTimeout(() => {
+      Router.reload();
+    }, 1500);
+  };
+
   return (
     <PopupLayout
       headerTitle={props.headerTitle}
       icon={props.icon}
       handleShow={props.handleIsShow}
-      handleSubmit={props.handleSubmit}
+      handleSubmit={handleSubmit}
     >
       <React.Fragment>
         <BaseField
           label="Project Title"
-          name="project-title"
+          name="title"
           type="text"
           isLightMode={true}
           innerRef={titleRef}
@@ -59,7 +76,7 @@ export default function ProjectForm(props: ProjectFormType) {
         />
         <BaseField
           label="Summary"
-          name="project-summary"
+          name="summary"
           type="text"
           isLightMode={true}
           innerRef={summaryRef}
@@ -70,7 +87,7 @@ export default function ProjectForm(props: ProjectFormType) {
         />
         <BaseField
           label="Demo"
-          name="project-demo"
+          name="demo"
           type="text"
           isLightMode={true}
           innerRef={demoRef}
@@ -81,7 +98,7 @@ export default function ProjectForm(props: ProjectFormType) {
         />
         <BaseField
           label="Repo"
-          name="project-repo"
+          name="repo"
           type="text"
           isLightMode={true}
           innerRef={repoRef}

@@ -20,12 +20,6 @@ function ProfilePorfolio(props: {
     setIsAddProject((isAddProject) => !isAddProject);
   }, []);
 
-  const handleAddProject = useCallback(() => {}, []);
-
-  const handleRemoveProject = useCallback(() => {}, []);
-
-  const handleEditProject = useCallback(() => {}, []);
-
   return (
     <Box width={960} height={400} borderWidth={1} clipType="clip-cyber-left">
       <div className={styles.porContainer}>
@@ -39,13 +33,11 @@ function ProfilePorfolio(props: {
               <Project
                 isSameUser={props.isSameUser}
                 key={index}
-                id={`${index}`}
+                id={`${project.id}`}
                 title={project.title}
                 summary={project.summary}
                 repo={project.repo}
                 demo={project.demo}
-                handleEditProject={handleEditProject}
-                handleRemoveProject={handleRemoveProject}
               />
             );
           })}
@@ -68,7 +60,6 @@ function ProfilePorfolio(props: {
                 isState: isAddProject,
                 setState: handleIsAddProject,
               }}
-              handleSubmit={handleAddProject}
             />
           </React.Fragment>
         )}

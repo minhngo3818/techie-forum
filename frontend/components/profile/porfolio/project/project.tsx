@@ -9,8 +9,6 @@ import styles from "./Project.module.css";
 
 interface ProjectComponentType extends IProject {
   isSameUser: boolean;
-  handleEditProject: () => void;
-  handleRemoveProject: () => void;
 }
 
 export default function Project(props: ProjectComponentType) {
@@ -36,12 +34,8 @@ export default function Project(props: ProjectComponentType) {
             summary={props.summary}
             demo={props.demo}
             repo={props.repo}
-            handleEditProject={props.handleEditProject}
           />
-          <ProjectBtnRemove
-            id={props.id ?? ""}
-            handleRemove={props.handleRemoveProject}
-          />
+          <ProjectBtnRemove id={props.id ?? ""} />
         </div>
       )}
     </div>

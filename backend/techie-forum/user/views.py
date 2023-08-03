@@ -469,4 +469,5 @@ class ProjectViewSet(ModelViewSet):
         serializer.save(owner=profile)
 
     def perform_update(self, serializer):
-        serializer(updated_date=timezone.now(), owner=self.request.user)
+        profile = Profile.objects.get(owner=self.request.user.id)
+        serializer.save(updated_date=timezone.now(), owner=profile)
