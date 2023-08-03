@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import PageTitle from "../../components/utils/page-title/page-title";
-import { ProfileCreationInterface } from "../../interfaces/profile/profile";
+import { IProfileForm } from "../../interfaces/profile/profile";
 import ProjectInterface from "../../interfaces/project/project";
 import {
   EventTargetNameValue,
@@ -41,7 +41,7 @@ const emptyProject: ProjectInterface = {
   title: "",
 };
 
-const emptyProfile: ProfileCreationInterface = {
+const emptyProfile: IProfileForm = {
   projects: [emptyProject],
 };
 
@@ -55,7 +55,7 @@ export default function ProfileCreation() {
   const tabRef = useRef<HTMLButtonElement>(null);
 
   // Data
-  const [profile, setProfile] = useState<ProfileCreationInterface>({
+  const [profile, setProfile] = useState<IProfileForm>({
     profile_name: user?.username,
     projects: [emptyProject],
   });
@@ -179,7 +179,7 @@ export default function ProfileCreation() {
             isShow={currentIndex === 0}
             name={profile.profile_name ?? ""}
             about={profile.about ?? ""}
-            avatar={profile.avatar ?? ""}
+            avatar={profile.avatar ? (profile.avatar as string) : ""}
             onChange={handleChangeProfile}
             nextTab={next}
           />
