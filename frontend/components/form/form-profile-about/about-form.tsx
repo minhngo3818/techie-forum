@@ -26,9 +26,10 @@ export default function AboutForm(props: AboutFormType) {
 
   const handleUpdateAbout = async () => {
     await updateProfile(props.profileName ?? "", { about: about });
-    console.log(aboutRef.current?.value, about);
-    props.handleIsShow.setState();
-    Router.reload();
+    setTimeout(() => {
+      props.handleIsShow.setState();
+      Router.reload();
+    }, 1500);
   };
 
   return (
