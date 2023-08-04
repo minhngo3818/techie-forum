@@ -5,7 +5,7 @@ import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
 import { Point } from "react-easy-crop";
 import getCroppedImg from "../../../utils/avatar-editor/crop-image-helper";
 import { ImageArea } from "../../../utils/avatar-editor/crop-image-helper";
-import { uploadAvatar } from "../../../../services/user/profile/profile-services";
+import { updateProfile } from "../../../../services/user/profile/profile-services";
 import styles from "./ProfileIdentity.module.css";
 import { useRouter } from "next/router";
 
@@ -57,9 +57,7 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
       if (!croppedArea) throw new Error("Blank cropped area");
       const croppedAvatar = await getCroppedImg(avatar, croppedArea, rotation);
       if (!croppedAvatar) throw new Error("Failed to crop image");
-      const fd = new FormData();
-      fd.append("avatar", croppedAvatar.file, croppedAvatar.file.name);
-      await uploadAvatar(props.profileName, fd);
+      await updateProfile(props.profileName, { avatar: croppedAvatar.file });
       setTimeout(() => {
         router.reload();
       }, 1500);
