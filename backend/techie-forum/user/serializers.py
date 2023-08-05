@@ -1,10 +1,12 @@
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.validators import validate_email
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.conf import settings
 from django.db import transaction
+from django.db.models import Q
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import AuthenticationFailed
@@ -267,6 +269,41 @@ class LogoutSerializer(serializers.Serializer):
             self.fail("bad_token")
 
 
+class EmailVerificationSerializer(serializers.ModelSerializer):
+    """
+    Serializer to verify user email by send a notification
+    """
+
+    token = serializers.CharField(max_length=600)
+
+    class Meta:
+        model = User
+        fields = ["token"]
+
+
+class ChangeEmailSerializer(serializers.ModelSerializer):
+
+    email = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ["email", "is_verified"]
+
+    def validate(self, attrs):
+        if User.objects.filter(email=attrs["email"]).exists():
+            raise serializers.ValidationError({"email": "already existed"})
+
+        validate_email(attrs["email"])
+
+        return attrs
+
+    def update(self, instance, validated_data):
+        instance.email = validated_data["email"]
+        instance.is_verified = False
+        instance.save()
+        return instance
+
+
 class CookieTokenRefreshSerializer(TokenRefreshSerializer):
     refresh = serializers.CharField()
 
@@ -317,18 +354,6 @@ class ChangePasswordSerializer(serializers.Serializer):
         instance.set_password(validated_data["new_password"])
         instance.save()
         return instance
-
-
-class EmailVerificationSerializer(serializers.ModelSerializer):
-    """
-    Serializer to verify user email by send a notification
-    """
-
-    token = serializers.CharField(max_length=600)
-
-    class Meta:
-        model = User
-        fields = ["token"]
 
 
 class RequestResetPasswordSerializer(serializers.Serializer):

@@ -7,6 +7,7 @@ from .views import (
     UserViewSet,
     UserRegisterView,
     EmailVerificationView,
+    ChangeEmailView,
     RequestEmailVerificationView,
     LoginView,
     LogoutView,
@@ -55,6 +56,7 @@ urlpatterns = [
         RequestEmailVerificationView.as_view(),
         name="request-email-verification",
     ),
+    path("user/change-email", ChangeEmailView.as_view(), name="email-change"),
     path(
         "user/auth/refresh", CookieTokenRefreshView.as_view(), name="token-refresh-view"
     ),

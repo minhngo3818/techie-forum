@@ -3,6 +3,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponsePermanentRedirect
 from django.middleware import csrf
 from django.shortcuts import reverse
@@ -29,6 +30,7 @@ from .serializers import (
     CookieTokenRefreshSerializer,
     CookieTokenVerifySerializer,
     EmailVerificationSerializer,
+    ChangeEmailSerializer,
     ChangePasswordSerializer,
     RequestResetPasswordSerializer,
     ResetPasswordSerializer,
@@ -140,6 +142,31 @@ class EmailVerificationView(GenericAPIView):
             return Response(
                 {"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class ChangeEmailView(UpdateAPIView):
+    """
+    Fetch to update user email. Send an email verification
+    """
+
+    queryset = User.objects.all()
+    serializer_class = ChangeEmailSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        obj = get_object_or_404(self.queryset, **{"id": self.request.user.id})
+        return obj
+
+    def perform_update(self, serializer):
+        user = self.get_object()
+        serializer.save()
+        tokens = user.get_tokens
+        data = EmailSender.compose_verification_email(
+            os.environ.get("FRONTEND_URL_DEV"),
+            user,
+            tokens["access"],
+        )
+        EmailSender.send_email(data)
 
 
 class CsrfTokenView(APIView):
@@ -312,7 +339,7 @@ class RequestResetPasswordView(GenericAPIView):
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
 
-            # Encode path
+            # Encoded path
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = PasswordResetTokenGenerator().make_token(user)
 
