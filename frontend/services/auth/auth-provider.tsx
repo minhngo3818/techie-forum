@@ -8,7 +8,7 @@ import {
   RegisterInterface,
 } from "../../interfaces/user/auth-interface";
 import axiosInst from "../axios/axios-instance";
-import UserInterface from "../../interfaces/user/user-interface";
+import IUser from "../../interfaces/user/user";
 import { toastResponse } from "../../utils/toast-helper";
 
 export const AuthContext = createContext<AuthContextInterface>({
@@ -22,7 +22,7 @@ export const AuthContext = createContext<AuthContextInterface>({
 });
 
 export function AuthProvider({ children }: { children: ReactElement }) {
-  const [user, setUser] = useState<UserInterface | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -62,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
             username: res.data.username,
             email: res.data.email,
             profile_name: res.data.profile_name,
+            is_verified: res.data.is_verified,
           };
           setUser(userObj);
           sessionStorage.setItem("techie:traits", JSON.stringify(userObj));

@@ -1,4 +1,4 @@
-import UserInterface from "./user-interface";
+import IUser from "./user";
 
 // All field names match with the serializers
 type UserName = { username: string };
@@ -22,7 +22,7 @@ export interface RegisterInterface
     Password2 {}
 
 export default interface AuthContextInterface {
-  user: UserInterface | null;
+  user: IUser | null;
   login: (data: LoginInterface) => Promise<void>;
   logout: () => Promise<void>;
   register: (data: RegisterInterface) => Promise<boolean>;
