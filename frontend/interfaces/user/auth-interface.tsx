@@ -7,26 +7,20 @@ type OldPassword = { old_password: string };
 type Password = { password: string };
 type Password2 = { password2: string };
 
-export interface LoginInterface extends UserName, Password {}
+export interface ILoginForm extends UserName, Password {}
 
-export interface ResetPasswordInterface extends Password, Password2 {}
+export interface IResetPasswordForm extends Password, Password2 {}
 
-export interface ChangePasswordInterface
-  extends OldPassword,
-    ResetPasswordInterface {}
+export interface IChangePasswordForm extends OldPassword, IResetPasswordForm {}
 
-export interface RegisterInterface
-  extends UserName,
-    Email,
-    Password,
-    Password2 {}
+export interface IRegisterForm extends UserName, Email, Password, Password2 {}
 
 export default interface AuthContextInterface {
   user: IUser | null;
-  login: (data: LoginInterface) => Promise<void>;
+  login: (data: ILoginForm) => Promise<void>;
   logout: () => Promise<void>;
-  register: (data: RegisterInterface) => Promise<boolean>;
+  register: (data: IRegisterForm) => Promise<boolean>;
   verifyUser: () => Promise<boolean>;
-  changePassword: (data: ChangePasswordInterface) => Promise<void>;
+  changePassword: (data: IChangePasswordForm) => Promise<void>;
   loading: boolean;
 }

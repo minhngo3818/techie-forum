@@ -3,9 +3,9 @@ import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { ReactElement } from "react";
 import AuthContextInterface from "../../interfaces/user/auth-interface";
 import {
-  LoginInterface,
-  ChangePasswordInterface,
-  RegisterInterface,
+  ILoginForm,
+  IChangePasswordForm,
+  IRegisterForm,
 } from "../../interfaces/user/auth-interface";
 import axiosInst from "../axios/axios-instance";
 import IUser from "../../interfaces/user/user";
@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    * @param data {username: string, password: string}
    * @returns void
    */
-  async function login(data: LoginInterface) {
+  async function login(data: ILoginForm) {
     setLoading(true);
     await axiosInst
       .post("user/login", data)
@@ -108,7 +108,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    * @param data registration inputs
    * @return boolean
    */
-  async function register(data: RegisterInterface) {
+  async function register(data: IRegisterForm) {
     let isSuccess = false;
     setLoading(true);
     await axiosInst
@@ -146,7 +146,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    * Change user password with authentication
    * @param data password inputs
    */
-  async function changePassword(data: ChangePasswordInterface) {}
+  async function changePassword(data: IChangePasswordForm) {}
 
   const context = useMemo(
     () => ({
