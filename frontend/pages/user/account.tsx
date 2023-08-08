@@ -19,7 +19,10 @@ function Account() {
         </div>
       </div>
       <div className={styles.accountSections}>
-        <ChangeEmail email={user ? user.email : ""} />
+        <ChangeEmail
+          email={user ? user.email : "something went wrong..."}
+          isVerified={user?.is_verified}
+        />
         <ChangePassword />
         <DeleteAccount />
       </div>
