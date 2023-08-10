@@ -72,7 +72,7 @@ class UserRegisterView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         user = User.objects.get(email=serializer.data["email"])
-        token = RefreshToken.for_user(user).access_token
+        token = RefreshToken.for_user(user)
         frontend_url = os.environ.get("FRONTEND_URL_DEV")
         data = EmailSender.compose_verification_email(frontend_url, user, token)
         EmailSender.send_email(data)
@@ -323,6 +323,40 @@ class ChangePasswordView(UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = ChangePasswordSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        obj = get_object_or_404(self.queryset, **{"id": self.request.user.id})
+        return obj
+
+    def update(self, request):
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        refresh = RefreshToken.for_user(request.user)
+        response = Response(
+            status=status.HTTP_200_OK,
+        )
+        response.set_cookie(
+            value=str(refresh.access_token),
+            expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+            key=settings.COOKIES["AUTH_COOKIE"],
+            secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+            path=settings.COOKIES["AUTH_COOKIE_PATH"],
+            httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
+            samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
+        )
+        response.set_cookie(
+            value=str(refresh),
+            expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+            key=settings.COOKIES["AUTH_COOKIE_REFRESH"],
+            secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+            path=settings.COOKIES["AUTH_COOKIE_PATH"],
+            httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
+            samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
+        )
+        return response
 
 
 class RequestResetPasswordView(GenericAPIView):

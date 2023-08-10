@@ -64,7 +64,7 @@ urlpatterns = [
         "user/auth/verify", CookieTokenVerifyView.as_view(), name="token-verification"
     ),
     path(
-        "user/auth/change-password/<str:pk>",
+        "user/auth/change-password",
         ChangePasswordView.as_view(),
         name="change-password",
     ),

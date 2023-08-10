@@ -336,10 +336,20 @@ class ChangePasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True, required=True)
     new_password2 = serializers.CharField(write_only=True, required=True)
 
-    def validate(self, attrs):
+    def to_internal_value(self, data):
+        return {
+            "old_password": data["old_password"],
+            "new_password": data["password"],
+            "new_password2": data["password2"],
+        }
 
+    def validate(self, attrs):
         errors = {}
-        if not self.context["request"].user.check_password(attrs["old_password"]):
+        user = self.context["request"].user
+
+        # Note: make sure db is consistent during development
+        #       abruptly change user instance causing fail test
+        if not user.check_password(attrs["old_password"]):
             errors["old_password"] = "old password is incorrect"
 
         if attrs["new_password"] != attrs["new_password2"]:
@@ -348,12 +358,13 @@ class ChangePasswordSerializer(serializers.Serializer):
         if errors:
             raise serializers.ValidationError(errors)
 
-        return attrs
+        return super().validate(attrs)
 
-    def update(self, instance, validated_data):
-        instance.set_password(validated_data["new_password"])
-        instance.save()
-        return instance
+    def save(self):
+        user = self.context["request"].user
+        user.set_password(self.validated_data["new_password"])
+        user.save()
+        return user
 
 
 class RequestResetPasswordSerializer(serializers.Serializer):
