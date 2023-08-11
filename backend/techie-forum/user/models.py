@@ -84,3 +84,14 @@ class Project(models.Model):
 
     def __str__(self) -> str:
         return str(self.title)
+
+
+class DeletedUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    deleted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-deleted_at"]
+
+    def __str__(self) -> str:
+        return str(self.user.username)

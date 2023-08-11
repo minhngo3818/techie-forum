@@ -21,7 +21,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 from .email import EmailSender
-from .models import User, Profile, Project
+from .models import User, DeletedUser, Profile, Project
 from .serializers import (
     UserSerializer,
     RegistrationSerializer,
@@ -389,25 +389,7 @@ class RequestResetPasswordView(GenericAPIView):
             redirect_url = "?redirect_url=" + request.data.get("redirect_url", "")
             server_url = "http://" + current_site + path
             reset_password_url = server_url + redirect_url
-
-            email_subject = "Reset your Techies Forum password"
-            email_body = (
-                "Hi {}, \n\n".format(user.username)
-                + "We have received a request to reset password for your Techies Forum account.\n"
-                + "Click to the link below to set a new password: \n\n"
-                + reset_password_url
-                + "\n\n"
-                + "If you did not send this request, please contact us at support@techiesforum.com\n\n"
-                + "Best,\n"
-                + "The Techie Forum Team"
-            )
-
-            data = {
-                "email_subject": email_subject,
-                "email_body": email_body,
-                "to_email": user.email,
-            }
-
+            data = EmailSender.compose_reset_password_notice(user, reset_password_url)
             EmailSender.send_email(data)
 
             return Response(
@@ -484,6 +466,32 @@ class ResetPasswordView(UpdateAPIView):
             data={"success": True, "message": "Password was reset successfully!"},
             status=status.HTTP_200_OK,
         )
+
+
+class DeleteAccountView(CreateAPIView):
+    """
+    Request to delete account temporarily by setting user non-active
+    """
+
+    queryset = User.objects.all()
+    permission_group = [IsAuthenticated]
+
+    def post(self, request):
+        user = User.objects.get(id=request.user.id)
+        user.is_active = False
+        user.save()
+        DeletedUser.objects.create(user=user)
+
+        # Send delete notification
+        data = EmailSender.compose_delete_account_notice(user)
+        EmailSender.send_email(data)
+
+        response = Response(status=status.HTTP_200_OK)
+        response.delete_cookie(settings.COOKIES["AUTH_COOKIE"])
+        response.delete_cookie(settings.COOKIES["AUTH_COOKIE_REFRESH"])
+        response.delete_cookie("csrftoken")
+
+        return response
 
 
 class ProfileViewSet(ModelViewSet):

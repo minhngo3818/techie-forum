@@ -17,9 +17,10 @@ from .views import (
     RequestResetPasswordView,
     ResetPasswordView,
     ConfirmResetPasswordUrlView,
+    ChangePasswordView,
+    DeleteAccountView,
     ProfileViewSet,
     ProjectViewSet,
-    ChangePasswordView,
 )
 
 router = DefaultRouter()
@@ -57,6 +58,7 @@ urlpatterns = [
         name="request-email-verification",
     ),
     path("user/change-email", ChangeEmailView.as_view(), name="email-change"),
+    path("user/delete-account", DeleteAccountView.as_view(), name="delete-account"),
     path(
         "user/auth/refresh", CookieTokenRefreshView.as_view(), name="token-refresh-view"
     ),

@@ -377,9 +377,6 @@ class RequestResetPasswordSerializer(serializers.Serializer):
     # Frontend send user email along with reset password route
     redirect_url = serializers.CharField(max_length=500, required=False)
 
-    class Meta:
-        fields = ["email"]
-
     def validate(self, attrs):
         if not User.objects.filter(email=attrs["email"]).exists():
             raise serializers.ValidationError({"email": "email does not exist"})
