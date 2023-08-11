@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { Warning } from "../../icons/icons";
+import React, { useState } from "react";
+import Router from "next/router";
+import { deleteAccount } from "../../../services/auth/auth-services";
 import PopupLayout from "../../utils/popup-layout/popup-layout";
 import styles from "../../../styles/Account.module.css";
 import uniqueStyles from "./DeleteAccount.module.css";
@@ -8,9 +8,23 @@ import uniqueStyles from "./DeleteAccount.module.css";
 export default function DeleteAccount() {
   const [isShow, setIsShow] = useState(false);
 
-  const handleShow = useCallback(() => {
+  const handleShow = () => {
     setIsShow((isShow) => !isShow);
-  }, []);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount()
+      setTimeout(() => {
+        Router.replace({
+          pathname: "/account-deleted",
+          query: { success: true },
+        });
+      }, 1200);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={styles.accountSection}>
@@ -30,10 +44,11 @@ export default function DeleteAccount() {
         headerTitle="WARNING"
         icon="warning"
         submitBtnName="DELETE"
+        handleSubmit={handleDeleteAccount}
         handleShow={{ isState: isShow, setState: handleShow }}
       >
         <p className={uniqueStyles.deleteText}>
-          Are you sure you want to <strong>delete</strong> account?
+          Are you sure you want to <strong>delete</strong> your account?
         </p>
       </PopupLayout>
     </div>

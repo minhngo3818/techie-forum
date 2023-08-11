@@ -1,6 +1,5 @@
 import axiosInst from "../axios/axios-instance";
 import { toastResponse } from "../../utils/toast-helper";
-import axios from "axios";
 import { IChangePasswordForm } from "../../interfaces/user/auth-interface";
 
 /**
@@ -79,4 +78,13 @@ export async function changePassword(data: IChangePasswordForm) {
     .catch((error) => {
       toastResponse("error", error.message);
     });
+}
+
+/**
+ * Temporarily delete user account
+ */
+export async function deleteAccount() {
+  return axiosInst.post("user/delete-account").catch((error) => {
+    toastResponse("error", error.message);
+  });
 }
