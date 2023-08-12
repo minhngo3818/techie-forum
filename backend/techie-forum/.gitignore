@@ -11,6 +11,7 @@ db.sqlite3
 # misc
 .DS_Store
 *.pem
+celerybeat-schedule
 
 # local env files
 .env*.local

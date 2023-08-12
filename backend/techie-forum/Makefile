@@ -12,6 +12,12 @@ venv: $(VENV)/bin/activate
 freeze:
 	pip list --format=freeze > requirements.txt
 
+celery-worker:
+	celery -A techies worker -l info
+
+celery-beat:
+	celery -A techies beat -l info
+
 run:
 	python3 manage.py runserver
 

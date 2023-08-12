@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from django.utils import timezone
+from celery.schedules import crontab
 from dotenv import load_dotenv
 import environ  # use django-environ
 import os
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
     "corsheaders",
+    "django_celery_results",
     # dev apps
     "user",
     "forum",
@@ -223,7 +226,7 @@ REST_FRAMEWORK = {
     # }
 }
 
-# TODO: Replace gmail with Sendgrid to Sendgrid and solve unable-to-send email issue
+# SMTP SERVICE
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = True
@@ -231,3 +234,17 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
+
+
+# AUTOMATIC JOBS SCHEDULER
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER")  # "redis://localhost:6379/0"
+CELERY_TIMEZONE = "UTC"
+
+CELERY_BEAT_SCHEDULE = {
+    "delete_inactive_users": {
+        "task": "user.tasks.delete_inactive_users",  # Updated task path
+        "schedule": crontab(minute=0, hour=0),
+        "args": {timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)},
+    },
+}
