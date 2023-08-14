@@ -15,7 +15,7 @@ export function toastResponse(type: string, message: string) {
       toast.success(message, defaultConfigs);
       break;
     case "error":
-      toast.success(message, defaultConfigs);
+      toast.error(message, defaultConfigs);
       break;
     case "warning":
       toast.warning(message, defaultConfigs);
