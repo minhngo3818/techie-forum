@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useCallback } from "react";
+import React, { ChangeEvent, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import PopupLayout from "../../../utils/popup-layout/popup-layout";
 import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
@@ -19,6 +19,7 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
   const router = useRouter();
   const originalAvatar = props.avatar;
   const [avatar, setAvatar] = useState<string>(props.avatar);
+  const avatarRef = useRef<HTMLInputElement>(null);
   const [isEditAvatar, setIsEditAvatar] = useState(false);
 
   // Avatar Cropper
@@ -96,7 +97,14 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
             setCrop={setCrop}
             croppedArea={croppedArea}
             setCroppedArea={setCroppedArea}
-            handleSelectedAvatar={handleSelectedAvatar}
+          />
+          <input
+            className="border border-white w-3/4 h-7 text-white"
+            name="avatar"
+            accept="image/jpeg,image/png,image/jpg"
+            type="file"
+            ref={avatarRef}
+            onChange={handleSelectedAvatar}
           />
         </div>
       </PopupLayout>

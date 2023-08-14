@@ -15,12 +15,9 @@ interface AvatarEditorType {
   setCrop: (value: Point) => void;
   croppedArea: ImageArea | null;
   setCroppedArea: (value: ImageArea | null) => void;
-  handleSelectedAvatar: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function AvatarEditor(props: AvatarEditorType) {
-  const avatarRef = useRef<HTMLInputElement>(null);
-
   const handleZoom = (e: ChangeEvent<HTMLInputElement>) => {
     props.setZoom(Number(e.target.value));
   };
@@ -87,7 +84,7 @@ export default function AvatarEditor(props: AvatarEditorType) {
                 onChange={handleRotation}
               />
             </div>
-            <div className={styles.avEditorTool}>
+            {/* <div className={styles.avEditorTool}>
               <input
                 className="border border-white w-3/4 h-7 text-white"
                 name="avatar"
@@ -96,7 +93,7 @@ export default function AvatarEditor(props: AvatarEditorType) {
                 ref={avatarRef}
                 onChange={props.handleSelectedAvatar}
               />
-            </div>
+            </div> */}
           </div>
         </React.Fragment>
       )}
