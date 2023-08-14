@@ -48,9 +48,9 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
     """
 
     projects = ProjectSerializer(many=True, required=False)
-    thread_counts = serializers.SerializerMethodField()
-    comment_counts = serializers.SerializerMethodField()
-    like_counts = serializers.SerializerMethodField()
+    thread_count = serializers.SerializerMethodField()
+    comment_count = serializers.SerializerMethodField()
+    like_count = serializers.SerializerMethodField()
     avatar = serializers.ImageField(required=False)
 
     class Meta:
@@ -67,21 +67,21 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             "linkedin",
             "indeed",
             "projects",
-            "thread_counts",
-            "comment_counts",
-            "like_counts",
+            "thread_count",
+            "comment_count",
+            "like_count",
         ]
 
     @classmethod
-    def get_thread_counts(cls, profile):
+    def get_thread_count(cls, profile):
         return Thread.objects.filter(author=profile.id).count()
 
     @classmethod
-    def get_comment_counts(cls, profile):
+    def get_comment_count(cls, profile):
         return Comment.objects.filter(author=profile.id).count()
 
     @classmethod
-    def get_like_counts(cls, profile):
+    def get_like_count(cls, profile):
         count = (
             BasePost.objects.filter(author=profile.id)
             .values("liked")
@@ -93,11 +93,13 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
     def create(self, validated_data):
         projects = validated_data.pop("projects", None)
 
-        with transaction.atomic():
-            profile_inst = Profile.objects.create(**validated_data)
-            project_inst = ProjectSerializer(data=projects, many=True)
-            project_inst.is_valid(raise_exception=True)
-            project_inst.save(owner=profile_inst)
+        profile_inst = Profile.objects.create(**validated_data)
+
+        if projects:
+            with transaction.atomic():
+                project_inst = ProjectSerializer(data=projects, many=True)
+                project_inst.is_valid(raise_exception=True)
+                project_inst.save(owner=profile_inst)
 
         return profile_inst
 
