@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  Dispatch,
-  ChangeEvent,
-} from "react";
+import React, { useState, ChangeEvent } from "react";
 import IProject from "../../../../interfaces/project/project";
 import ProjectInner from "./project-inner";
 import { Tab, Transition } from "@headlessui/react";

@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 
 export default function useMultistepForm(steps: string[]) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -9,6 +9,7 @@ export default function useMultistepForm(steps: string[]) {
       return index + 1;
     });
   }
+
   function prev() {
     setCurrentIndex((index) => {
       if (index < 0) return 0;

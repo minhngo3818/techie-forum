@@ -13,7 +13,7 @@ type Required = { required?: boolean };
 export type EventTargetNameValue = {
   target: {
     name: string;
-    value: string;
+    value: string | File;
   };
 };
 

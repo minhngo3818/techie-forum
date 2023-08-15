@@ -14,7 +14,7 @@ export default function DeleteAccount() {
 
   const handleDeleteAccount = async () => {
     try {
-      await deleteAccount()
+      await deleteAccount();
       setTimeout(() => {
         Router.replace({
           pathname: "/account-deleted",
