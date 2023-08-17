@@ -16,76 +16,84 @@ export default function Navbar(props: NavbarProps) {
   const { user, logout } = useAuth();
   const { dependentRef, ref, isShow, setIsShow } = useShowComponent(false);
 
+  function UnAuthNav(): JSX.Element {
+    return (
+      <>
+        <Link
+          href="/login"
+          className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
+        >
+          Login
+        </Link>
+        <Link
+          href="/register"
+          className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
+        >
+          Register
+        </Link>
+      </>
+    );
+  }
+
+  function AuthNav(): JSX.Element {
+    return (
+      <div className="relative w-36 h-8 mr-4">
+        <button
+          id="user-dropdowns"
+          type="button"
+          className={`${styles.navLoginBtn} ${styles.navLoginUser} ${
+            isShow && styles.navUserDropdwnActive
+          }`}
+          ref={ref}
+          onClick={() => setIsShow(!isShow)}
+        >
+          {user?.username}
+        </button>
+        <Tooltip
+          anchorId="user-dropdowns"
+          content="User Navs"
+          events={["hover"]}
+        />
+        {isShow && (
+          <div className={styles.navDropdownWrapper}>
+            <Link
+              href={`/profile/${
+                user?.profile_name !== null ? user?.profile_name : "create"
+              }`}
+              className={`${styles.navDropdown} + ${styles.navDropdownLink}`}
+            >
+              Profile
+            </Link>
+            <hr className="w-5/6" />
+            <Link
+              href="/user/account"
+              className={`${styles.navDropdown} + ${styles.navDropdownLink}`}
+            >
+              Account
+            </Link>
+            <hr className="w-5/6" />
+            <button
+              className={`${styles.navDropdown} + ${styles.navDropdownLogout}`}
+              role="button"
+              onMouseDown={logout}
+            >
+              Log Out
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.navWrapper}>
         <div aria-label="brand" className={styles.navBrandWrapper}>
-          <Link href="/" className={styles.navBrand}>
+          <Link href={user ? "/forum" : "/"} className={styles.navBrand}>
             Techies Forum
           </Link>
         </div>
-        {!user ? (
-          <React.Fragment>
-            <Link
-              href="/login"
-              className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
-            >
-              Register
-            </Link>
-          </React.Fragment>
-        ) : (
-          <div className="relative w-36 h-8 mr-4">
-            <button
-              id="user-dropdowns"
-              type="button"
-              className={`${styles.navLoginBtn} ${styles.navLoginUser} ${
-                isShow && styles.navUserDropdwnActive
-              }`}
-              ref={ref}
-              onClick={() => setIsShow(!isShow)}
-            >
-              {user.username}
-            </button>
-            <Tooltip
-              anchorId="user-dropdowns"
-              content="User Navs"
-              events={["hover"]}
-            />
-            {isShow && (
-              <div className={styles.navDropdownWrapper}>
-                <Link
-                  href={`/profile/${
-                    user.profile_name !== null ? user.profile_name : "create"
-                  }`}
-                  className={`${styles.navDropdown} + ${styles.navDropdownLink}`}
-                >
-                  Profile
-                </Link>
-                <hr className="w-5/6" />
-                <Link
-                  href="/user/account"
-                  className={`${styles.navDropdown} + ${styles.navDropdownLink}`}
-                >
-                  Account
-                </Link>
-                <hr className="w-5/6" />
-                <button
-                  className={`${styles.navDropdown} + ${styles.navDropdownLogout}`}
-                  role="button"
-                  onMouseDown={logout}
-                >
-                  Log Out
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        {!user ? <UnAuthNav /> : <AuthNav />}
         <button
           id="sidebar-toggle"
           className={
