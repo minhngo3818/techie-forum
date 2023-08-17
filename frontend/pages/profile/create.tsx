@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
+import Router from "next/router";
 import PageTitle from "../../components/utils/page-title/page-title";
 import { IProfileForm } from "../../interfaces/profile/profile";
-import ProjectInterface from "../../interfaces/project/project";
+import IProject from "../../interfaces/project/project";
 import {
   EventTargetNameValue,
   FormEvent,
@@ -11,6 +11,11 @@ import {
 import { useMutation } from "react-query";
 import { createProfile } from "../../services/user/profile/profile-services";
 import { AxiosError } from "axios";
+import useAuth from "../../services/auth/auth-provider";
+import useMultistepForm from "../../hooks/useMultistepForm";
+import { Tab } from "@headlessui/react";
+import { FadeLoader } from "react-spinners";
+import styles from "../../styles/ProfileCreation.module.css";
 const BasicInfo = dynamic(
   () =>
     import("../../components/form/form-profile-creation/basic-info/basic-info"),
@@ -30,24 +35,14 @@ const Submission = dynamic(
     import("../../components/form/form-profile-creation/submission/submission"),
   { ssr: false }
 );
-import { Tab } from "@headlessui/react";
-import useMultistepForm from "../../hooks/useMultistepForm";
-import { FadeLoader } from "react-spinners";
-import styles from "../../styles/ProfileCreation.module.css";
-import useAuth from "../../services/auth/auth-provider";
 
 //  Empty data objects
-const emptyProject: ProjectInterface = {
+const emptyProject: IProject = {
   title: "",
-};
-
-const emptyProfile: IProfileForm = {
-  projects: [emptyProject],
 };
 
 export default function ProfileCreation() {
   const { user } = useAuth();
-  const router = useRouter();
 
   // Tabs
   let tabs = ["Info", "Links", "Projects", "Submission"];
@@ -66,6 +61,15 @@ export default function ProfileCreation() {
     }
   }, [currentIndex]);
 
+  useEffect(() => {
+    if (user?.username && !profile.profile_name) {
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        profile_name: user.username,
+      }));
+    }
+  }, [user]);
+
   const {
     mutate: performCreateProfile,
     isLoading,
@@ -74,51 +78,30 @@ export default function ProfileCreation() {
     error,
   } = useMutation(createProfile);
 
-  // Data handlers
-  /**
-   * Update profile inputs, exclude projects
-   */
   const handleChangeProfile = ({
     target: { name, value },
   }: EventTargetNameValue) => {
     setProfile((object) => ({ ...object, [name]: value }));
   };
 
-  /**
-   * Add an empty project to the project list of profile
-   */
-  const handleAddProject = useCallback(
-    (id: string) => {
-      let newProjectList = [...(profile.projects ?? [])];
-      newProjectList.push(emptyProject);
-      setProfile({ ...profile, projects: newProjectList });
-    },
-    [profile]
-  );
+  const handleAddProject = useCallback(() => {
+    let newProjectList = [...(profile.projects ?? [])];
+    newProjectList.push(emptyProject);
+    setProfile({ ...profile, projects: newProjectList });
+  }, [profile]);
 
-  /**
-   * Remove a project by rendered id
-   */
   const handleRemoveProject = useCallback(
     (index: number) => {
-      console.log(index);
       let newProjectList = [...(profile.projects ?? [])];
-      console.log(newProjectList);
       newProjectList.splice(index, 1);
-      console.log(newProjectList);
       setProfile({ ...profile, projects: newProjectList });
     },
     [profile]
   );
 
-  /**
-   * Change the input of a project corresponding to its id
-   */
   const handleChangeProject = useCallback(
     (index: number, { target: { name, value } }: EventTargetNameValue) => {
-      let newProjectList = [
-        ...(profile.projects ?? []),
-      ] as Array<ProjectInterface>;
+      let newProjectList = [...(profile.projects ?? [])] as Array<IProject>;
       newProjectList[index] = { ...newProjectList[index], [name]: value };
       setProfile({ ...profile, projects: newProjectList });
     },
@@ -126,10 +109,15 @@ export default function ProfileCreation() {
   );
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    /**
+     * TODO: solve set avatar file problem and send blob with data form
+     * Error 1:click choose file will jump page
+     */
     e.preventDefault();
     performCreateProfile(profile);
   };
 
+  // RENDERING SIGNALS
   if (isLoading) {
     return (
       <div className={styles.veNoneSuccessWrapper}>
@@ -145,6 +133,12 @@ export default function ProfileCreation() {
         <h2 className={styles.veText}>{resError?.message}</h2>
       </div>
     );
+  }
+
+  if (isSuccess) {
+    setTimeout(() => {
+      Router.push("/forum");
+    }, 1200);
   }
 
   return (

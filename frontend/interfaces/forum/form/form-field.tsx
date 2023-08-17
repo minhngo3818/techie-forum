@@ -9,11 +9,12 @@ type Placeholder = { placeholder?: string };
 type Value<T> = { value?: T };
 type DefaultValue<T> = { defaultValue?: T };
 type Required = { required?: boolean };
+type FileName = { fileName?: string };
 
 export type EventTargetNameValue = {
   target: {
     name: string;
-    value: string | File;
+    value: string | Blob;
   };
 };
 
@@ -39,7 +40,8 @@ interface FieldProps<E, F, V>
     OnChange<E>,
     InnerRef<E>,
     DefaultValue<V>,
-    Value<V> {
+    Value<V>,
+    FileName {
   fieldType: F;
 }
 

@@ -32,7 +32,6 @@ export function AuthProvider({ children }: { children: ReactElement }) {
     let userTraits = sessionStorage.getItem("techie:traits");
 
     if (userTraits) {
-      console.log(userTraits);
       let userObject = JSON.parse(userTraits);
       setUser(userObject);
     }

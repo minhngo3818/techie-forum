@@ -1,18 +1,26 @@
-import React, { ChangeEvent, useState, useRef, useCallback } from "react";
+import React, {
+  ChangeEvent,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import { Tab, Transition } from "@headlessui/react";
 import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
+import { Point } from "react-easy-crop";
+import { ImageArea } from "../../../utils/avatar-editor/crop-image-helper";
+import getCroppedImg from "../../../utils/avatar-editor/crop-image-helper";
 import HorzField from "../../field-horizontal/horizontal-field";
 import generalStyles from "../ProfileCreationForm.module.css";
 import { CaretRightFilled } from "../../../icons/icons";
+import { EventTargetNameValue } from "../../../../interfaces/forum/form/form-field";
 
 interface BasicInfoType {
   isShow: boolean;
   name: string;
   about: string;
   avatar: string;
-  onChange: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChange: (event: EventTargetNameValue) => void;
   nextTab: () => void;
 }
 
@@ -22,14 +30,37 @@ function BasicInfo(props: BasicInfoType) {
   const avatarRef = useRef<HTMLInputElement>(null);
 
   // Avatar editor
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState<string>("");
+  const [avatarName, setAvatarName] = useState<string>("");
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [rotation, setRotation] = useState(0);
+  const [croppedArea, setCroppedArea] = useState<ImageArea | null>(null);
 
-  const handleChangeImage = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      let avatarUrl = URL.createObjectURL(event.target.files[0]);
-      setAvatar(avatarUrl);
+  useEffect(() => {
+    if (croppedArea) {
+      getCroppedImg(avatar, croppedArea, rotation).then((value) => {
+        if (value) {
+          let avatarData = { target: { name: "avatar", value: value.file } };
+          props.onChange(avatarData);
+        }
+      });
     }
-  };
+  }, [crop, zoom, rotation, croppedArea, avatar, props.avatar]);
+
+  const handleChangeImage = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0];
+        let avatarUrl = URL.createObjectURL(file);
+        setAvatar(avatarUrl);
+        setAvatarName(file.name);
+        let avatarData = { target: { name: "avatar", value: file } };
+        props.onChange(avatarData);
+      }
+    },
+    [props.avatar]
+  );
 
   return (
     <Tab.Panel as="div">
@@ -94,11 +125,22 @@ function BasicInfo(props: BasicInfoType) {
                 label="Avatar"
                 name="avatar"
                 type="file"
+                fileName={avatarName}
                 onChange={handleChangeImage}
                 fieldType="input"
               />
             </Transition.Child>
-            <AvatarEditor avatar={avatar} />
+            <AvatarEditor
+              avatar={avatar as string}
+              zoom={zoom}
+              setZoom={setZoom}
+              rotation={rotation}
+              setRotation={setRotation}
+              crop={crop}
+              setCrop={setCrop}
+              croppedArea={croppedArea}
+              setCroppedArea={setCroppedArea}
+            />
           </div>
           <div className={generalStyles.procreChangeTabWrapper}>
             <button
