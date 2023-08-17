@@ -1,15 +1,28 @@
 .horzFieldWrapper {
-  @apply relative grid grid-flow-row grid-cols-3 max-w-[560px] w-full min-h-[32px] h-auto my-2;
+  @apply relative grid grid-flow-row grid-cols-3 max-w-[560px] 
+  w-full min-h-[32px] h-auto my-2;
 }
 
 .horzFieldLabel {
-  @apply col-span-1 flex justify-center items-center max-w-[120px] w-full h-9
-  text-black font-medium bg-white px-2 py-1;
+  @apply col-span-1 flex justify-center items-center max-w-[120px] 
+  w-full h-9 text-black font-medium bg-white px-2 py-1;
 }
 
 .horzField {
-  @apply col-span-2 w-full min-h-[32px] h-auto border-2 border-gray 
-  text-gray bg-black hover:border-white 
-  focus:border-white focus:text-white
-  outline-none px-3 py-1 duration-200;
+  @apply flex items-center col-span-2 w-full min-h-[32px] h-auto 
+  border-2 border-gray text-gray bg-black hover:border-white 
+  focus:text-white outline-none px-3 py-1 duration-200;
+}
+
+.horzInput {
+  @apply border-none outline-none bg-transparent w-full focus:text-white duration-200;
+}
+
+.horzSelectFileBtn {
+  @apply px-2 text-black bg-white hover:text-white 
+  hover:bg-gray duration-200;
+}
+
+.horzFileName {
+  @apply absolute ml-28 text-gray bg-black;
 }
