@@ -109,10 +109,6 @@ export default function ProfileCreation() {
   );
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    /**
-     * TODO: solve set avatar file problem and send blob with data form
-     * Error 1:click choose file will jump page
-     */
     e.preventDefault();
     performCreateProfile(profile);
   };
