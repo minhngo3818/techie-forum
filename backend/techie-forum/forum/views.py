@@ -45,6 +45,9 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
         return self.queryset
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user.profile)
+
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile, updated_at=timezone.now())
 

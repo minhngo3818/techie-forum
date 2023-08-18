@@ -267,6 +267,7 @@ class ThreadSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = (
             "id",
+            "author",
             "category",
             "created_at",
             "is_active",
