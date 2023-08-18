@@ -12,23 +12,23 @@ const forumLinks = [
     path: "algorithm",
   },
   {
-    name: "System",
-    path: "system",
+    name: "OS",
+    path: "os",
   },
   {
-    name: "Langs",
-    path: "langs",
+    name: "Languages",
+    path: "languages",
   },
   {
     name: "DevOps",
     path: "devops",
   },
   {
-    name: "Game",
-    path: "game",
+    name: "Game Dev",
+    path: "game-dev",
   },
   {
-    name: "AI",
+    name: "A.I.",
     path: "ai",
   },
 ];

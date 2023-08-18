@@ -1,8 +1,10 @@
 CATEGORIES = [
-    ("web-design", "Web Design"),
+    ("ai", "A.I."),
     ("os", "OS"),
     ("game-dev", "Game Dev"),
-    ("server", "Server"),
-    ("cybersecurity", "Cybersecurity"),
+    ("frontend", "Frontend"),
+    ("backend", "Backend"),
+    ("algorithm", "Algorithm"),
+    ("devops", "DevOps"),
     ("languages", "Languages"),
 ]
