@@ -4,13 +4,13 @@ import React, {
   useRef,
   ChangeEvent,
   MouseEvent,
+  useEffect,
 } from "react";
+import Router from "next/router";
 import Image from "next/image";
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
-import {
-  ThreadBodyInterface,
-  TagInterface,
-} from "../../../interfaces/forum/post/post";
+import { ThreadBodyInterface } from "../../../interfaces/forum/post/post";
+import { postThread } from "../../../services/forum/thread/thread-service";
 import BaseField from "../field-base/base-field";
 import TagField from "../field-tag/tag-field";
 import { useAddTag, useRemoveTag } from "../field-tag/function/handleTag";
@@ -26,19 +26,23 @@ interface ThreadFormType {
   category: string;
 }
 
-const initialState: ThreadBodyInterface = {
-  title: "",
-  content: "",
-  images: [],
-  tags: new Set() as Set<TagInterface>,
-};
-
 export default function ThreadForm(props: ThreadFormType) {
-  const [thread, setThread] = useState(initialState);
+  const initialState: ThreadBodyInterface = {
+    category: props.category,
+    title: "",
+    content: "",
+    tags: new Set() as Set<string>,
+  };
+
+  const [thread, setThread] = useState<ThreadBodyInterface>(initialState);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   useAutosizeTextArea(contentRef.current, thread.content);
+
+  useEffect(() => {
+    setThread({ ...thread, category: props.category });
+  }, [props.category]);
 
   const preventEnterKey = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === "Enter") {
@@ -70,16 +74,20 @@ export default function ThreadForm(props: ThreadFormType) {
 
   const handleRemoveTag = useRemoveTag(thread.tags, setThread);
 
-  const handleOnSubmit = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      console.log(thread);
-    },
-    [thread]
-  );
+  const handleOnSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      await postThread(thread);
+      setThread(initialState);
+      setTimeout(() => {
+        Router.reload();
+      }, 1200);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    // Wrapp transition with div
     <Transition
       as="div"
       className={styles.threadFormWrapper}

@@ -4,18 +4,14 @@ type ParentCommentId = { pcid?: string };
 type Author = { author: string };
 type AuthorId = { authorId: string };
 type Avatar = { avatar: string };
+type Category = { category: string };
 type Title = { title: string };
 type PostDate = { date: Date };
 type Content = { content: string };
 type Depth = { depth?: number };
 type Memorized = { memorized?: boolean };
-type Images = { images?: string[] };
+type Images = { images?: string[] }; // TODO: improve for posting images
 type Likes = { likes?: number };
-
-export interface TagInterface {
-  name: string;
-  date?: Date;
-}
 
 export interface CommentInterface
   extends PostId,
@@ -32,8 +28,8 @@ export interface CommentInterface
   comments?: CommentInterface[];
 }
 
-export interface ThreadBodyInterface extends Title, Content, Images {
-  tags: Set<TagInterface>;
+export interface ThreadBodyInterface extends Category, Title, Content, Images {
+  tags: Set<string>;
 }
 
 export interface ThreadInterface

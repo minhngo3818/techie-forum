@@ -5,57 +5,58 @@ import Thread from "../../components/forum/thread/thread";
 const ThreadForm = dynamic(
   () => import("../../components/form/form-thread/thread-form")
 );
-import {
-  TagInterface,
-  ThreadInterface,
-} from "../../interfaces/forum/post/post";
+import { ThreadInterface } from "../../interfaces/forum/post/post";
 import searchFilterThread from "../../utils/searchFilterThread";
 import forumLinks from "../../page-paths/forum";
 import styles from "../../styles/Forum.module.css";
 
 // Helper function convert json data to ThreadUserInterface data
 // Temporary use for testing rending frontend
-function convertData(data: any) {
-  let newData: ThreadInterface[] = [];
-  for (let i = 0; i < data?.length; i += 1) {
-    let dateObj = data[i].date.split("/");
-    let thread: ThreadInterface = {
-      id: data[i].id,
-      author: data[i].author,
-      authorId: data[i].authorId,
-      avatar: data[i].avatar,
-      date: new Date(dateObj[2], dateObj[0] - 1, dateObj[1]),
-      title: data[i].title,
-      content: data[i].content,
-      tags: new Set<TagInterface>(data[i].tags),
-      memorized: data[i].memorized,
-      likes: data[i].numOfLikes,
-    };
-    newData.push(thread);
-  }
+// function convertData(data: any) {
+//   let newData: ThreadInterface[] = [];
+//   for (let i = 0; i < data?.length; i += 1) {
+//     let dateObj = data[i].date.split("/");
+//     let thread: ThreadInterface = {
+//       id: data[i].id,
+//       author: data[i].author,
+//       authorId: data[i].authorId,
+//       avatar: data[i].avatar,
+//       date: new Date(dateObj[2], dateObj[0] - 1, dateObj[1]),
+//       title: data[i].title,
+//       content: data[i].content,
+//       tags: new Set<TagInterface>(data[i].tags),
+//       memorized: data[i].memorized,
+//       likes: data[i].numOfLikes,
+//     };
+//     newData.push(thread);
+//   }
 
-  return newData;
-}
+//   return newData;
+// }
 
 export default function Field() {
-  // Current Page
-  // TODO: Solve the error that cause router.query.page does not work
-  //    when reloading the page
   const router = useRouter();
-  let currentPageRoute = router.query.field;
-  console.log(currentPageRoute);
-  let linkObj = forumLinks.find((link) => link.path === currentPageRoute);
-  let currentPage = linkObj?.name ?? "Forum does not exist";
-
-  // States
+  // let currentPageRoute = router.query.field;
+  // console.log(currentPageRoute);
+  // let linkObj = forumLinks.find((link) => link.path === currentPageRoute);
+  // let currentPage = linkObj?.name ?? "Forum does not exist";
+  const [forumName, setForumName] = useState("");
+  const [category, setCategory] = useState("");
   const [threadList, setThreadList] = useState<ThreadInterface[]>([]);
   const [isThreadForm, setThreadForm] = useState(false);
   const [filter, setFilter] = useState(false);
   const [search, setSearch] = useState("");
-
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // Handlers
+  useEffect(() => {
+    let field = router.query.field;
+    if (field) {
+      let pathObj = forumLinks.find((link) => link.path === field);
+      setForumName(pathObj?.name as string);
+      setCategory(field as string);
+    }
+  }, [router.query]);
+
   const handleFilterData = useCallback(() => {
     setFilter((filter) => !filter);
   }, []);
@@ -67,24 +68,24 @@ export default function Field() {
     []
   );
 
-  const handleOpenThreadForm = useCallback(() => {
+  const handleOpenThreadForm = () => {
     setThreadForm(!isThreadForm);
-  }, [isThreadForm]);
+  };
 
   const threads = [] as ThreadInterface[];
   const avatar = "/king-crimson.jpg";
   const images = [] as string[];
   const date = new Date(Date.now());
-  const tags = new Set<TagInterface>();
-  tags.add({ name: "Python" });
-  tags.add({ name: "Typescript" });
-  tags.add({ name: "C++" });
-  tags.add({ name: "SQL" });
-  tags.add({ name: "llvm" });
+  const tags = new Set<string>();
+  tags.add("Python");
+  tags.add("Typescript");
+  tags.add("C++");
+  tags.add("SQL");
+  tags.add("llvm");
 
   return (
     <div className={styles.forumContainer}>
-      <h2 className={styles.forumHeader}>&gt;_ {currentPage}</h2>
+      <h2 className={styles.forumHeader}>&gt;_ {forumName}</h2>
       <div className={styles.forumToolBar}>
         <button
           type="button"
@@ -117,7 +118,7 @@ export default function Field() {
           />
         </div>
       </div>
-      <ThreadForm isShow={isThreadForm} category={currentPage} />
+      <ThreadForm isShow={isThreadForm} category={category} />
       {threads
         .filter((thread) => searchFilterThread(thread, filter, search))
         .map((thread, index) => {
@@ -130,6 +131,7 @@ export default function Field() {
               authorId={thread.authorId}
               avatar={avatar}
               date={date}
+              category={thread.category}
               title={thread.title}
               content={thread.content}
               likes={thread.likes}

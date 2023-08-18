@@ -63,6 +63,7 @@ export default function Thread(props: ThreadType) {
   ];
 
   const [thread, setThread] = useState<ThreadBodyInterface>({
+    category: props.category,
     title: props.title,
     content: props.content,
     tags: props.tags,
@@ -74,28 +75,28 @@ export default function Thread(props: ThreadType) {
   const [isCommentForm, setIsComment] = useState(false);
   const [showComments, setShowComments] = useState(false);
 
-  const handleIsLike = useCallback(() => {
+  const handleIsLike = () => {
     // Call api to update data
     setIsLike((isLike) => !isLike);
-  }, []);
+  };
 
-  const handleIsMemorized = useCallback(() => {
+  const handleIsMemorized = () => {
     setIsMemorized((isMemorized) => !isMemorized);
-  }, []);
+  };
 
-  const handleIsEdit = useCallback(() => {
+  const handleIsEdit = () => {
     // Call api to update data
     setIsEdit((isEdit) => !isEdit);
-  }, []);
+  };
 
-  const handleIsCommentForm = useCallback(() => {
+  const handleIsCommentForm = () => {
     // Call api to update data
     setIsComment((isComment) => !isComment);
-  }, []);
+  };
 
-  const handleShowComments = useCallback(() => {
+  const handleShowComments = () => {
     setShowComments((showComments) => !showComments);
-  }, []);
+  };
 
   // Thread
   const handleThreadChange = useCallback(

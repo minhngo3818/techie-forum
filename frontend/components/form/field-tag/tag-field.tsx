@@ -8,17 +8,17 @@ import React, {
 } from "react";
 import styles from "./TagField.module.css";
 import { ClosePixel } from "../../icons/icons";
-import { TagInterface } from "../../../interfaces/forum/post/post";
+// import { string } from "../../../interfaces/forum/post/post";
 
 interface TagFieldType {
-  tags: Set<TagInterface>;
+  tags: Set<string>;
   isLabel?: boolean;
-  onRemove: (tag: TagInterface) => void;
-  onAdd: (tag: TagInterface) => void;
+  onRemove: (tag: string) => void;
+  onAdd: (tag: string) => void;
 }
 
 export default function TagField(props: TagFieldType) {
-  const [tag, setTag] = useState({ name: "" } as TagInterface);
+  const [tag, setTag] = useState("");
   const tagRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -29,13 +29,13 @@ export default function TagField(props: TagFieldType) {
 
   const handleChangeTag = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      setTag({ ...tag, name: event.target?.value });
+      setTag(event.target?.value);
     },
     [tag]
   );
 
   const handleRemoveTag = useCallback(
-    (tag: TagInterface) => {
+    (tag: string) => {
       console.log("Remove was clicked");
       props.onRemove(tag);
     },
@@ -46,7 +46,7 @@ export default function TagField(props: TagFieldType) {
     (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         props.onAdd(tag);
-        setTag({ name: "" } as TagInterface);
+        setTag("");
       }
     },
     [tag, props]
@@ -59,8 +59,8 @@ export default function TagField(props: TagFieldType) {
         <ul className={styles.tagFieldList}>
           {Array.from(props.tags).map((tag) => {
             return (
-              <li key={tag.name} className={styles.tagFieldItem}>
-                <p className={styles.tagFieldName}>{tag.name}</p>
+              <li key={tag} className={styles.tagFieldItem}>
+                <p className={styles.tagFieldName}>{tag}</p>
                 <button
                   className={styles.tagFieldBtn}
                   onClick={() => handleRemoveTag(tag)}
@@ -76,7 +76,7 @@ export default function TagField(props: TagFieldType) {
           name="tag-field"
           type="input"
           ref={tagRef}
-          value={tag.name}
+          value={tag}
           onChange={handleChangeTag}
           onKeyUp={handleKeyDown}
           placeholder="Enter to add tag"

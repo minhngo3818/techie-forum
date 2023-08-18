@@ -5,14 +5,11 @@ import {
   useAddTag,
   useRemoveTag,
 } from "../../../form/field-tag/function/handleTag";
-import {
-  ThreadBodyInterface,
-  TagInterface,
-} from "../../../../interfaces/forum/post/post";
+import { ThreadBodyInterface } from "../../../../interfaces/forum/post/post";
 
 interface ThreadTagsType {
   isEdit: boolean;
-  tags: Set<TagInterface>;
+  tags: Set<string>;
   setThread: Dispatch<SetStateAction<ThreadBodyInterface>>;
 }
 
@@ -25,8 +22,8 @@ export default function ThreadTags(props: ThreadTagsType) {
       {!props.isEdit ? (
         Array.from(props.tags).map((tag) => {
           return (
-            <p key={tag.name} className={styles.threadTag}>
-              {tag.name}
+            <p key={tag} className={styles.threadTag}>
+              {tag}
             </p>
           );
         })
