@@ -7,6 +7,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.conf import settings
 from django.db import transaction
 from django.db.models import Q
+import json
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import AuthenticationFailed
@@ -89,6 +90,26 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             .count()
         )
         return count
+
+    def to_internal_value(self, data):
+
+        # parse projects string into array of project
+        projects_list = []
+        if "projects" in data:
+            try:
+                projects_list = json.loads(data["projects"])
+            except json.JSONDecodeError:
+                # Handle invalid JSON input
+                raise serializers.ValidationError("Invalid JSON for projects")
+
+        new_data = {key: value for key, value in data.items() if key != "projects"}
+        new_data["projects"] = projects_list
+
+        return new_data
+
+    def validate(self, attrs):
+        print("validate: ", attrs)
+        return super().validate(attrs)
 
     def create(self, validated_data):
         projects = validated_data.pop("projects", None)

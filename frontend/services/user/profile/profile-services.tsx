@@ -116,12 +116,12 @@ function checkAndRemoveProjects(
 
   if (projects.length === 1 && projects[0].title === "") return null;
 
-  let processedProjects = projects.slice();
-  for (let i = 0; i < projects.length; i += 1) {
-    if (processedProjects[i].title === "") {
-      processedProjects.splice(i, 1);
+  let parsedProjects = [] as IProject[];
+  projects.forEach((project) => {
+    if (project.title !== "" || project.title !== null) {
+      parsedProjects.push(Object.assign({}, project));
     }
-  }
+  });
 
-  return processedProjects;
+  return parsedProjects;
 }
