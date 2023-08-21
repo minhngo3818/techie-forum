@@ -32,7 +32,7 @@ export interface ThreadBodyInterface extends Category, Title, Content, Images {
   tags: Set<string>;
 }
 
-export interface ThreadInterface
+export interface IThread
   extends PostId,
     Author,
     AuthorId,

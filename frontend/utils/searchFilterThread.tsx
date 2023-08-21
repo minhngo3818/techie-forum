@@ -1,7 +1,7 @@
-import { ThreadInterface } from "../interfaces/forum/post/post";
+import { IThread } from "../interfaces/forum/post/post";
 
 export default function searchFilterThread(
-  data: ThreadInterface,
+  data: IThread,
   filterKey: boolean,
   searchKey: string
 ) {

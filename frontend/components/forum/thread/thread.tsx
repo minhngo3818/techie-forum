@@ -12,14 +12,14 @@ const CommentForm = dynamic(
   () => import("../../form/form-comment/comment-form")
 );
 import {
-  ThreadInterface,
+  IThread,
   ThreadBodyInterface,
   CommentInterface,
 } from "../../../interfaces/forum/post/post";
 import styles from "./Thread.module.css";
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
 
-interface ThreadType extends ThreadInterface {
+interface ThreadType extends IThread {
   keyId: number;
 }
 
