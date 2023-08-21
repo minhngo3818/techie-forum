@@ -1,9 +1,9 @@
 import { SetStateAction, Dispatch, useCallback } from "react";
-import { ThreadBodyInterface } from "../../../../interfaces/forum/post/post";
+import { IThreadBody } from "../../../../interfaces/forum/post/post";
 
 export function useAddTag(
   tags: Set<string>,
-  setThread: Dispatch<SetStateAction<ThreadBodyInterface>>
+  setThread: Dispatch<SetStateAction<IThreadBody>>
 ) {
   return useCallback(
     (tag: string) => {
@@ -17,7 +17,7 @@ export function useAddTag(
 
 export function useRemoveTag(
   tags: Set<string>,
-  setThread: Dispatch<SetStateAction<ThreadBodyInterface>>
+  setThread: Dispatch<SetStateAction<IThreadBody>>
 ) {
   return useCallback(
     (tag: string) => {

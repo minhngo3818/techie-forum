@@ -28,7 +28,7 @@ export interface CommentInterface
   comments?: CommentInterface[];
 }
 
-export interface ThreadBodyInterface extends Category, Title, Content, Images {
+export interface IThreadBody extends Category, Title, Content, Images {
   tags: Set<string>;
 }
 
@@ -40,7 +40,7 @@ export interface IThread
     PostDate,
     Likes,
     Memorized,
-    ThreadBodyInterface {
+    IThreadBody {
   comments?: CommentInterface[];
 }
 

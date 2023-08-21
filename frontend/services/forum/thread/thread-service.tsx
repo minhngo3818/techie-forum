@@ -1,4 +1,4 @@
-import { ThreadBodyInterface } from "../../../interfaces/forum/post/post";
+import { IThreadBody } from "../../../interfaces/forum/post/post";
 import {
   toastResponse,
   toastDelayedSeqMessage,
@@ -17,7 +17,7 @@ export async function getThread(id: string) {
   return response;
 }
 
-export async function postThread(data: ThreadBodyInterface) {
+export async function postThread(data: IThreadBody) {
   const formData = composeFormData(data);
 
   return await axiosInst
@@ -32,7 +32,7 @@ export async function postThread(data: ThreadBodyInterface) {
     });
 }
 
-export async function updateThread(id: string, data: ThreadBodyInterface) {
+export async function updateThread(id: string, data: IThreadBody) {
   const response = await axiosInst.patch(`forum/thread/${id}/`, data);
 
   return response;
@@ -47,11 +47,11 @@ export async function deleteThread(id: string) {
 /**
  * HELPERS
  */
-function composeFormData(data: ThreadBodyInterface) {
+function composeFormData(data: IThreadBody) {
   let formData = new FormData();
 
   for (var key in data) {
-    let value = data[key as keyof ThreadBodyInterface];
+    let value = data[key as keyof IThreadBody];
 
     if (key === "tags" && value instanceof Set) {
       let tags = Array.from(value);

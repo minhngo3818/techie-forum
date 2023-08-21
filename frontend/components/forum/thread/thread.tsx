@@ -13,7 +13,7 @@ const CommentForm = dynamic(
 );
 import {
   IThread,
-  ThreadBodyInterface,
+  IThreadBody,
   CommentInterface,
 } from "../../../interfaces/forum/post/post";
 import styles from "./Thread.module.css";
@@ -60,7 +60,7 @@ export default function Thread(props: ThreadType) {
     },
   ];
 
-  const [thread, setThread] = useState<ThreadBodyInterface>({
+  const [thread, setThread] = useState<IThreadBody>({
     category: props.category,
     title: props.title,
     content: props.content,

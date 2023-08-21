@@ -9,7 +9,7 @@ import React, {
 import Router from "next/router";
 import Image from "next/image";
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
-import { ThreadBodyInterface } from "../../../interfaces/forum/post/post";
+import { IThreadBody } from "../../../interfaces/forum/post/post";
 import { postThread } from "../../../services/forum/thread/thread-service";
 import BaseField from "../field-base/base-field";
 import TagField from "../field-tag/tag-field";
@@ -27,14 +27,14 @@ interface ThreadFormType {
 }
 
 export default function ThreadForm(props: ThreadFormType) {
-  const initialState: ThreadBodyInterface = {
+  const initialState: IThreadBody = {
     category: props.category,
     title: "",
     content: "",
     tags: new Set() as Set<string>,
   };
 
-  const [thread, setThread] = useState<ThreadBodyInterface>(initialState);
+  const [thread, setThread] = useState<IThreadBody>(initialState);
   const [reviewedImages, setReviewedImages] = useState<string[]>([]);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);

@@ -5,12 +5,12 @@ import {
   useAddTag,
   useRemoveTag,
 } from "../../../form/field-tag/function/handleTag";
-import { ThreadBodyInterface } from "../../../../interfaces/forum/post/post";
+import { IThreadBody } from "../../../../interfaces/forum/post/post";
 
 interface ThreadTagsType {
   isEdit: boolean;
   tags: Set<string>;
-  setThread: Dispatch<SetStateAction<ThreadBodyInterface>>;
+  setThread: Dispatch<SetStateAction<IThreadBody>>;
 }
 
 export default function ThreadTags(props: ThreadTagsType) {
