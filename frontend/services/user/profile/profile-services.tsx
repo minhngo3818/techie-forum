@@ -1,6 +1,9 @@
 import { IProfile, IProfileForm } from "../../../interfaces/profile/profile";
 import axiosInst from "../../axios/axios-instance";
-import { toastResponse } from "../../../utils/toast-helper";
+import {
+  toastResponse,
+  toastDelayedSeqMessage,
+} from "../../../utils/toast-helper";
 import IProject from "../../../interfaces/project/project";
 
 /**
@@ -32,7 +35,10 @@ export async function createProfile(data: Partial<IProfileForm>) {
 
       toastResponse("success", "Your profile was created successfully!");
     })
-    .catch((error) => toastResponse("error", error.message));
+    .catch((error) => {
+      toastResponse("error", error.message);
+      toastDelayedSeqMessage("error", error.response.data.errors);
+    });
 }
 
 /**
@@ -68,6 +74,7 @@ export async function updateProfile(
     })
     .catch((error) => {
       toastResponse("error", error.message);
+      toastDelayedSeqMessage("error", error.response.data.errors);
     });
 }
 

@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import Link from "next/link";
+import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
-
 import ThreadHeader from "./header/thread-header";
 import ThreadContent from "./content/content";
 import ThreadButtons from "./buttons/thread-buttons";
 import ThreadTags from "./tags/thread-tag";
+import ThreadImages from "./images/images";
 const CommentList = dynamic(
   () => import("../comment/comment-list/comment-list")
 );
@@ -122,15 +120,7 @@ export default function Thread(props: ThreadType) {
         content={props.content}
         onChange={handleThreadChange}
       />
-      <div className={styles.threadContentImages}>
-        {props.images?.map((image, index) => {
-          return (
-            <div key={index}>
-              <Image src={image} alt="content-image" fill />
-            </div>
-          );
-        })}
-      </div>
+      <ThreadImages images={props.images} />
       <ThreadTags isEdit={isEdit} tags={props.tags} setThread={setThread} />
       <ThreadButtons
         keyId={`thr-${props.keyId}`}

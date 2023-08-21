@@ -35,6 +35,7 @@ export default function ThreadForm(props: ThreadFormType) {
   };
 
   const [thread, setThread] = useState<ThreadBodyInterface>(initialState);
+  const [reviewedImages, setReviewedImages] = useState<string[]>([]);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
@@ -60,11 +61,16 @@ export default function ThreadForm(props: ThreadFormType) {
   const handleChangeImage = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       if (event.target.files) {
-        let newImages: string[] = [];
+        let imagesToReview: string[] = [];
         for (let i = 0; i < event.target.files.length; i += 1) {
-          newImages.push(URL.createObjectURL(event.target.files[i]));
+          imagesToReview.push(URL.createObjectURL(event.target.files[i]));
         }
-        setThread((thread) => ({ ...thread, images: newImages }));
+
+        setReviewedImages(imagesToReview);
+        setThread((thread) => ({
+          ...thread,
+          images: event.target.files as FileList,
+        }));
       }
     },
     []
@@ -123,7 +129,9 @@ export default function ThreadForm(props: ThreadFormType) {
             <input
               id="upload-img"
               type="file"
+              name="images"
               multiple
+              accept="image/jpeg,image/png,image/jpg"
               className="hidden"
               onChange={handleChangeImage}
             />
@@ -159,10 +167,10 @@ export default function ThreadForm(props: ThreadFormType) {
         />
         {thread.images && thread.images.length > 0 && (
           <div className={styles.threadFormImages}>
-            {thread.images?.map((image, index) => {
+            {reviewedImages.map((image, index) => {
               return (
                 <div key={index} className={styles.threadFormImage}>
-                  <Image src={image} alt={`image-${index}`} fill />
+                  <Image src={image as string} alt={`image-${index}`} fill />
                 </div>
               );
             })}

@@ -1,5 +1,8 @@
 import { ThreadBodyInterface } from "../../../interfaces/forum/post/post";
-import { toastResponse } from "../../../utils/toast-helper";
+import {
+  toastResponse,
+  toastDelayedSeqMessage,
+} from "../../../utils/toast-helper";
 import axiosInst from "../../axios/axios-instance";
 
 export async function getPaginatedThreads() {
@@ -24,6 +27,8 @@ export async function postThread(data: ThreadBodyInterface) {
     })
     .catch((error) => {
       toastResponse("error", error.message);
+      let errors = error.response.data.errors;
+      toastDelayedSeqMessage("error", errors);
     });
 }
 
@@ -55,7 +60,11 @@ function composeFormData(data: ThreadBodyInterface) {
       });
     }
 
-    // TODO: check and add multiple images
+    if (key === "images" && value instanceof FileList) {
+      for (let i = 0; i < value.length; i += 1) {
+        formData.append(`images[${i}]`, value[i], value[i].name);
+      }
+    }
 
     if (typeof value === "string") {
       formData.append(key, value);

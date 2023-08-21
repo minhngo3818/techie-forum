@@ -10,7 +10,7 @@ type PostDate = { date: Date };
 type Content = { content: string };
 type Depth = { depth?: number };
 type Memorized = { memorized?: boolean };
-type Images = { images?: string[] }; // TODO: improve for posting images
+type Images = { images?: string[] | FileList };
 type Likes = { likes?: number };
 
 export interface CommentInterface
