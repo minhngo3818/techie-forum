@@ -296,9 +296,10 @@ class ThreadSerializer(serializers.ModelSerializer):
         return False
 
     def validate(self, attrs):
-        errors = {}
         title = attrs.get("title", None)
         content = attrs.get("content", None)
+
+        errors = {}
 
         if title is None or title == "":
             errors["title"] = "title is required"
