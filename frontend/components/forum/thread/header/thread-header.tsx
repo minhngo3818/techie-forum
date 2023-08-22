@@ -1,17 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import PostHeaderInterface from "../../../../interfaces/forum/post/post";
+import IPostHeader from "../../../../interfaces/forum/post/post";
 import styles from "./ThreadHeader.module.css";
 
-interface ThreadHeaderType extends PostHeaderInterface {}
-
-export default function ThreadHeader(props: ThreadHeaderType) {
+export default function ThreadHeader(props: IPostHeader) {
   return (
     <div className={styles.threadHeader}>
       <div className={styles.threadHeaderAvatar}>
         <Image
-          src={props.avatar || ""}
+          src={props.author.avatar}
           alt="avatar"
           fill
           sizes="(max-width: 40px)"
@@ -20,13 +18,11 @@ export default function ThreadHeader(props: ThreadHeaderType) {
       <Link
         className={styles.threadAuthor}
         as="a"
-        href={`/user/profile/[${props.authorId}]`}
+        href={`/user/profile/[${props.author.id}]`}
       >
-        {props.author}
+        {props.author.profile_name}
       </Link>
-      <p className={styles.threadHeaderDate}>
-        {props.date?.toDateString() || ""}
-      </p>
+      <p className={styles.threadHeaderDate}>{props.date.toDateString()}</p>
     </div>
   );
 }

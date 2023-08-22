@@ -29,9 +29,11 @@ export default function Thread(props: ThreadType) {
       id: "123",
       thid: "1",
       pcid: "1",
-      author: "Jotaro",
-      authorId: "29038rsfasd",
-      avatar: "/jotaro.jpg",
+      author: {
+        id: "29038rsfasd",
+        profile_name: "Jotaro",
+        avatar: "/jotaro.jpg",
+      },
       depth: 1,
       content:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
@@ -48,9 +50,11 @@ export default function Thread(props: ThreadType) {
       id: "1223",
       thid: "1",
       pcid: "2",
-      author: "Josuke",
-      authorId: "29038rsfasd",
-      avatar: "/josuke.jpg",
+      author: {
+        profile_name: "Josuke",
+        id: "29038rsfasd",
+        avatar: "/josuke.jpg",
+      },
       depth: 2,
       content:
         "Excepteur sint occaecat cupidatat non proident, \
@@ -108,12 +112,7 @@ export default function Thread(props: ThreadType) {
 
   return (
     <div className={styles.thread}>
-      <ThreadHeader
-        author={props.author}
-        authorId={props.authorId}
-        avatar={props.avatar}
-        date={props.date}
-      />
+      <ThreadHeader author={props.author} date={props.date} />
       <ThreadContent
         isEdit={isEdit}
         title={props.title}
@@ -121,7 +120,11 @@ export default function Thread(props: ThreadType) {
         onChange={handleThreadChange}
       />
       <ThreadImages images={props.images} />
-      <ThreadTags isEdit={isEdit} tags={props.tags} setThread={setThread} />
+      <ThreadTags
+        isEdit={isEdit}
+        tags={new Set<string>(props.tags)}
+        setThread={setThread}
+      />
       <ThreadButtons
         keyId={`thr-${props.keyId}`}
         numOfLikes={props.likes}

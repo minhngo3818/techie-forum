@@ -1,3 +1,4 @@
+import { touchEndEvent } from "tsparticles-engine";
 import { IThreadBody } from "../../../interfaces/forum/post/post";
 import {
   toastResponse,
@@ -5,12 +6,18 @@ import {
 } from "../../../utils/toast-helper";
 import axiosInst from "../../axios/axios-instance";
 
-export async function getPaginatedThreads() {
-  const response = await axiosInst.get("forum/thread");
-
-  return response;
+export async function getPaginatedThreads(category: string, next_id?: string) {
+  return await axiosInst
+    .get(`forum/thread/?category=${category}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((error) => {
+      toastResponse("error", error.message);
+    });
 }
 
+// TODO: single thread
 export async function getThread(id: string) {
   const response = await axiosInst.get(`forum/thread/${id}/`);
 
