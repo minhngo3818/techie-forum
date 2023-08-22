@@ -14,7 +14,10 @@ def custom_exception_handler(exception, context) -> Response:
         error_list = {}
 
         for label, message in response.data.items():
-            error_list[label] = str(message[0])
+            if type(message) is list:
+                error_list[label] = str(message[0])
+            else:
+                error_list[label] = message
 
         error_payload["errors"] = error_list
         response.data = error_payload
