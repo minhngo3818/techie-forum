@@ -1,0 +1,7 @@
+.threadImages {
+  @apply relative flex w-full;
+}
+
+.threadImage {
+  @apply mx-2 my-1 relative max-w-[200px] w-full h-auto min-h-[180px];
+}
