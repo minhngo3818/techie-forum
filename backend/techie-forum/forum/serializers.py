@@ -1,12 +1,24 @@
 from rest_framework import serializers
 from django.db import transaction
 from user.models import Profile
+from user.serializers import ProfileSerializer
 from .choices import CATEGORIES
 from forum.helper.serializer.image_serializer_helper import (
     create_multiple_images,
     update_multiple_images,
 )
 from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
+from django.contrib.auth.models import AnonymousUser
+
+
+class NestedProfileSerializer(serializers.ModelSerializer):
+    """
+    Serialize short version of profile for thread and comment
+    """
+
+    class Meta:
+        model = Profile
+        fields = ["id", "profile_name", "avatar"]
 
 
 class TagListSerializer(serializers.ListSerializer):
@@ -143,6 +155,7 @@ class CommentSerializer(serializers.ModelSerializer):
     Serialize to view and manage comment instances
     """
 
+    author = NestedProfileSerializer()
     parent = serializers.CharField(required=False, default=None)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
@@ -241,6 +254,7 @@ class ThreadSerializer(serializers.ModelSerializer):
     Serialize to view and manage thread instances
     """
 
+    author = NestedProfileSerializer()
     tags = TagSerializer(many=True, required=False)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
@@ -285,6 +299,10 @@ class ThreadSerializer(serializers.ModelSerializer):
 
     def is_memorized(self, instance):
         request = self.context["request"]
+
+        if type(request.user) is AnonymousUser:
+            return False
+
         profile = Profile.objects.get(owner=request.user)
 
         if (
@@ -353,7 +371,7 @@ class ThreadSerializer(serializers.ModelSerializer):
         if not instance.is_active:
             return {
                 "id": instance.id,
-                "author": instance.author.id,
+                "author": instance.author,
                 "is_active": instance.is_active,
                 "category": instance.category,
                 "title": instance.title,

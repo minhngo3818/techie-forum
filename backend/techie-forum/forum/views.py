@@ -1,7 +1,11 @@
 from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.decorators import action
 from rest_framework import status
 from user.models import Profile
@@ -33,14 +37,13 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
     serializer_class = ThreadSerializer
     queryset = Thread.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = PaginationHelper
-    lookup_field = "id"
 
     def get_queryset(self):
-        category = self.request.query_params.get("category", "")
+        category = self.request.query_params.get("category", None)
 
-        if category != "":
+        if category:
             return self.queryset.filter(category=category)
 
         return self.queryset
