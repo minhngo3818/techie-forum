@@ -47,7 +47,6 @@ class Profile(models.Model):
     github = models.URLField(null=True, blank=True)
     stackoverflow = models.URLField(null=True, blank=True)
     linkedin = models.URLField(null=True, blank=True)
-    indeed = models.URLField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
