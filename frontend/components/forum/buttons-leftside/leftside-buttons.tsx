@@ -4,6 +4,7 @@ import { StateDuo } from "../../../interfaces/utils/button";
 
 export interface LeftsideButtonsType {
   keyId: string;
+  isSameUser: Boolean;
   handleIsLike: StateDuo;
   handleIsMemorized: StateDuo;
   handleIsEdit: StateDuo;
@@ -29,13 +30,17 @@ export default function LeftsideButtons(props: LeftsideButtonsType) {
         isState={props.handleIsMemorized.isState}
         setState={props.handleIsMemorized.setState}
       />
-      <ForumButton
-        keyId={props.keyId}
-        name="edit"
-        content="Edit"
-        isState={props.handleIsEdit.isState}
-        setState={props.handleIsEdit.setState}
-      />
+      {!props.isSameUser ? (
+        <></>
+      ) : (
+        <ForumButton
+          keyId={props.keyId}
+          name="edit"
+          content="Edit"
+          isState={props.handleIsEdit.isState}
+          setState={props.handleIsEdit.setState}
+        />
+      )}
       <ForumButton
         keyId={props.keyId}
         name="comment"

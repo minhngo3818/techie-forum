@@ -8,6 +8,7 @@ import { StateDuo } from "../../../../interfaces/utils/button";
 import styles from "./ThreadButtons.module.css";
 
 export interface ThreadButtonTypes extends LeftsideButtonsType {
+  isSameUser: Boolean;
   handleShowComments: StateDuo;
   onSubmit(event: React.FormEvent<HTMLButtonElement>): void;
   numOfLikes?: number;
@@ -28,6 +29,7 @@ export default function ThreadButtons(props: ThreadButtonTypes) {
         ) : (
           <LeftsideButtons
             keyId={props.keyId}
+            isSameUser={props.isSameUser}
             stat={props.numOfComments}
             handleIsLike={props.handleIsLike}
             handleIsMemorized={props.handleIsMemorized}

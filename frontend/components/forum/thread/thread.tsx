@@ -16,8 +16,9 @@ import {
   IThreadBody,
   IComment,
 } from "../../../interfaces/forum/post/post";
-import styles from "./Thread.module.css";
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
+import styles from "./Thread.module.css";
+import useAuth from "../../../services/auth/auth-provider";
 
 interface ThreadType extends IThread {
   keyId: number;
@@ -64,6 +65,8 @@ export default function Thread(props: ThreadType) {
     },
   ];
 
+  const { user } = useAuth();
+
   const [thread, setThread] = useState<IThreadBody>({
     category: props.category,
     title: props.title,
@@ -105,10 +108,10 @@ export default function Thread(props: ThreadType) {
     ({ target: { name, value } }: EventTargetNameValue) => {
       setThread((thread) => ({ ...thread, [name]: value }));
     },
-    []
+    [thread]
   );
 
-  const handleThreadSubmit = () => {};
+  const handleUpdateThread = () => {};
 
   return (
     <div className={styles.thread}>
@@ -123,6 +126,7 @@ export default function Thread(props: ThreadType) {
       <ThreadTags isEdit={isEdit} tags={props.tags} setThread={setThread} />
       <ThreadButtons
         keyId={`thr-${props.keyId}`}
+        isSameUser={props.author.profile_name === user?.profile_name}
         numOfLikes={props.likes}
         handleIsLike={{ isState: isLike, setState: handleIsLike }}
         handleIsMemorized={{
@@ -138,7 +142,7 @@ export default function Thread(props: ThreadType) {
           isState: showComments,
           setState: handleShowComments,
         }}
-        onSubmit={handleThreadSubmit}
+        onSubmit={handleUpdateThread}
         numOfComments={commentList.length}
       />
       <CommentForm isComment={isCommentForm} threadId={`thr-${props.keyId}`} />
