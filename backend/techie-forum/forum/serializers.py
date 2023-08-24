@@ -254,7 +254,7 @@ class ThreadSerializer(serializers.ModelSerializer):
     Serialize to view and manage thread instances
     """
 
-    author = NestedProfileSerializer()
+    author = NestedProfileSerializer(read_only=True)
     tags = TagSerializer(many=True, required=False)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
