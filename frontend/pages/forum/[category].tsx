@@ -1,18 +1,16 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import dynamic from "next/dynamic";
-import Thread from "../../components/forum/thread/thread";
-const ThreadForm = dynamic(
-  () => import("../../components/form/form-thread/thread-form")
-);
+import ThreadForm from "../../components/form/form-thread/thread-form";
 import { IThread } from "../../interfaces/forum/post/post";
 import searchFilterThread from "../../utils/searchFilterThread";
 import forumLinks from "../../page-paths/forum";
 import styles from "../../styles/Forum.module.css";
 import { getPaginatedThreads } from "../../services/forum/thread/thread-service";
+const Thread = dynamic(() => import("../../components/forum/thread/thread"));
 
-export default function Field(
+export default function Category(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const router = useRouter();

@@ -48,7 +48,7 @@ function Sidebar(props: SideBarProps) {
                   : styles.sidebarLinkActive
               }
               onClick={() => handleSwitchPage(forum.name)}
-              href="/forum/[field]"
+              href="/forum/[category]"
               as={`/forum/${forum.path}`}
               key={forum.name}
               replace
