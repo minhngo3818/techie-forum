@@ -14,7 +14,7 @@ const CommentForm = dynamic(
 import {
   IThread,
   IThreadBody,
-  CommentInterface,
+  IComment,
 } from "../../../interfaces/forum/post/post";
 import styles from "./Thread.module.css";
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
@@ -24,7 +24,7 @@ interface ThreadType extends IThread {
 }
 
 export default function Thread(props: ThreadType) {
-  let commentList: CommentInterface[] = [
+  let commentList: IComment[] = [
     {
       id: "123",
       thid: "1",

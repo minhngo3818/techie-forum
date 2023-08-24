@@ -4,9 +4,7 @@ import Image from "next/image";
 import IPostHeader from "../../../../../interfaces/forum/post/post";
 import styles from "./CommentHeader.module.css";
 
-export interface CommentHeaderType extends IPostHeader {}
-
-export default function CommentHeader(props: CommentHeaderType) {
+export default function CommentHeader(props: IPostHeader) {
   return (
     <div className={styles.commentHeader}>
       <div className={styles.commentAvatar}>

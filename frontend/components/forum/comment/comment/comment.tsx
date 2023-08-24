@@ -1,22 +1,20 @@
 import React, { useState, useCallback } from "react";
 import CommentHeader from "./header/comment-header";
 import CommentBody from "./body/comment-body";
-import { CommentInterface } from "../../../../interfaces/forum/post/post";
+import { IComment } from "../../../../interfaces/forum/post/post";
 import styles from "./Comment.module.css";
 import { EventTargetNameValue } from "../../../../interfaces/forum/form/form-field";
 
-interface CommentType extends CommentInterface {
+interface CommentType extends IComment {
   keyId: string;
 }
 
 export default function Comment(props: CommentType) {
-  const [comment, setComment] = useState<CommentInterface>({
+  const [comment, setComment] = useState<IComment>({
     id: props.id,
     thid: props.thid,
     pcid: props.pcid,
     author: props.author,
-    authorId: props.authorId,
-    avatar: props.avatar,
     images: props.images,
     date: props.date,
     content: props.content,
@@ -58,12 +56,7 @@ export default function Comment(props: CommentType) {
 
   return (
     <div className={styles.comment} data-depth={1}>
-      <CommentHeader
-        author={props.author}
-        authorId={props.authorId}
-        avatar={props.avatar}
-        date={props.date}
-      />
+      <CommentHeader author={props.author} date={props.date} />
       <CommentBody
         keyId={props.keyId}
         handleIsLike={{ isState: isLike, setState: handleIsLike }}

@@ -1,14 +1,15 @@
 import React from "react";
 import Comment from "../comment/comment";
-import { CommentInterface } from "../../../../interfaces/forum/post/post";
+import { IComment } from "../../../../interfaces/forum/post/post";
 import styles from "./CommentList.module.css";
 
 interface CommentListType {
   threadKey: string;
   showComments: boolean;
-  comments: CommentInterface[];
+  comments: IComment[];
 }
 
+// TODO: lazy server rendering comments, address some change
 export default function CommentList(props: CommentListType) {
   return (
     <>
@@ -23,8 +24,6 @@ export default function CommentList(props: CommentListType) {
                 thid={comment.thid}
                 pcid={comment.pcid}
                 author={comment.author}
-                authorId={comment.authorId}
-                avatar={comment.avatar}
                 depth={comment.depth}
                 images={comment.images}
                 date={comment.date}

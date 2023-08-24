@@ -1,4 +1,4 @@
-import { CommentInterface } from "../../../interfaces/forum/post/post";
+import { IComment } from "../../../interfaces/forum/post/post";
 import axiosInst from "../../axios/axios-instance";
 
 export async function getAllCommentsService(tid: string, parent?: string) {
@@ -25,7 +25,7 @@ export async function createCommentService(tid: string, parent?: string) {
   return response;
 }
 
-export async function changeCommentService(data: CommentInterface) {
+export async function changeCommentService(data: IComment) {
   const response = await axiosInst.patch("forum/comment-view/", data, {
     withCredentials: true,
   });

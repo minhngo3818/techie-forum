@@ -19,7 +19,7 @@ export interface IAuthor {
   };
 }
 
-export interface CommentInterface
+export interface IComment
   extends PostId,
     ThreadId,
     ParentCommentId,
@@ -29,7 +29,7 @@ export interface CommentInterface
     Depth,
     Images,
     Likes {
-  comments?: CommentInterface[];
+  comments?: IComment[];
 }
 
 export interface IThreadBody extends Category, Title, Content, Images, Tags {}
@@ -41,7 +41,7 @@ export interface IThread
     Likes,
     Memorized,
     IThreadBody {
-  comments?: CommentInterface[];
+  comments?: IComment[];
 }
 
 export default interface IPostHeader extends IAuthor {
