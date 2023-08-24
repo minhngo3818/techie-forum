@@ -120,11 +120,7 @@ export default function Thread(props: ThreadType) {
         onChange={handleThreadChange}
       />
       <ThreadImages images={props.images} />
-      <ThreadTags
-        isEdit={isEdit}
-        tags={new Set<string>(props.tags)}
-        setThread={setThread}
-      />
+      <ThreadTags isEdit={isEdit} tags={props.tags} setThread={setThread} />
       <ThreadButtons
         keyId={`thr-${props.keyId}`}
         numOfLikes={props.likes}

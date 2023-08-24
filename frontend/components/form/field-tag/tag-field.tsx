@@ -11,7 +11,7 @@ import { ClosePixel } from "../../icons/icons";
 // import { string } from "../../../interfaces/forum/post/post";
 
 interface TagFieldType {
-  tags: Set<string>;
+  tags: string[] | undefined;
   isLabel?: boolean;
   onRemove: (tag: string) => void;
   onAdd: (tag: string) => void;
@@ -20,12 +20,6 @@ interface TagFieldType {
 export default function TagField(props: TagFieldType) {
   const [tag, setTag] = useState("");
   const tagRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (tagRef.current) {
-      tagRef.current.focus();
-    }
-  }, []);
 
   const handleChangeTag = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +33,7 @@ export default function TagField(props: TagFieldType) {
       console.log("Remove was clicked");
       props.onRemove(tag);
     },
-    [props]
+    [props.tags]
   );
 
   const handleKeyDown = useCallback(
@@ -49,27 +43,40 @@ export default function TagField(props: TagFieldType) {
         setTag("");
       }
     },
-    [tag, props]
+    [tag, props.tags]
   );
+
+  // Render a list of tags
+  const Tags = (): JSX.Element => {
+    if (!Array.isArray(props.tags)) {
+      return <></>;
+    }
+
+    return (
+      <>
+        {props.tags.map((tag) => {
+          return (
+            <li key={tag} className={styles.tagFieldItem}>
+              <p className={styles.tagFieldName}>{tag}</p>
+              <button
+                className={styles.tagFieldBtn}
+                onClick={() => handleRemoveTag(tag)}
+              >
+                <ClosePixel />
+              </button>
+            </li>
+          );
+        })}
+      </>
+    );
+  };
 
   return (
     <div className={styles.tagFieldContainer}>
       {props.isLabel && <h3 className={styles.tagFieldLabel}>Tag</h3>}
       <div className={styles.tagFieldWrapper}>
         <ul className={styles.tagFieldList}>
-          {Array.from(props.tags).map((tag) => {
-            return (
-              <li key={tag} className={styles.tagFieldItem}>
-                <p className={styles.tagFieldName}>{tag}</p>
-                <button
-                  className={styles.tagFieldBtn}
-                  onClick={() => handleRemoveTag(tag)}
-                >
-                  <ClosePixel />
-                </button>
-              </li>
-            );
-          })}
+          <Tags />
         </ul>
         <input
           className={styles.tagFieldInput}

@@ -60,7 +60,7 @@ function composeFormData(data: IThreadBody) {
   for (var key in data) {
     let value = data[key as keyof IThreadBody];
 
-    if (key === "tags" && value instanceof Set) {
+    if (key === "tags" && Array.isArray(value)) {
       let tags = Array.from(value);
       tags.forEach((tag, index) => {
         formData.append(`tags[${index}]`, tag);

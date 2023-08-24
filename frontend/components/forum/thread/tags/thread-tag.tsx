@@ -9,7 +9,7 @@ import { IThreadBody } from "../../../../interfaces/forum/post/post";
 
 interface ThreadTagsType {
   isEdit: boolean;
-  tags: Set<string>;
+  tags: string[] | undefined;
   setThread: Dispatch<SetStateAction<IThreadBody>>;
 }
 
@@ -20,13 +20,15 @@ export default function ThreadTags(props: ThreadTagsType) {
   return (
     <div className={styles.threadTags}>
       {!props.isEdit ? (
-        Array.from(props.tags).map((tag) => {
-          return (
-            <p key={tag} className={styles.threadTag}>
-              {tag}
-            </p>
-          );
-        })
+        (props.tags && Array.isArray(props.tags) ? props.tags : []).map(
+          (tag) => {
+            return (
+              <p key={tag} className={styles.threadTag}>
+                {tag}
+              </p>
+            );
+          }
+        )
       ) : (
         <TagField
           tags={props.tags}

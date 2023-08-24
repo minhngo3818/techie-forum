@@ -31,7 +31,7 @@ export default function ThreadForm(props: ThreadFormType) {
     category: props.category,
     title: "",
     content: "",
-    tags: new Set() as Set<string>,
+    tags: [],
   };
 
   const [thread, setThread] = useState<IThreadBody>(initialState);
