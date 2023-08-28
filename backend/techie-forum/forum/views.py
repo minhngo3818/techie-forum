@@ -1,4 +1,6 @@
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
+from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import (
@@ -110,58 +112,39 @@ class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializer
     queryset = Like.objects.all()
     permission_classes = [IsAuthenticated]
-    filter_fields = ("pid", "post_id")
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid()
-        serializer.save()
-        post = BasePost.objects.get(id=serializer.data["post_id"])
-        owner = Profile.objects.get(id=serializer.data["owner"])
-        liked, created = Like.objects.get_or_create(post=post, owner=owner)
-
-        if created:
-            return Response(
-                {"error": "Invalid action, double like"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        post.liked.add(owner)
-
-        return Response(
-            data={"success": "Post was liked"}, status=status.HTTP_201_CREATED
-        )
+    def perform_create(self, serializer):
+        liked_instance = serializer.save()
+        liked_instance.post.liked.add(liked_instance.profile)
 
     @action(
-        methods=["delete"],
+        methods=["DELETE"],
         detail=False,
-        url_path="remove",
-        url_name="remove",
+        url_path="unlike",
+        url_name="unlike",
     )
-    def remove_like(self, request):
-        post_id = request.query_params.get("post_id", "")
-        pid = request.query_params.get("pid", "")
-
-        if post_id == "" or pid == "":
-            return Response(
-                data={"error": "Query params must contain post_id and pid!"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+    def unlike(self, request):
+        post_id = request.query_params.get("post")
+        profile_id = request.query_params.get("profile")
+        serializer = self.serializer_class(
+            data={"post": post_id, "profile": profile_id}, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
 
         try:
-            post = BasePost.objects.get(id=post_id)
-            owner = Profile.objects.get(id=pid)
-            instance = self.queryset.get(post=post_id, owner=pid)
-            instance.delete()
-            post.liked.remove(owner)
-
-        except Exception as e:
+            with transaction.atomic():
+                post = serializer.validated_data.get("post")
+                profile = serializer.validated_data.get("profile")
+                like = get_object_or_404(Like, post=post, profile=profile)
+                post.liked.remove(profile)
+                like.delete()
+        except:
             return Response(
-                data={"error": "Query failed! {}".format(e)},
-                status=status.HTTP_400_BAD_REQUEST,
+                {"errors": {"like": "Delete transaction failed"}},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-        return Response(data={"success": "User unliked"}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 class MemorizeViewSet(viewsets.ModelViewSet):

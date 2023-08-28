@@ -66,7 +66,6 @@ class ProfileSerializer(DynamicFieldsModelSerializer):
             "github",
             "stackoverflow",
             "linkedin",
-            "indeed",
             "projects",
             "thread_count",
             "comment_count",

@@ -20,6 +20,7 @@ class BasePost(models.Model):
         Profile, default=None, blank=True, related_name="likes_set"
     )
     is_active = models.BooleanField(default=True)
+    is_edited = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -86,31 +87,33 @@ class ParentChildComment(models.Model):
 
 
 class Like(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     post = models.ForeignKey(BasePost, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["owner", "post"], name="user_like_post")
+            models.UniqueConstraint(fields=["profile", "post"], name="user_like_post")
         ]
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return "user: {} | post: {}".format(
-            self.owner.profile_name, str(self.post.id)[:8]
+            self.profile.profile_name, str(self.post.id)[:8]
         )
 
 
 class Memorize(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, null=True, blank=True
+    )
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["owner", "thread"], name="user_memorize_thread"
+                fields=["profile", "thread"], name="user_memorize_thread"
             )
         ]
         ordering = ["-created_at"]

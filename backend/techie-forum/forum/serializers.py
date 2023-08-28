@@ -1,14 +1,23 @@
-from rest_framework import serializers
 from django.db import transaction
+from django.contrib.auth.models import AnonymousUser
+from rest_framework import serializers
 from user.models import Profile
 from user.serializers import ProfileSerializer
+from .models import (
+    BasePost,
+    Thread,
+    Comment,
+    ParentChildComment,
+    Like,
+    Memorize,
+    Tag,
+    Image,
+)
 from .choices import CATEGORIES
 from forum.helper.serializer.image_serializer_helper import (
     create_multiple_images,
     update_multiple_images,
 )
-from .models import Thread, Comment, ParentChildComment, Like, Memorize, Tag, Image
-from django.contrib.auth.models import AnonymousUser
 
 
 class NestedProfileSerializer(serializers.ModelSerializer):
@@ -116,8 +125,22 @@ class LikeSerializer(serializers.ModelSerializer):
         read_only_fields = ["created_at"]
 
     def validate(self, attrs):
-        if attrs["post_id"] == "" or attrs["user"] == "":
-            raise serializers.ValidationError("Field is empty")
+        errors = {}
+        request = self.context.get("request")
+
+        if attrs["post"] == "" or attrs["profile"] == "":
+            errors["post"] = errors["profile"] = "Field is empty"
+
+        if (
+            request.method == "POST"
+            and Like.objects.filter(
+                post=attrs["post"], profile=attrs["profile"]
+            ).exists()
+        ):
+            errors["internal"] = "post or profile are already exists"
+
+        if errors:
+            raise serializers.ValidationError(errors)
 
         return super().validate(attrs)
 
@@ -167,13 +190,14 @@ class CommentSerializer(serializers.ModelSerializer):
             "author",
             "cmt_thread",
             "parent",
-            "is_active",
             "content",
             "images",
             "depth",
             "created_at",
             "updated_at",
             "likes",
+            "is_active",
+            "is_edited",
         ]
         read_only_fields = ("id", "is_active", "created_at", "updated_at", "likes")
 
@@ -267,7 +291,6 @@ class ThreadSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "author",
-            "is_active",
             "category",
             "title",
             "content",
@@ -278,6 +301,8 @@ class ThreadSerializer(serializers.ModelSerializer):
             "memorized",
             "likes",
             "comment_counts",
+            "is_active",
+            "is_edited",
         ]
         read_only_fields = (
             "id",
