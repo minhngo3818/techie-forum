@@ -1,15 +1,18 @@
+import { toastResponse } from "../../../utils/toast-helper";
 import axiosInst from "../../axios/axios-instance";
 
-export async function likeService(pid: string, tid: string) {
-  const response = await axiosInst.patch(`/like-view/?pid=${pid}&?tid=${tid}/`);
-
-  return response;
+export async function likePost(profileId: string, threadId: string) {
+  return await axiosInst
+    .post(`/forum/like/?profile=${profileId}&post=${threadId}/`)
+    .catch((error) => {
+      toastResponse("error", error.message);
+    });
 }
 
-export async function unlikeService(pid: string, tid: string) {
-  const response = await axiosInst.delete(
-    `/like-view/?pid=${pid}&?tid=${tid}/`
-  );
-
-  return response;
+export async function unlikePost(profileId: string, threadId: string) {
+  return await axiosInst
+    .delete(`/forum/like/?profile=${profileId}&?post=${threadId}/`)
+    .catch((error) => {
+      toastResponse("error", error.message);
+    });
 }

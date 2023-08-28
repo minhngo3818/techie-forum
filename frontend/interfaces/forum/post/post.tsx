@@ -9,7 +9,7 @@ type Depth = { depth?: number };
 type Tags = { tags?: string[] };
 type Memorized = { memorized?: boolean };
 type Images = { images?: string[] | FileList };
-type Likes = { likes?: number };
+type Likes = { likes: number };
 
 export interface IAuthor {
   author: {

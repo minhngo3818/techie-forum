@@ -14,6 +14,7 @@ export default function Category(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const router = useRouter();
+  const [threadList, setThreadList] = useState<IThread[]>(props.threads);
   const [forumName, setForumName] = useState("");
   const [category, setCategory] = useState("");
   const [isThreadForm, setThreadForm] = useState(false);
@@ -22,13 +23,14 @@ export default function Category(
   const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    let category = router.query.category;
-    if (category) {
-      let pathObj = forumLinks.find((link) => link.path === category);
+    let paramCategory = router.query.category;
+    if (paramCategory) {
+      let pathObj = forumLinks.find((link) => link.path === paramCategory);
       setForumName(pathObj?.name as string);
-      setCategory(category as string);
+      setCategory(paramCategory as string);
+      setThreadList(props.threads);
     }
-  }, [router.query]);
+  }, [router.query, category]);
 
   const handleFilterData = useCallback(() => {
     setFilter((filter) => !filter);
@@ -40,6 +42,11 @@ export default function Category(
     },
     []
   );
+
+  // TODO: update thread list when user post/update a thread
+  const handleAddNewThread = useCallback(() => {}, threadList);
+
+  const handleUpdateThreadItem = useCallback(() => [], threadList);
 
   const handleOpenThreadForm = () => {
     setThreadForm(!isThreadForm);
@@ -81,7 +88,7 @@ export default function Category(
         </div>
       </div>
       <ThreadForm isShow={isThreadForm} category={category} />
-      {props?.threads
+      {threadList
         .filter((thread) => searchFilterThread(thread, filter, search))
         .map((thread, index) => {
           return (

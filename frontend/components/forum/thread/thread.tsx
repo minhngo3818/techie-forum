@@ -19,6 +19,10 @@ import {
 import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
 import styles from "./Thread.module.css";
 import useAuth from "../../../services/auth/auth-provider";
+import {
+  likePost,
+  unlikePost,
+} from "../../../services/forum/like/like-service";
 
 interface ThreadType extends IThread {
   keyId: number;
@@ -75,14 +79,25 @@ export default function Thread(props: ThreadType) {
     images: props.images,
   });
   const [isLike, setIsLike] = useState(false);
+  const [like, setLike] = useState(props.likes);
   const [isMemorized, setIsMemorized] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isCommentForm, setIsComment] = useState(false);
   const [showComments, setShowComments] = useState(false);
 
-  const handleIsLike = () => {
-    // Call api to update data
-    setIsLike((isLike) => !isLike);
+  const handleLike = async () => {
+    try {
+      if (!isLike) {
+        await likePost(props.author.id, props.id);
+        setLike((like) => like + 1);
+      } else {
+        await unlikePost(props.author.id, props.id);
+        setLike((like) => (like === 0 ? 0 : like - 1));
+      }
+      setIsLike((isLike) => !isLike);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleIsMemorized = () => {
@@ -127,8 +142,8 @@ export default function Thread(props: ThreadType) {
       <ThreadButtons
         keyId={`thr-${props.keyId}`}
         isSameUser={props.author.profile_name === user?.profile_name}
-        numOfLikes={props.likes}
-        handleIsLike={{ isState: isLike, setState: handleIsLike }}
+        numOfLikes={like}
+        handleIsLike={{ isState: isLike, setState: handleLike }}
         handleIsMemorized={{
           isState: isMemorized,
           setState: handleIsMemorized,
