@@ -16,7 +16,7 @@ from .models import (
     Thread,
     Comment,
     Like,
-    Memorize,
+    Mark,
     ParentChildComment,
     Tag,
     Image,
@@ -25,7 +25,7 @@ from .serializers import (
     ThreadSerializer,
     CommentSerializer,
     LikeSerializer,
-    MemorizedSerializer,
+    MarkSerializer,
     TagSerializer,
     ImageSerializer,
 )
@@ -114,7 +114,7 @@ class LikeViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        liked_instance = serializer.save()
+        liked_instance = serializer.save(profile=self.request.user.profile)
         liked_instance.post.liked.add(liked_instance.profile)
 
     @action(
@@ -125,16 +125,15 @@ class LikeViewSet(viewsets.ModelViewSet):
     )
     def unlike(self, request):
         post_id = request.query_params.get("post")
-        profile_id = request.query_params.get("profile")
         serializer = self.serializer_class(
-            data={"post": post_id, "profile": profile_id}, context={"request": request}
+            data={"post": post_id}, context={"request": request}
         )
         serializer.is_valid(raise_exception=True)
 
         try:
             with transaction.atomic():
                 post = serializer.validated_data.get("post")
-                profile = serializer.validated_data.get("profile")
+                profile = request.user.profile
                 like = get_object_or_404(Like, post=post, profile=profile)
                 post.liked.remove(profile)
                 like.delete()
@@ -147,64 +146,45 @@ class LikeViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
 
-class MemorizeViewSet(viewsets.ModelViewSet):
+class MarkViewSet(viewsets.ModelViewSet):
     """
-    Fetch to memorize a thread
+    Fetch to mark a thread
     """
 
-    serializer_class = MemorizedSerializer
-    queryset = Memorize.objects.all()
+    serializer_class = MarkSerializer
+    queryset = Mark.objects.all()
     permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid()
-        thread = Thread.objects.get(id=serializer.data["thread"])
-        owner = Profile.objects.get(id=serializer.data["owner"])
-        memorize, created = self.queryset.get_or_create(thread=thread, owner=owner)
-
-        if created:
-            return Response(
-                data={"message": "The thread was memorized!"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        thread.memorized.add(owner)
-
-        return Response(
-            data={"success": "Thread was memorized"}, status=status.HTTP_201_CREATED
-        )
+    def perform_create(self, serializer):
+        mark_instance = serializer.save(profile=self.request.user.profile)
+        mark_instance.thread.marked.add(mark_instance.profile)
 
     @action(
-        methods=["delete"],
+        methods=["DELETE"],
         detail=False,
-        url_path="remove",
-        url_name="remove",
+        url_path="unmark",
+        url_name="unmark",
     )
-    def remove_memorize(self, request):
-        tid = request.query_params.get("tid", "")
-        pid = request.query_params.get("pid", "")
-
-        if tid == "" or pid == "":
-            return Response(
-                data={"error": "Query params must contain tid and pid"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+    def unmark(self, request):
+        thread_id = request.query_params.get("thread")
+        serializer = self.serializer_class(
+            data={"thread": thread_id}, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
 
         try:
-            thread = BasePost.objects.get(id=tid)
-            owner = Profile.objects.get(id=pid)
-            instance = self.queryset.get(thread=thread, owner=pid)
-            instance.delete()
-            thread.memorized.remove(owner)
-
-        except Exception as e:
+            thread = serializer.validated_data.get("thread")
+            profile = request.user.profile
+            mark = get_object_or_404(Mark, thread=thread, profile=profile)
+            thread.marked.remove(profile)
+            mark.delete()
+        except:
             return Response(
-                data={"error": "Query failed {}".format(e)},
-                status=status.HTTP_400_BAD_REQUEST,
+                {"errors": {"mark": "Delete transaction failed"}},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-        return Response(data={"success": "User was unliked"}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 class TagViewSet(viewsets.ModelViewSet):

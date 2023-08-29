@@ -9,7 +9,7 @@ from .models import (
     Comment,
     ParentChildComment,
     Like,
-    Memorize,
+    Mark,
     Tag,
     Image,
 )
@@ -122,22 +122,22 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = "__all__"
-        read_only_fields = ["created_at"]
+        read_only_fields = ["profile", "created_at"]
 
     def validate(self, attrs):
         errors = {}
         request = self.context.get("request")
 
-        if attrs["post"] == "" or attrs["profile"] == "":
-            errors["post"] = errors["profile"] = "Field is empty"
+        if attrs["post"] == "":
+            errors["post"] = "Field is empty"
 
         if (
             request.method == "POST"
             and Like.objects.filter(
-                post=attrs["post"], profile=attrs["profile"]
+                post=attrs["post"], profile=request.user.profile
             ).exists()
         ):
-            errors["internal"] = "post or profile are already exists"
+            errors["integrity"] = "Thread or profile are already exists."
 
         if errors:
             raise serializers.ValidationError(errors)
@@ -145,19 +145,30 @@ class LikeSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
 
-class MemorizedSerializer(serializers.ModelSerializer):
+class MarkSerializer(serializers.ModelSerializer):
     """
-    Serialize memorize instance
+    Serialize mark instance
     """
 
     class Meta:
-        model = Memorize
+        model = Mark
         fields = "__all__"
-        read_only_fields = ["created_at"]
+        read_only_fields = ["profile", "created_at"]
 
     def validate(self, attrs):
-        if attrs["thread"] == "" or attrs["user"] == "":
-            raise serializers.ValidationError("Field is empty")
+        errors = {}
+        request = self.context.get("request")
+
+        if attrs["thread"] == "":
+            errors["thread"] = "Field is empty"
+
+        if (
+            request.method == "POST"
+            and Mark.objects.filter(
+                thread=attrs["thread"], profile=request.user.profile
+            ).exists()
+        ):
+            errors["integrity"] = ""
 
         return super().validate(attrs)
 
@@ -282,7 +293,7 @@ class ThreadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, required=False)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
-    memorized = serializers.SerializerMethodField("is_memorized")
+    marked = serializers.SerializerMethodField("is_marked")
     category = serializers.ChoiceField(choices=CATEGORIES, required=True)
     comment_counts = serializers.SerializerMethodField()
 
@@ -298,7 +309,7 @@ class ThreadSerializer(serializers.ModelSerializer):
             "tags",
             "created_at",
             "updated_at",
-            "memorized",
+            "marked",
             "likes",
             "comment_counts",
             "is_active",
@@ -322,7 +333,7 @@ class ThreadSerializer(serializers.ModelSerializer):
 
         return 0
 
-    def is_memorized(self, instance):
+    def is_marked(self, instance):
         request = self.context["request"]
 
         if type(request.user) is AnonymousUser:
@@ -330,10 +341,7 @@ class ThreadSerializer(serializers.ModelSerializer):
 
         profile = Profile.objects.get(owner=request.user)
 
-        if (
-            request.method == "GET"
-            and instance.memorized.filter(id=profile.id).exists()
-        ):
+        if request.method == "GET" and instance.marked.filter(id=profile.id).exists():
             return True
 
         return False

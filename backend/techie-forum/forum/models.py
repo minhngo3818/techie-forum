@@ -38,8 +38,8 @@ class BasePost(models.Model):
 class Thread(BasePost):
     title = models.CharField(max_length=255, null=True, blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
-    memorized = models.ManyToManyField(
-        Profile, default=None, blank=True, related_name="is_memorized_set"
+    marked = models.ManyToManyField(
+        Profile, default=None, blank=True, related_name="is_markd_set"
     )
     category = models.CharField(
         max_length=100, choices=CATEGORIES, null=True, blank=True
@@ -103,7 +103,7 @@ class Like(models.Model):
         )
 
 
-class Memorize(models.Model):
+class Mark(models.Model):
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, null=True, blank=True
     )
@@ -113,13 +113,15 @@ class Memorize(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["profile", "thread"], name="user_memorize_thread"
+                fields=["profile", "thread"], name="profile_mark_thread"
             )
         ]
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return "user: {} | thread {}".format(self.owner.profile_name, self.thread.title)
+        return "profile: {} | thread {}".format(
+            self.profile.profile_name, self.thread.title
+        )
 
 
 class Tag(models.Model):

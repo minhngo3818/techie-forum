@@ -4,7 +4,7 @@ from .views import (
     ThreadViewSet,
     CommentViewSet,
     LikeViewSet,
-    MemorizeViewSet,
+    MarkViewSet,
     TagViewSet,
     ImageViewSet,
 )
@@ -14,7 +14,7 @@ router = DefaultRouter()
 router.register(r"thread", ThreadViewSet)
 router.register(r"comment", CommentViewSet)
 router.register(r"like", LikeViewSet)
-router.register(r"memorize", MemorizeViewSet, basename="memorize")
+router.register(r"mark", MarkViewSet, basename="memorize")
 router.register(r"tag", TagViewSet, basename="tag"),
 router.register(r"image", ImageViewSet)
 
