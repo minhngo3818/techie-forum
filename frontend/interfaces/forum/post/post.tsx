@@ -7,9 +7,10 @@ type PostDate = { date: Date };
 type Content = { content: string };
 type Depth = { depth?: number };
 type Tags = { tags?: string[] };
-type Memorized = { memorized?: boolean };
+type Marked = { isMarked: boolean };
 type Images = { images?: string[] | FileList };
 type Likes = { likes: number };
+type Liked = { isLiked: boolean };
 
 export interface IAuthor {
   author: {
@@ -39,7 +40,8 @@ export interface IThread
     IAuthor,
     PostDate,
     Likes,
-    Memorized,
+    Liked,
+    Marked,
     IThreadBody {
   comments?: IComment[];
 }

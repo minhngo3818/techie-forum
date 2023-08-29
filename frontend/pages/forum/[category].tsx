@@ -101,7 +101,9 @@ export default function Category(
               category={thread.category}
               title={thread.title}
               content={thread.content}
+              isMarked={thread.isMarked}
               likes={thread.likes}
+              isLiked={thread.isLiked}
               tags={thread.tags}
               images={thread.images}
             />
@@ -130,8 +132,9 @@ export const getServerSideProps: GetServerSideProps<{
       content: threads[i].content,
       images: threads[i].images,
       tags: threads[i].tags,
-      memorized: threads[i].memorized,
+      isMarked: threads[i].is_marked,
       likes: threads[i].likes,
+      isLiked: threads[i].is_liked,
     };
     threadList.push(thread);
   }

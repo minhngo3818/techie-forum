@@ -11,7 +11,7 @@ export interface ThreadButtonTypes extends LeftsideButtonsType {
   isSameUser: Boolean;
   handleShowComments: StateDuo;
   onSubmit(event: React.FormEvent<HTMLButtonElement>): void;
-  numOfLikes?: number;
+  numOfLikes: number;
   numOfComments: number;
 }
 
@@ -30,9 +30,9 @@ export default function ThreadButtons(props: ThreadButtonTypes) {
           <LeftsideButtons
             keyId={props.keyId}
             isSameUser={props.isSameUser}
-            stat={props.numOfComments}
+            numOfLikes={props.numOfLikes}
             handleIsLike={props.handleIsLike}
-            handleIsMemorized={props.handleIsMemorized}
+            handleIsMarked={props.handleIsMarked}
             handleIsEdit={props.handleIsEdit}
             handleIsComment={props.handleIsComment}
           />

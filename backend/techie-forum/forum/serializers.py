@@ -292,8 +292,9 @@ class ThreadSerializer(serializers.ModelSerializer):
     author = NestedProfileSerializer(read_only=True)
     tags = TagSerializer(many=True, required=False)
     images = ImageSerializer(many=True, required=False)
+    is_liked = serializers.SerializerMethodField("get_is_liked")
     likes = serializers.IntegerField(source="get_likes", required=False)
-    marked = serializers.SerializerMethodField("is_marked")
+    is_marked = serializers.SerializerMethodField("get_is_marked")
     category = serializers.ChoiceField(choices=CATEGORIES, required=True)
     comment_counts = serializers.SerializerMethodField()
 
@@ -309,7 +310,8 @@ class ThreadSerializer(serializers.ModelSerializer):
             "tags",
             "created_at",
             "updated_at",
-            "marked",
+            "is_marked",
+            "is_liked",
             "likes",
             "comment_counts",
             "is_active",
@@ -320,9 +322,11 @@ class ThreadSerializer(serializers.ModelSerializer):
             "author",
             "category",
             "created_at",
+            "updated_at",
             "is_active",
+            "is_liked",
             "likes",
-            "comment_counts",
+            "is_marked" "comment_counts",
         )
 
     def get_comment_counts(self, instance):
@@ -333,18 +337,21 @@ class ThreadSerializer(serializers.ModelSerializer):
 
         return 0
 
-    def is_marked(self, instance):
+    def get_is_marked(self, instance):
         request = self.context["request"]
 
         if type(request.user) is AnonymousUser:
             return False
 
-        profile = Profile.objects.get(owner=request.user)
+        return instance.marked.filter(id=request.user.profile.id).exists()
 
-        if request.method == "GET" and instance.marked.filter(id=profile.id).exists():
-            return True
+    def get_is_liked(self, instance):
+        request = self.context.get("request")
 
-        return False
+        if type(request.user) is AnonymousUser:
+            return False
+
+        return instance.liked.filter(id=request.user.profile.id).exists()
 
     def validate(self, attrs):
         title = attrs.get("title", None)

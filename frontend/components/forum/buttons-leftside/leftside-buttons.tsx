@@ -1,15 +1,16 @@
 import React from "react";
 import ForumButton from "../../utils/buttons/forum-button/forum-button";
 import { StateDuo } from "../../../interfaces/utils/button";
+import { NumericLiteral } from "typescript";
 
 export interface LeftsideButtonsType {
   keyId: string;
   isSameUser: Boolean;
   handleIsLike: StateDuo;
-  handleIsMemorized: StateDuo;
+  handleIsMarked: StateDuo;
   handleIsEdit: StateDuo;
   handleIsComment: StateDuo;
-  stat?: number;
+  numOfLikes: number;
 }
 
 export default function LeftsideButtons(props: LeftsideButtonsType) {
@@ -19,7 +20,7 @@ export default function LeftsideButtons(props: LeftsideButtonsType) {
         keyId={props.keyId}
         name="thumbsup"
         content="Thumbs Up"
-        stat={props.stat}
+        stat={props.numOfLikes}
         isState={props.handleIsLike.isState}
         setState={props.handleIsLike.setState}
       />
@@ -27,8 +28,8 @@ export default function LeftsideButtons(props: LeftsideButtonsType) {
         keyId={props.keyId}
         name="memorized"
         content="Memorize"
-        isState={props.handleIsMemorized.isState}
-        setState={props.handleIsMemorized.setState}
+        isState={props.handleIsMarked.isState}
+        setState={props.handleIsMarked.setState}
       />
       {!props.isSameUser ? (
         <></>

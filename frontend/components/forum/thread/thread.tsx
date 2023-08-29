@@ -78,9 +78,9 @@ export default function Thread(props: ThreadType) {
     tags: props.tags,
     images: props.images,
   });
-  const [isLike, setIsLike] = useState(false);
+  const [isLike, setIsLike] = useState(props.isLiked);
   const [like, setLike] = useState(props.likes);
-  const [isMemorized, setIsMemorized] = useState(false);
+  const [isMarked, setIsMarked] = useState(props.isMarked);
   const [isEdit, setIsEdit] = useState(false);
   const [isCommentForm, setIsComment] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -88,10 +88,10 @@ export default function Thread(props: ThreadType) {
   const handleLike = async () => {
     try {
       if (!isLike) {
-        await likePost(props.author.id, props.id);
+        await likePost(props.id);
         setLike((like) => like + 1);
       } else {
-        await unlikePost(props.author.id, props.id);
+        await unlikePost(props.id);
         setLike((like) => (like === 0 ? 0 : like - 1));
       }
       setIsLike((isLike) => !isLike);
@@ -100,9 +100,7 @@ export default function Thread(props: ThreadType) {
     }
   };
 
-  const handleIsMemorized = () => {
-    setIsMemorized((isMemorized) => !isMemorized);
-  };
+  const handleIsMarked = () => {};
 
   const handleIsEdit = () => {
     // Call api to update data
@@ -144,9 +142,9 @@ export default function Thread(props: ThreadType) {
         isSameUser={props.author.profile_name === user?.profile_name}
         numOfLikes={like}
         handleIsLike={{ isState: isLike, setState: handleLike }}
-        handleIsMemorized={{
-          isState: isMemorized,
-          setState: handleIsMemorized,
+        handleIsMarked={{
+          isState: isMarked,
+          setState: handleIsMarked,
         }}
         handleIsEdit={{ isState: isEdit, setState: handleIsEdit }}
         handleIsComment={{

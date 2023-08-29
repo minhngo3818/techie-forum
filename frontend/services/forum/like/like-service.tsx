@@ -1,17 +1,25 @@
 import { toastResponse } from "../../../utils/toast-helper";
 import axiosInst from "../../axios/axios-instance";
 
-export async function likePost(profileId: string, threadId: string) {
+export async function likePost(threadId: string) {
   return await axiosInst
-    .post(`/forum/like/?profile=${profileId}&post=${threadId}/`)
+    .post(
+      `forum/like/`,
+      { post: threadId },
+      {
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
     .catch((error) => {
       toastResponse("error", error.message);
     });
 }
 
-export async function unlikePost(profileId: string, threadId: string) {
+export async function unlikePost(threadId: string) {
   return await axiosInst
-    .delete(`/forum/like/?profile=${profileId}&?post=${threadId}/`)
+    .delete(`forum/like/unlike/?post=${threadId}`)
     .catch((error) => {
       toastResponse("error", error.message);
     });
