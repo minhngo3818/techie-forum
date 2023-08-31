@@ -23,6 +23,10 @@ import {
   likePost,
   unlikePost,
 } from "../../../services/forum/like/like-service";
+import {
+  markThread,
+  unmarkThread,
+} from "../../../services/forum/mark/mark-service";
 
 interface ThreadType extends IThread {
   keyId: number;
@@ -100,7 +104,18 @@ export default function Thread(props: ThreadType) {
     }
   };
 
-  const handleIsMarked = () => {};
+  const handleIsMarked = async () => {
+    try {
+      if (!isMarked) {
+        await markThread(props.id);
+      } else {
+        await unmarkThread(props.id);
+      }
+      setIsMarked((isMarked) => !isMarked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleIsEdit = () => {
     // Call api to update data

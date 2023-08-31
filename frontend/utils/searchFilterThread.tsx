@@ -5,9 +5,8 @@ export default function searchFilterThread(
   filterKey: boolean,
   searchKey: string
 ) {
-  // TODO: Filter by category
   if (filterKey) {
-    return data.memorized === true;
+    return data.isMarked === true;
   }
 
   // TODO: Improvement search key from left to right

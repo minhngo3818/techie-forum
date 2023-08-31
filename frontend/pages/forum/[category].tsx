@@ -18,7 +18,7 @@ export default function Category(
   const [forumName, setForumName] = useState("");
   const [category, setCategory] = useState("");
   const [isThreadForm, setThreadForm] = useState(false);
-  const [filter, setFilter] = useState(false);
+  const [marked, setMarked] = useState(false);
   const [search, setSearch] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -32,21 +32,16 @@ export default function Category(
     }
   }, [router.query, category]);
 
-  const handleFilterData = useCallback(() => {
-    setFilter((filter) => !filter);
-  }, []);
+  const handleFilterMarkedThreads = useCallback(() => {
+    setMarked((marked) => !marked);
+  }, [threadList]);
 
   const handleSearchData = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearch(event.target?.value);
     },
-    []
+    [threadList]
   );
-
-  // TODO: update thread list when user post/update a thread
-  const handleAddNewThread = useCallback(() => {}, threadList);
-
-  const handleUpdateThreadItem = useCallback(() => [], threadList);
 
   const handleOpenThreadForm = () => {
     setThreadForm(!isThreadForm);
@@ -67,12 +62,10 @@ export default function Category(
         </button>
         <button
           type="button"
-          className={`${styles.forumTool} ${
-            isThreadForm && styles.forumToolActive
-          }`}
-          onClick={handleFilterData}
+          className={`${styles.forumTool} ${marked && styles.forumToolActive}`}
+          onClick={handleFilterMarkedThreads}
         >
-          Memorize
+          Marked
         </button>
         <div className={styles.forumSearchBar}>
           <p className={styles.forumSearchLabel}>Search</p>
@@ -89,7 +82,7 @@ export default function Category(
       </div>
       <ThreadForm isShow={isThreadForm} category={category} />
       {threadList
-        .filter((thread) => searchFilterThread(thread, filter, search))
+        .filter((thread) => searchFilterThread(thread, marked, search))
         .map((thread, index) => {
           return (
             <Thread

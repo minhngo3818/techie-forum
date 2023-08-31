@@ -1,7 +1,6 @@
 import React from "react";
 import ForumButton from "../../utils/buttons/forum-button/forum-button";
 import { StateDuo } from "../../../interfaces/utils/button";
-import { NumericLiteral } from "typescript";
 
 export interface LeftsideButtonsType {
   keyId: string;
@@ -26,8 +25,8 @@ export default function LeftsideButtons(props: LeftsideButtonsType) {
       />
       <ForumButton
         keyId={props.keyId}
-        name="memorized"
-        content="Memorize"
+        name="marked"
+        content="Marked"
         isState={props.handleIsMarked.isState}
         setState={props.handleIsMarked.setState}
       />
