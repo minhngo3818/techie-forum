@@ -13,7 +13,12 @@ export default function ThreadImages(props: ThreadImageType) {
         {props.images?.map((image, index) => {
           return (
             <div key={index} className={styles.threadImage}>
-              <Image src={image as string} alt="content-image" fill />
+              <Image
+                src={image as string}
+                alt="content-image"
+                fill
+                sizes="(max-width: 720px) 100vw"
+              />
             </div>
           );
         })}
