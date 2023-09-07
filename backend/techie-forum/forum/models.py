@@ -17,7 +17,7 @@ class BasePost(models.Model):
     )
     content = models.TextField(null=True, blank=True)
     liked = models.ManyToManyField(
-        Profile, default=None, blank=True, related_name="likes_set"
+        Profile, default=None, blank=True, related_name="liked_set"
     )
     is_active = models.BooleanField(default=True)
     is_edited = models.BooleanField(default=False)
@@ -39,7 +39,7 @@ class Thread(BasePost):
     title = models.CharField(max_length=255, null=True, blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
     marked = models.ManyToManyField(
-        Profile, default=None, blank=True, related_name="is_markd_set"
+        Profile, default=None, blank=True, related_name="marked_set"
     )
     category = models.CharField(
         max_length=100, choices=CATEGORIES, null=True, blank=True
