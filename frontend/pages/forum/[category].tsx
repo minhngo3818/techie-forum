@@ -111,7 +111,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   const { query } = context;
   let category = query.category as string;
-  const data = await getPaginatedThreads(category);
+  const data = await getPaginatedThreads(context.req, category);
   const threads = data.results;
   let threadList: IThread[] = [];
 

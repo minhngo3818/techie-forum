@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   ThumbUpOutline,
@@ -22,7 +24,6 @@ interface IconType {
 
 export default function ForumButton(props: ButtonInterface) {
   const id = `btn-${props.name}-${props.keyId}`;
-
   const icons: IconType[] = [
     {
       name: "thumbsup",
@@ -30,7 +31,7 @@ export default function ForumButton(props: ButtonInterface) {
       outline: <ThumbUpOutline className={styles.forumIcon} />,
     },
     {
-      name: "memorized",
+      name: "marked",
       fill: <CheckBox className={styles.forumIcon} />,
       outline: <CheckBoxOutline className={styles.forumIcon} />,
     },
@@ -56,11 +57,13 @@ export default function ForumButton(props: ButtonInterface) {
 
   function findIcon() {
     const foundIcon = icons.find((icon) => icon.name === props.name);
+    if (!foundIcon) return <></>;
+
     if (!props.isState) {
-      return foundIcon?.outline;
+      return foundIcon.outline;
     }
 
-    return foundIcon?.fill;
+    return foundIcon.fill;
   }
 
   return (

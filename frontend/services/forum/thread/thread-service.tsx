@@ -1,4 +1,4 @@
-import { touchEndEvent } from "tsparticles-engine";
+import { IncomingMessage } from "http";
 import { IThreadBody } from "../../../interfaces/forum/post/post";
 import {
   toastResponse,
@@ -6,9 +6,22 @@ import {
 } from "../../../utils/toast-helper";
 import axiosInst from "../../axios/axios-instance";
 
-export async function getPaginatedThreads(category: string, next_id?: string) {
+export async function getPaginatedThreads(
+  req: IncomingMessage,
+  category: string,
+  next_id?: string
+) {
+  /**
+   * Notes: Must add credentials from request context manually
+   * if using getServersideProps, otherwise, credentials are excluded
+   */
   return await axiosInst
-    .get(`forum/thread/?category=${category}`)
+    .get(`/forum/thread/?category=${category}`, {
+      withCredentials: true,
+      headers: {
+        Cookie: req.headers.cookie,
+      },
+    })
     .then((res) => {
       return res.data;
     })
