@@ -87,3 +87,17 @@ input[type="range"]::focus {
 input[type="range"]:focus::-webkit-slider-thumb {
   background: #ffffff;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:enabled,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:enabled,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  box-shadow: 0 0 0px 1000px #000 inset;
+  background-color: #000;
+}
