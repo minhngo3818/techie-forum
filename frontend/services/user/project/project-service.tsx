@@ -1,6 +1,6 @@
-import IProject from "../../../interfaces/project/project";
-import axiosInst from "../../axios/axios-instance";
-import { toastResponse } from "../../../utils/toast-helper";
+import IProject from "@interfaces/project/project";
+import axiosInst from "@services/axios/axios-instance";
+import { toastResponse } from "@utils/toast-helper";
 
 export async function getProjectService(id: string) {
   const response = await axiosInst.get(`project-view/?owner=${id}`);

@@ -1,10 +1,7 @@
-import { IProfile, IProfileForm } from "../../../interfaces/profile/profile";
-import axiosInst from "../../axios/axios-instance";
-import {
-  toastResponse,
-  toastDelayedSeqMessage,
-} from "../../../utils/toast-helper";
-import IProject from "../../../interfaces/project/project";
+import { IProfile, IProfileForm } from "@interfaces/profile/profile";
+import axiosInst from "@services/axios/axios-instance";
+import { toastResponse, toastDelayedSeqMessage } from "@utils/toast-helper";
+import IProject from "@interfaces/project/project";
 
 /**
  * Retrieve a user profile data by collect profile name in the url
