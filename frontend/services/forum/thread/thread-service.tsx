@@ -1,10 +1,7 @@
 import { IncomingMessage } from "http";
-import { IThreadBody } from "../../../interfaces/forum/post/post";
-import {
-  toastResponse,
-  toastDelayedSeqMessage,
-} from "../../../utils/toast-helper";
-import axiosInst from "../../axios/axios-instance";
+import { IThreadBody } from "@interfaces/forum/post/post";
+import { toastResponse, toastDelayedSeqMessage } from "@utils/toast-helper";
+import axiosInst from "@services/axios/axios-instance";
 
 export async function getPaginatedThreads(
   req: IncomingMessage,

@@ -1,5 +1,5 @@
-import { toastResponse } from "../../../utils/toast-helper";
-import axiosInst from "../../axios/axios-instance";
+import { toastResponse } from "@utils/toast-helper";
+import axiosInst from "@services/axios/axios-instance";
 
 export async function likePost(threadId: string) {
   return await axiosInst
