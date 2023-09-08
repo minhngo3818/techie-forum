@@ -199,7 +199,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "author",
-            "cmt_thread",
+            "post_thread",
             "parent",
             "content",
             "images",
@@ -223,7 +223,7 @@ class CommentSerializer(serializers.ModelSerializer):
             return {
                 "id": instance.id,
                 "author": instance.author,
-                "cmt_thread": instance.cmt_thread,
+                "post_thread": instance.post_thread,
                 "parent": parent,
                 "is_active": instance.is_active,
                 "created_at": instance.create_at,
@@ -333,7 +333,7 @@ class ThreadSerializer(serializers.ModelSerializer):
         request = self.context["request"]
 
         if request.method != "POST":
-            return Comment.objects.filter(cmt_thread=instance.id).count()
+            return Comment.objects.filter(post_thread=instance.id).count()
 
         return 0
 

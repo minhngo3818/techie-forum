@@ -54,12 +54,12 @@ class Thread(BasePost):
 
 
 class Comment(BasePost):
-    cmt_thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    post_thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     depth = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
         return "comment: {} | thread: {}".format(
-            str(self.id)[:8], self.cmt_thread.title
+            str(self.id)[:8], self.post_thread.title
         )
 
 
