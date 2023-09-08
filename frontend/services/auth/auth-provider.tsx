@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
 import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { ReactElement } from "react";
-import AuthContextInterface from "../../interfaces/user/auth-interface";
+import AuthContextInterface from "@interfaces/user/auth-interface";
 import {
   ILoginForm,
   IChangePasswordForm,
   IRegisterForm,
-} from "../../interfaces/user/auth-interface";
-import axiosInst from "../axios/axios-instance";
-import IUser from "../../interfaces/user/user";
-import { toastResponse } from "../../utils/toast-helper";
+} from "@interfaces/user/auth-interface";
+import axiosInst from "@services/axios/axios-instance";
+import IUser from "@interfaces/user/user";
+import { toastResponse } from "@utils/toast-helper";
 
 export const AuthContext = createContext<AuthContextInterface>({
   user: null,

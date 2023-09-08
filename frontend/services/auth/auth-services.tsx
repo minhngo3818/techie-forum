@@ -1,6 +1,6 @@
-import axiosInst from "../axios/axios-instance";
-import { toastResponse } from "../../utils/toast-helper";
-import { IChangePasswordForm } from "../../interfaces/user/auth-interface";
+import axiosInst from "@services/axios/axios-instance";
+import { toastResponse } from "@utils/toast-helper";
+import { IChangePasswordForm } from "@interfaces/user/auth-interface";
 
 /**
  * Request an verification email if user don't receive an email
