@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { toast } from "react-toastify";
-import { toastResponse } from "../../utils/toast-helper";
+import { toastResponse } from "@utils/toast-helper";
 
 // API CONFIGS
 const DEV_API = "http://127.0.0.1:8000/api/";
