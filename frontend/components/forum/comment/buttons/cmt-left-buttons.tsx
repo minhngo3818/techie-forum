@@ -1,18 +1,17 @@
 import React from "react";
-import ForumButton from "../../utils/buttons/forum-button/forum-button";
-import { StateDuo } from "../../../interfaces/utils/button";
+import ForumButton from "../../../utils/buttons/forum-button/forum-button";
+import { StateDuo } from "../../../../interfaces/utils/button";
 
-export interface LeftsideButtonsType {
+export interface CmtLeftButtonsType {
   keyId: string;
   isSameUser: Boolean;
   handleIsLike: StateDuo;
-  handleIsMarked: StateDuo;
   handleIsEdit: StateDuo;
   handleIsComment: StateDuo;
   numOfLikes: number;
 }
 
-export default function LeftsideButtons(props: LeftsideButtonsType) {
+export default function CmtLeftButtons(props: CmtLeftButtonsType) {
   return (
     <>
       <ForumButton
@@ -22,13 +21,6 @@ export default function LeftsideButtons(props: LeftsideButtonsType) {
         stat={props.numOfLikes}
         isState={props.handleIsLike.isState}
         setState={props.handleIsLike.setState}
-      />
-      <ForumButton
-        keyId={props.keyId}
-        name="marked"
-        content="Marked"
-        isState={props.handleIsMarked.isState}
-        setState={props.handleIsMarked.setState}
       />
       {!props.isSameUser ? (
         <></>

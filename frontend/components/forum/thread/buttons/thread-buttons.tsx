@@ -1,13 +1,13 @@
 import React from "react";
-import LeftsideButtons, {
-  LeftsideButtonsType,
-} from "../../buttons-leftside/leftside-buttons";
-import ShowCommentsBtn from "./comment-list-button/show-comments";
+import ThreadLeftButtons, {
+  ThreadLeftButtonsType,
+} from "./left-buttons/left-buttons";
+import ShowCommentsBtn from "./show-comments-btn/show-comments-btn";
 import EditButton from "../../../utils/buttons/edit-button/edit-button";
 import { StateDuo } from "../../../../interfaces/utils/button";
 import styles from "./ThreadButtons.module.css";
 
-export interface ThreadButtonTypes extends LeftsideButtonsType {
+export interface ThreadButtonTypes extends ThreadLeftButtonsType {
   isSameUser: Boolean;
   handleShowComments: StateDuo;
   onSubmit(event: React.FormEvent<HTMLButtonElement>): void;
@@ -27,7 +27,7 @@ export default function ThreadButtons(props: ThreadButtonTypes) {
             onSubmit={props.onSubmit}
           />
         ) : (
-          <LeftsideButtons
+          <ThreadLeftButtons
             keyId={props.keyId}
             isSameUser={props.isSameUser}
             numOfLikes={props.numOfLikes}

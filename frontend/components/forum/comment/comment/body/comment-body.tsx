@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useRef } from "react";
-import LeftsideButtons, {
-  LeftsideButtonsType,
-} from "../../../buttons-leftside/leftside-buttons";
+import CmtLeftButtons, {
+  CmtLeftButtonsType,
+} from "../../buttons/cmt-left-buttons";
 import EditButton from "../../../../utils/buttons/edit-button/edit-button";
 import useAutosizeTextArea from "../../../../../hooks/useAutosizeTextArea";
 import styles from "./CommentBody.module.css";
 
-export interface CommentBodyType extends LeftsideButtonsType {
+export interface CommentBodyType extends CmtLeftButtonsType {
   keyId: string;
   content: string;
-  stat?: number;
+  isSameUser: boolean;
   onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: () => void;
 }
@@ -25,13 +25,13 @@ export default function CommentBody(props: CommentBodyType) {
           <React.Fragment>
             <p className={styles.commentContent}>{props.content}</p>
             <div className={styles.commentButtons}>
-              <LeftsideButtons
+              <CmtLeftButtons
                 keyId={props.keyId}
+                isSameUser={props.isSameUser}
                 handleIsLike={props.handleIsLike}
-                handleIsMemorized={props.handleIsMemorized}
                 handleIsEdit={props.handleIsEdit}
                 handleIsComment={props.handleIsComment}
-                stat={props.stat}
+                numOfLikes={props.numOfLikes}
               />
             </div>
           </React.Fragment>

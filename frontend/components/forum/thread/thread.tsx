@@ -178,6 +178,7 @@ export default function Thread(props: ThreadType) {
         showComments={showComments}
         threadKey={`${props.keyId}`}
         comments={commentList}
+        isSameUser={props.author.profile_name === user?.profile_name}
       />
     </div>
   );

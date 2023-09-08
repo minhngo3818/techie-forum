@@ -7,6 +7,7 @@ import { EventTargetNameValue } from "../../../../interfaces/forum/form/form-fie
 
 interface CommentType extends IComment {
   keyId: string;
+  isSameUser: boolean;
 }
 
 export default function Comment(props: CommentType) {
@@ -22,16 +23,12 @@ export default function Comment(props: CommentType) {
   });
 
   const [isLike, setIsLike] = useState(false);
-  const [isMemorize, setIsMemorize] = useState(false);
+  const [isMarked, setIsMarked] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isComment, setIsComment] = useState(false);
 
   const handleIsLike = useCallback(() => {
     setIsLike((isLike) => !isLike);
-  }, []);
-
-  const handleIsMemorize = useCallback(() => {
-    setIsMemorize((isMemorize) => !isMemorize);
   }, []);
 
   const handleIsEdit = useCallback(() => {
@@ -60,11 +57,11 @@ export default function Comment(props: CommentType) {
       <CommentBody
         keyId={props.keyId}
         handleIsLike={{ isState: isLike, setState: handleIsLike }}
-        handleIsMemorized={{ isState: isMemorize, setState: handleIsMemorize }}
         handleIsEdit={{ isState: isEdit, setState: handleIsEdit }}
         handleIsComment={{ isState: isComment, setState: handleIsComment }}
         content={props.content}
-        stat={props.likes}
+        numOfLikes={props.likes}
+        isSameUser={props.isSameUser}
         onChange={handleChangeComment}
         onSubmit={handleSubmitContent}
       />

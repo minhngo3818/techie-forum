@@ -7,9 +7,9 @@ interface CommentListType {
   threadKey: string;
   showComments: boolean;
   comments: IComment[];
+  isSameUser: boolean;
 }
 
-// TODO: lazy server rendering comments, address some change
 export default function CommentList(props: CommentListType) {
   return (
     <>
@@ -21,6 +21,7 @@ export default function CommentList(props: CommentListType) {
                 key={index}
                 keyId={`${props.threadKey}-cmt-${index}`}
                 id={comment.id}
+                isSameUser={props.isSameUser}
                 thid={comment.thid}
                 pcid={comment.pcid}
                 author={comment.author}
