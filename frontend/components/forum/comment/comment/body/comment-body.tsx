@@ -2,8 +2,8 @@ import React, { ChangeEvent, useRef } from "react";
 import CmtLeftButtons, {
   CmtLeftButtonsType,
 } from "../../buttons/cmt-left-buttons";
-import EditButton from "../../../../utils/buttons/edit-button/edit-button";
-import useAutosizeTextArea from "../../../../../hooks/useAutosizeTextArea";
+import EditButton from "@components/utils/buttons/edit-button/edit-button";
+import useAutosizeTextArea from "@hooks/useAutosizeTextArea";
 import styles from "./CommentBody.module.css";
 
 export interface CommentBodyType extends CmtLeftButtonsType {

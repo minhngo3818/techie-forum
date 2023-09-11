@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import IPostHeader from "../../../../../interfaces/forum/post/post";
+import IPostHeader from "@interfaces/forum/post/post";
 import styles from "./CommentHeader.module.css";
 
 export default function CommentHeader(props: IPostHeader) {
@@ -21,7 +21,10 @@ export default function CommentHeader(props: IPostHeader) {
       >
         {props.author.profile_name}
       </Link>
-      <p className={styles.commentDate}>{props.date.toDateString()}</p>
+      <p className={styles.commentDate}>
+        {!props.isEdited ? "" : "(Edited) "}
+        {new Date(props.date).toDateString()}
+      </p>
     </div>
   );
 }

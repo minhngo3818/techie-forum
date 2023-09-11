@@ -1,6 +1,6 @@
 import React from "react";
-import ForumButton from "../../../utils/buttons/forum-button/forum-button";
-import { StateDuo } from "../../../../interfaces/utils/button";
+import ForumButton from "@components/utils/buttons/forum-button/forum-button";
+import { StateDuo } from "@interfaces/utils/button";
 
 export interface CmtLeftButtonsType {
   keyId: string;

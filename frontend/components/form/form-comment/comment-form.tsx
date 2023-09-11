@@ -1,44 +1,53 @@
-import React, { useState, useRef, useCallback, ChangeEvent } from "react";
+import React, { useState, useRef, ChangeEvent } from "react";
+import { postComment } from "@services/forum/comment/comment-service";
 import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
-import { Emoji, Image as ImageIcon } from "../../icons/icons";
+import { Emoji, Image as ImageIcon } from "@components/icons/icons";
 import styles from "./CommentForm.module.css";
 import Image from "next/image";
+import { IComment, ICommentPost } from "@interfaces/forum/post/post";
 
 interface CommentForm {
   threadId: string;
+  parentId?: string;
   isComment: boolean;
+  addNewComment: (newComment: IComment) => void;
 }
 
 export default function CommentForm(props: CommentForm) {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState<ICommentPost>({
+    threadId: props.threadId,
+    parentId: props.parentId,
+    content: "",
+    images: [],
+  });
   const [imageCmt, setImage] = useState("");
   const commentRef = useRef<HTMLTextAreaElement>(null);
   const imageCmtRef = useRef<HTMLInputElement>(null);
 
-  useAutosizeTextArea(commentRef.current, comment);
+  useAutosizeTextArea(commentRef.current, comment?.content);
 
-  const handleChangeComment = useCallback(
-    (event: ChangeEvent<HTMLTextAreaElement>) => {
-      setComment(event.target.value);
-    },
-    []
-  );
+  const handleChangeContent = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setComment({ ...comment, content: event.target.value });
+  };
 
-  const handleChangeImage = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      console.log("button was clicked");
-      if (event.target.files) {
-        let newImage = URL.createObjectURL(event.target.files[0]);
-        setImage(newImage);
+  const handleChangeImage = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      let newImage = URL.createObjectURL(event.target.files[0]);
+      setImage(newImage);
+    }
+  };
+
+  const handleSubmitComment = async () => {
+    try {
+      if (comment.content || (comment.images && comment.images.length > 0)) {
+        let newComment = await postComment(comment);
+        if (newComment) props.addNewComment(newComment);
       }
-    },
-    []
-  );
-
-  const handleSubmitComment = () => {
-    console.log("Send add-comment request");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -50,8 +59,8 @@ export default function CommentForm(props: CommentForm) {
             className={styles.cmtFormInput}
             rows={3}
             ref={commentRef}
-            value={comment}
-            onChange={handleChangeComment}
+            value={comment.content}
+            onChange={handleChangeContent}
             onSubmit={handleSubmitComment}
           />
 
