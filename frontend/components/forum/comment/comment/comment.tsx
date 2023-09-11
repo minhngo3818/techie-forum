@@ -4,31 +4,39 @@ import CommentBody from "./body/comment-body";
 import { IComment } from "@interfaces/forum/post/post";
 import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import styles from "./Comment.module.css";
+import useAuth from "@services/auth/auth-provider";
 
 interface CommentType {
   keyId: string;
-  isSameUser: boolean;
   comment: IComment;
 }
 
 export default function Comment(props: CommentType) {
+  const { user } = useAuth();
+
   const [comment, setComment] = useState<IComment>(props.comment);
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(comment.likes);
   const [isEdit, setIsEdit] = useState(false);
   const [isComment, setIsComment] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
+  const [numOfReplies, setNumOfReplies] = useState(0);
 
-  const handleIsLike = useCallback(() => {
+  const handleIsLike = () => {
     setIsLike((isLike) => !isLike);
-  }, []);
+  };
 
-  const handleIsEdit = useCallback(() => {
+  const handleIsEdit = () => {
     setIsEdit((isEdit) => !isEdit);
-  }, []);
+  };
 
-  const handleIsComment = useCallback(() => {
+  const handleIsComment = () => {
     setIsComment((isComment) => !isComment);
-  }, []);
+  };
+
+  const handleShowReplies = () => {
+    setShowReplies((showReplies) => !showReplies);
+  };
 
   const handleChangeComment = useCallback(
     ({ target: { name, value } }: EventTargetNameValue) => {
@@ -53,9 +61,14 @@ export default function Comment(props: CommentType) {
         handleIsLike={{ isState: isLike, setState: handleIsLike }}
         handleIsEdit={{ isState: isEdit, setState: handleIsEdit }}
         handleIsComment={{ isState: isComment, setState: handleIsComment }}
+        handleShowReplies={{
+          isState: showReplies,
+          setState: handleShowReplies,
+        }}
         content={comment.content}
+        numOfReplies={numOfReplies}
         numOfLikes={likes}
-        isSameUser={props.isSameUser}
+        isSameUser={props.comment.author.profile_name === user?.profile_name}
         onChange={handleChangeComment}
         onSubmit={handleSubmitComment}
       />

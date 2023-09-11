@@ -31,6 +31,8 @@ export default function CommentBody(props: CommentBodyType) {
                 handleIsLike={props.handleIsLike}
                 handleIsEdit={props.handleIsEdit}
                 handleIsComment={props.handleIsComment}
+                handleShowReplies={props.handleShowReplies}
+                numOfReplies={props.numOfReplies}
                 numOfLikes={props.numOfLikes}
               />
             </div>

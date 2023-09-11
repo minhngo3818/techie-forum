@@ -7,7 +7,6 @@ interface CommentListType {
   threadKey: string;
   showComments: boolean;
   comments: IComment[];
-  isSameUser: boolean;
 }
 
 export default function CommentList(props: CommentListType) {
@@ -20,7 +19,6 @@ export default function CommentList(props: CommentListType) {
               <Comment
                 key={index}
                 keyId={`${props.threadKey}-cmt-${index}`}
-                isSameUser={props.isSameUser}
                 comment={comment}
               />
             );

@@ -8,6 +8,8 @@ export interface CmtLeftButtonsType {
   handleIsLike: StateDuo;
   handleIsEdit: StateDuo;
   handleIsComment: StateDuo;
+  handleShowReplies: StateDuo;
+  numOfReplies: number;
   numOfLikes: number;
 }
 
@@ -22,9 +24,7 @@ export default function CmtLeftButtons(props: CmtLeftButtonsType) {
         isState={props.handleIsLike.isState}
         setState={props.handleIsLike.setState}
       />
-      {!props.isSameUser ? (
-        <></>
-      ) : (
+      {props.isSameUser && (
         <ForumButton
           keyId={props.keyId}
           name="edit"
@@ -40,6 +40,16 @@ export default function CmtLeftButtons(props: CmtLeftButtonsType) {
         isState={props.handleIsComment.isState}
         setState={props.handleIsComment.setState}
       />
+      {props.numOfReplies !== 0 && (
+        <ForumButton
+          keyId={props.keyId}
+          name="reply"
+          content="Reply"
+          stat={props.numOfReplies}
+          isState={props.handleShowReplies.isState}
+          setState={props.handleShowReplies.setState}
+        />
+      )}
     </>
   );
 }
