@@ -189,7 +189,7 @@ class CommentSerializer(serializers.ModelSerializer):
     Serialize to view and manage comment instances
     """
 
-    author = NestedProfileSerializer()
+    author = NestedProfileSerializer(read_only=True)
     parent = serializers.CharField(required=False, default=None)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
@@ -210,7 +210,8 @@ class CommentSerializer(serializers.ModelSerializer):
             "is_active",
             "is_edited",
         ]
-        read_only_fields = ("id", "is_active", "created_at", "updated_at", "likes")
+        read_only_fields = ("id", "is_active", "author", "depth", "created_at", "updated_at", "likes")
+
 
     def to_representation(self, instance):
 
@@ -225,6 +226,7 @@ class CommentSerializer(serializers.ModelSerializer):
                 "author": instance.author,
                 "post_thread": instance.post_thread,
                 "parent": parent,
+                "is_edited": instance.is_edited,
                 "is_active": instance.is_active,
                 "created_at": instance.create_at,
                 "updated_at": instance.updated_at,
@@ -234,24 +236,18 @@ class CommentSerializer(serializers.ModelSerializer):
 
         default_data = super(CommentSerializer, self).to_representation(instance)
         default_data["parent"] = parent
-        print(default_data)
-
         return default_data
 
     def validate(self, attrs):
-        author = attrs.get("author", None)  # Object of author profile
         depth = attrs.get("depth", 0)
         parent = attrs.get("parent", None)
 
         errors = {}
 
-        if not Profile.objects.filter(id=author.id).exists():
-            errors["author"] = "author does not exist"
-
-        if not Comment.objects.filter(id=parent).exists():
+        if parent and not Comment.objects.filter(id=parent).exists():
             errors["parent"] = "parent comment does not exist"
-        else:
-            attrs["parent"] = Comment.objects.get(id=parent)
+        # else:
+        #     attrs["parent"] = Comment.objects.get(id=parent)
 
         if depth > 0 and (parent == "" or parent is None):
             errors["parent"] = "depth is provided but missing parent comment"
@@ -296,7 +292,7 @@ class ThreadSerializer(serializers.ModelSerializer):
     likes = serializers.IntegerField(source="get_likes", required=False)
     is_marked = serializers.SerializerMethodField("get_is_marked")
     category = serializers.ChoiceField(choices=CATEGORIES, required=True)
-    comment_counts = serializers.SerializerMethodField()
+    comment_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Thread
@@ -313,7 +309,7 @@ class ThreadSerializer(serializers.ModelSerializer):
             "is_marked",
             "is_liked",
             "likes",
-            "comment_counts",
+            "comment_count",
             "is_active",
             "is_edited",
         ]
@@ -326,10 +322,10 @@ class ThreadSerializer(serializers.ModelSerializer):
             "is_active",
             "is_liked",
             "likes",
-            "is_marked" "comment_counts",
+            "is_marked" "comment_count",
         )
 
-    def get_comment_counts(self, instance):
+    def get_comment_count(self, instance):
         request = self.context["request"]
 
         if request.method != "POST":
@@ -418,7 +414,7 @@ class ThreadSerializer(serializers.ModelSerializer):
                 "created_at": instance.created_at,
                 "updated_at": instance.updated_at,
                 "likes": instance.get_likes,
-                "count_comments": self.get_comment_counts(instance),
+                "count_comments": self.get_comment_count(instance),
                 "notice": "This thread was deleted by user.",
             }
 

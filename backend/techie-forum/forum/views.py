@@ -98,6 +98,9 @@ class CommentViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user.profile)
+
     def perform_destroy(self, instance):
         related_instance = ParentChildComment.objects.get(child=instance.id)
         related_instance.delete()
