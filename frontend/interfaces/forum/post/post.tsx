@@ -1,6 +1,6 @@
 type PostId = { id: string };
-type ThreadId = { thid: string };
-type ParentCommentId = { pcid?: string };
+type ThreadId = { threadId: string };
+type ParentId = { parentId?: string };
 type Category = { category: string };
 type Title = { title: string };
 type PostDate = { date: Date };
@@ -11,6 +11,8 @@ type Marked = { isMarked: boolean };
 type Images = { images?: string[] | FileList };
 type Likes = { likes: number };
 type Liked = { isLiked: boolean };
+type IsActive = { isActive: boolean };
+type IsEdited = { isEdited: boolean };
 
 export interface IAuthor {
   author: {
@@ -23,15 +25,24 @@ export interface IAuthor {
 export interface IComment
   extends PostId,
     ThreadId,
-    ParentCommentId,
+    ParentId,
     IAuthor,
     PostDate,
     Content,
     Depth,
     Images,
-    Likes {
+    Likes,
+    IsActive,
+    IsEdited {
   comments?: IComment[];
 }
+
+export interface ICommentPost
+  extends ThreadId,
+    ParentId,
+    Content,
+    Depth,
+    Images {}
 
 export interface IThreadBody extends Category, Title, Content, Images, Tags {}
 
@@ -42,10 +53,12 @@ export interface IThread
     Likes,
     Liked,
     Marked,
+    IsEdited,
+    IsActive,
     IThreadBody {
-  comments?: IComment[];
+  commentCount: number;
 }
 
-export default interface IPostHeader extends IAuthor {
+export default interface IPostHeader extends IAuthor, IsEdited {
   date: Date;
 }
