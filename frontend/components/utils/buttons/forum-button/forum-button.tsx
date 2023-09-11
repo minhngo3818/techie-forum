@@ -10,8 +10,10 @@ import {
   EditOutline,
   CommentOutline,
   Comment,
-} from "../../../icons/icons";
-import ButtonInterface from "../../../../interfaces/utils/button";
+  Reply,
+  ReplyOutline,
+} from "@components/icons/icons";
+import ButtonInterface from "@interfaces/utils/button";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./ForumButton.module.css";
@@ -45,6 +47,11 @@ export default function ForumButton(props: ButtonInterface) {
       fill: <Comment className={styles.forumIcon} />,
       outline: <CommentOutline className={styles.forumIcon} />,
     },
+    {
+      name: "reply",
+      fill: <Reply className={styles.forumIcon} />,
+      outline: <ReplyOutline className={styles.forumIcon} />,
+    },
   ];
 
   function activeStyle(isActive: boolean) {
@@ -74,9 +81,7 @@ export default function ForumButton(props: ButtonInterface) {
     >
       {findIcon()}
       <Tooltip anchorId={id} content={props.content} events={["hover"]} />
-      {props.name === "thumbsup" && (
-        <p className="text-white ml-2">{props.stat}</p>
-      )}
+      {!props.stat ? <></> : <p className="text-white ml-2">{props.stat}</p>}
     </button>
   );
 }

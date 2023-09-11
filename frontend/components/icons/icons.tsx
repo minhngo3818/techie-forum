@@ -210,6 +210,40 @@ export function Edit(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function ReplyOutline(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M19 10v9h-2v-7H6.828l3.95 3.95l-1.414 1.414L3 11l6.364-6.364l1.414 1.414L6.828 10H19Z"
+      ></path>
+    </svg>
+  );
+}
+
+export function Reply(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M19 10v9h-2v-7H9.414v5.414L3 11l6.414-6.414V10H19Z"
+      ></path>
+    </svg>
+  );
+}
+
 export function CommentOutline(props: SVGProps<SVGSVGElement>) {
   return (
     <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
