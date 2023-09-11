@@ -2,13 +2,13 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import ThreadForm from "../../components/form/form-thread/thread-form";
-import { IThread } from "../../interfaces/forum/post/post";
-import searchFilterThread from "../../utils/searchFilterThread";
+import ThreadForm from "@components/form/form-thread/thread-form";
+import { IThread } from "@interfaces/forum/post/post";
+import { getPaginatedThreads } from "@services/forum/thread/thread-service";
+import searchFilterThread from "@utils/searchFilterThread";
+import styles from "@styles/Forum.module.css";
 import forumLinks from "../../page-paths/forum";
-import styles from "../../styles/Forum.module.css";
-import { getPaginatedThreads } from "../../services/forum/thread/thread-service";
-const Thread = dynamic(() => import("../../components/forum/thread/thread"));
+const Thread = dynamic(() => import("@components/forum/thread/thread"));
 
 export default function Category(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -84,23 +84,7 @@ export default function Category(
       {threadList
         .filter((thread) => searchFilterThread(thread, marked, search))
         .map((thread, index) => {
-          return (
-            <Thread
-              key={index}
-              keyId={index}
-              id={thread.id}
-              author={thread.author}
-              date={new Date(thread.date)}
-              category={thread.category}
-              title={thread.title}
-              content={thread.content}
-              isMarked={thread.isMarked}
-              likes={thread.likes}
-              isLiked={thread.isLiked}
-              tags={thread.tags}
-              images={thread.images}
-            />
-          );
+          return <Thread key={index} keyId={index} thread={thread} />;
         })}
     </div>
   );
@@ -108,29 +92,15 @@ export default function Category(
 
 export const getServerSideProps: GetServerSideProps<{
   threads: IThread[];
+  nextId: string;
 }> = async (context) => {
   const { query } = context;
   let category = query.category as string;
-  const data = await getPaginatedThreads(context.req, category);
-  const threads = data.results;
-  let threadList: IThread[] = [];
-
-  for (let i = 0; i < threads.length; i += 1) {
-    let thread: IThread = {
-      id: threads[i].id,
-      author: threads[i].author,
-      category: threads[i].category,
-      date: threads[i].updated_at,
-      title: threads[i].title,
-      content: threads[i].content,
-      images: threads[i].images,
-      tags: threads[i].tags,
-      isMarked: threads[i].is_marked,
-      likes: threads[i].likes,
-      isLiked: threads[i].is_liked,
-    };
-    threadList.push(thread);
-  }
-
-  return { props: { threads: threadList } };
+  const results = await getPaginatedThreads(context.req, category);
+  return {
+    props: {
+      threads: results?.threads || [],
+      nextId: results?.nextId || null,
+    },
+  };
 };

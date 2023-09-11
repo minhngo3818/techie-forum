@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
 import ThreadHeader from "./header/thread-header";
 import ThreadContent from "./content/content";
@@ -8,94 +8,68 @@ import ThreadImages from "./images/images";
 const CommentList = dynamic(
   () => import("../comment/comment-list/comment-list")
 );
-const CommentForm = dynamic(
-  () => import("../../form/form-comment/comment-form")
-);
-import {
-  IThread,
-  IThreadBody,
-  IComment,
-} from "../../../interfaces/forum/post/post";
-import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
+import CommentForm from "../../form/form-comment/comment-form";
+import { getPaginatedComments } from "@services/forum/comment/comment-service";
+import { IThread, IThreadBody, IComment } from "@interfaces/forum/post/post";
+import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import styles from "./Thread.module.css";
-import useAuth from "../../../services/auth/auth-provider";
-import {
-  likePost,
-  unlikePost,
-} from "../../../services/forum/like/like-service";
-import {
-  markThread,
-  unmarkThread,
-} from "../../../services/forum/mark/mark-service";
+import useAuth from "@services/auth/auth-provider";
+import { likePost, unlikePost } from "@services/forum/like/like-service";
+import { markThread, unmarkThread } from "@services/forum/mark/mark-service";
 
-interface ThreadType extends IThread {
+interface ThreadType {
   keyId: number;
+  thread: IThread;
 }
 
 export default function Thread(props: ThreadType) {
-  let commentList: IComment[] = [
-    {
-      id: "123",
-      thid: "1",
-      pcid: "1",
-      author: {
-        id: "29038rsfasd",
-        profile_name: "Jotaro",
-        avatar: "/jotaro.jpg",
-      },
-      depth: 1,
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
-        tempor incididunt ut labore et dolore magna aliqua.\
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in\
-        voluptate velit esse cillum dolore eu fugiat nulla pariatur. \
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa\
-        qui officia deserunt mollit anim id est laborum. ",
-      date: new Date(Date.now()),
-      likes: 0,
-    },
-    {
-      id: "1223",
-      thid: "1",
-      pcid: "2",
-      author: {
-        profile_name: "Josuke",
-        id: "29038rsfasd",
-        avatar: "/josuke.jpg",
-      },
-      depth: 2,
-      content:
-        "Excepteur sint occaecat cupidatat non proident, \
-      sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      date: new Date(Date.now()),
-      likes: 0,
-    },
-  ];
-
   const { user } = useAuth();
 
   const [thread, setThread] = useState<IThreadBody>({
-    category: props.category,
-    title: props.title,
-    content: props.content,
-    tags: props.tags,
-    images: props.images,
+    category: props.thread.category,
+    title: props.thread.title,
+    content: props.thread.content,
+    tags: props.thread.tags,
+    images: props.thread.images,
   });
-  const [isLike, setIsLike] = useState(props.isLiked);
-  const [like, setLike] = useState(props.likes);
-  const [isMarked, setIsMarked] = useState(props.isMarked);
+  const [commentList, setCommentList] = useState<IComment[]>([]);
+  const [nextQueryId, setNextQueryId] = useState<string | undefined>();
+  const [isLike, setIsLike] = useState(props.thread.isLiked);
+  const [like, setLike] = useState(props.thread.likes);
+  const [isMarked, setIsMarked] = useState(props.thread.isMarked);
   const [isEdit, setIsEdit] = useState(false);
-  const [isCommentForm, setIsComment] = useState(false);
+  const [isCommentForm, setIsCommentForm] = useState(false);
   const [showComments, setShowComments] = useState(false);
+
+  const fetchComments = useCallback(async () => {
+    if (showComments) {
+      setCommentList([]);
+      setNextQueryId(undefined);
+    } else {
+      const results = await getPaginatedComments(
+        props.thread.id,
+        undefined,
+        nextQueryId
+      );
+      if (results) {
+        setCommentList(results.comments);
+        setNextQueryId(results.nextId);
+      }
+    }
+  }, [commentList, showComments]);
+
+  const handleShowComments = () => {
+    setShowComments((showComments) => !showComments);
+    fetchComments();
+  };
 
   const handleLike = async () => {
     try {
       if (!isLike) {
-        await likePost(props.id);
+        await likePost(props.thread.id);
         setLike((like) => like + 1);
       } else {
-        await unlikePost(props.id);
+        await unlikePost(props.thread.id);
         setLike((like) => (like === 0 ? 0 : like - 1));
       }
       setIsLike((isLike) => !isLike);
@@ -107,9 +81,9 @@ export default function Thread(props: ThreadType) {
   const handleIsMarked = async () => {
     try {
       if (!isMarked) {
-        await markThread(props.id);
+        await markThread(props.thread.id);
       } else {
-        await unmarkThread(props.id);
+        await unmarkThread(props.thread.id);
       }
       setIsMarked((isMarked) => !isMarked);
     } catch (error) {
@@ -122,13 +96,14 @@ export default function Thread(props: ThreadType) {
     setIsEdit((isEdit) => !isEdit);
   };
 
-  const handleIsCommentForm = () => {
-    // Call api to update data
-    setIsComment((isComment) => !isComment);
+  const addNewComment = (newComment: IComment) => {
+    let newCommentList = [...commentList, newComment];
+    setCommentList(newCommentList);
   };
 
-  const handleShowComments = () => {
-    setShowComments((showComments) => !showComments);
+  const handleIsCommentForm = () => {
+    // Call api to update data
+    setIsCommentForm((isComment) => !isComment);
   };
 
   // Thread
@@ -143,18 +118,26 @@ export default function Thread(props: ThreadType) {
 
   return (
     <div className={styles.thread}>
-      <ThreadHeader author={props.author} date={props.date} />
+      <ThreadHeader
+        author={props.thread.author}
+        isEdited={props.thread.isEdited}
+        date={props.thread.date}
+      />
       <ThreadContent
         isEdit={isEdit}
-        title={props.title}
-        content={props.content}
+        title={props.thread.title}
+        content={props.thread.content}
         onChange={handleThreadChange}
       />
-      <ThreadImages images={props.images} />
-      <ThreadTags isEdit={isEdit} tags={props.tags} setThread={setThread} />
+      <ThreadImages images={props.thread.images} />
+      <ThreadTags
+        isEdit={isEdit}
+        tags={props.thread.tags}
+        setThread={setThread}
+      />
       <ThreadButtons
         keyId={`thr-${props.keyId}`}
-        isSameUser={props.author.profile_name === user?.profile_name}
+        isSameUser={props.thread.author.profile_name === user?.profile_name}
         numOfLikes={like}
         handleIsLike={{ isState: isLike, setState: handleLike }}
         handleIsMarked={{
@@ -171,14 +154,22 @@ export default function Thread(props: ThreadType) {
           setState: handleShowComments,
         }}
         onSubmit={handleUpdateThread}
-        numOfComments={commentList.length}
+        numOfComments={
+          commentList.length === 0
+            ? props.thread.commentCount
+            : commentList.length
+        }
       />
-      <CommentForm isComment={isCommentForm} threadId={`thr-${props.keyId}`} />
+      <CommentForm
+        isComment={isCommentForm}
+        threadId={`thr-${props.keyId}`}
+        addNewComment={addNewComment}
+      />
       <CommentList
         showComments={showComments}
         threadKey={`${props.keyId}`}
         comments={commentList}
-        isSameUser={props.author.profile_name === user?.profile_name}
+        isSameUser={props.thread.author.profile_name === user?.profile_name}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import IPostHeader from "../../../../interfaces/forum/post/post";
+import IPostHeader from "@interfaces/forum/post/post";
 import styles from "./ThreadHeader.module.css";
 
 export default function ThreadHeader(props: IPostHeader) {
@@ -22,7 +22,10 @@ export default function ThreadHeader(props: IPostHeader) {
       >
         {props.author.profile_name}
       </Link>
-      <p className={styles.threadHeaderDate}>{props.date.toDateString()}</p>
+      <p className={styles.threadHeaderDate}>
+        {!props.isEdited ? "" : "(Edited) "}
+        {new Date(props.date).toDateString()}
+      </p>
     </div>
   );
 }
