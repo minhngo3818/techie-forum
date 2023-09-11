@@ -1,38 +1,53 @@
-import { IComment } from "../../../interfaces/forum/post/post";
-import axiosInst from "../../axios/axios-instance";
+import { IComment, ICommentPost } from "@interfaces/forum/post/post";
+import axiosInst from "@services/axios/axios-instance";
+import { toastResponse } from "@utils/toast-helper";
+import commentMapper from "./comment-mapper";
 
-export async function getAllCommentsService(tid: string, parent?: string) {
-  const response = await axiosInst.get(
-    `forum/comment-view/?thread=${tid}&?parent=${parent}`
-  );
+export async function getPaginatedComments(
+  threadId: string,
+  parentId?: string,
+  next_id?: string
+) {
+  let queryString = `?thread=${threadId}`;
+  queryString += !parentId ? "" : `&?parent=${parentId}`;
+  queryString += !next_id ? "" : `&?next=${next_id}`;
 
-  return response;
+  return await axiosInst
+    .get(`forum/comment/${queryString}`)
+    .then((res) => {
+      let rawComments = res.data.results;
+      let comments: IComment[] = [];
+      for (let i = 0; i < rawComments.length; i += 1) {
+        comments.push(commentMapper(rawComments[i]));
+      }
+      return { comments: comments, nextId: res.data.next };
+    })
+    .catch((error) => {
+      toastResponse("error", error.message);
+    });
 }
 
-export async function getPaginatedCommentsService() {}
-
-export async function getComment(cid: string) {
-  const response = await axiosInst.get(`forum/comment-view/?id=${cid}/`);
-
-  return response;
+export async function postComment(data: ICommentPost) {
+  return await axiosInst
+    .post(`forum/comment/`, data)
+    .then((res) => {
+      toastResponse("success", "Your comment was posted successfully");
+      return commentMapper(res.data);
+    })
+    .catch((error) => {
+      toastResponse("error", error.message);
+    });
 }
 
-export async function createCommentService(tid: string, parent?: string) {
-  const response = await axiosInst.post(
-    `forum/comment-view/?thread=${tid}&?parent=${parent}`
-  );
-
-  return response;
+export async function updateComment(cmtId: string, data: IComment) {
+  return await axiosInst
+    .patch(`forum/comment/${cmtId}`, data)
+    .then((res) =>
+      toastResponse("success", "Your comment was updated successfully!")
+    )
+    .catch((error) => toastResponse("error", error.message));
 }
 
-export async function changeCommentService(data: IComment) {
-  const response = await axiosInst.patch("forum/comment-view/", data, {
-    withCredentials: true,
-  });
+export async function removeComment(cmtId: string) {}
 
-  return response;
-}
-
-export async function removeComment() {}
-
-export async function recoverComment() {}
+export async function recoverComment(cmtId: string) {}
