@@ -5,7 +5,7 @@ import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import CommentForm from "@components/form/form-comment/comment-form";
 import { getPaginatedComments } from "@services/forum/comment/comment-service";
 import useAuth from "@services/auth/auth-provider";
-import { likePost, unlikePost } from "@services/forum/like/like-service";
+import { setLikeWorker } from "@services/forum/like/like-worker";
 import { markThread, unmarkThread } from "@services/forum/mark/mark-service";
 import ThreadHeader from "./header/thread-header";
 import ThreadContent from "./content/content";
@@ -32,8 +32,8 @@ export default function Thread(props: ThreadType) {
   });
   const [commentList, setCommentList] = useState<IComment[]>([]);
   const [nextQueryId, setNextQueryId] = useState<string | undefined>();
-  const [isLike, setIsLike] = useState(props.thread.isLiked);
-  const [like, setLike] = useState(props.thread.likes);
+  const [isLiked, setIsLiked] = useState(props.thread.isLiked);
+  const [likes, setLikes] = useState(props.thread.likes);
   const [isMarked, setIsMarked] = useState(props.thread.isMarked);
   const [isEdit, setIsEdit] = useState(false);
   const [isCommentForm, setIsCommentForm] = useState(false);
@@ -62,18 +62,7 @@ export default function Thread(props: ThreadType) {
   };
 
   const handleLike = async () => {
-    try {
-      if (!isLike) {
-        await likePost(props.thread.id);
-        setLike((like) => like + 1);
-      } else {
-        await unlikePost(props.thread.id);
-        setLike((like) => (like === 0 ? 0 : like - 1));
-      }
-      setIsLike((isLike) => !isLike);
-    } catch (error) {
-      console.log(error);
-    }
+    await setLikeWorker(props.thread.id, isLiked, setIsLiked, setLikes);
   };
 
   const handleIsMarked = async () => {
@@ -136,8 +125,8 @@ export default function Thread(props: ThreadType) {
       <ThreadButtons
         keyId={`thr-${props.keyId}`}
         isSameUser={props.thread.author.profile_name === user?.profile_name}
-        numOfLikes={like}
-        handleIsLike={{ isState: isLike, setState: handleLike }}
+        numOfLikes={likes}
+        handleIsLike={{ isState: isLiked, setState: handleLike }}
         handleIsMarked={{
           isState: isMarked,
           setState: handleIsMarked,

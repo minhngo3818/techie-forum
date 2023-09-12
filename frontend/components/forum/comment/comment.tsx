@@ -9,6 +9,7 @@ import CommentWrapper from "./wrapper/comment-wrapper";
 import CommentContent from "./content/comment-content";
 import CommentLeftButtons from "./buttons/cmt-left-buttons";
 import CommentList from "./list/comment-list";
+import { setLikeWorker } from "@services/forum/like/like-worker";
 
 interface CommentType {
   keyId: string;
@@ -19,16 +20,18 @@ export default function Comment(props: CommentType) {
   const { user } = useAuth();
 
   const [comment, setComment] = useState<IComment>(props.comment);
-  const [isLike, setIsLike] = useState(false);
-  const [likes, setLikes] = useState(10);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(props.comment.likes);
   const [isEdit, setIsEdit] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState<IComment[]>([]);
   const [numOfReplies, setNumOfReplies] = useState(10);
 
-  const handleIsLike = () => {
-    setIsLike((isLike) => !isLike);
+  console.log(props.comment.author.profile_name === user?.profile_name);
+
+  const handleLike = async () => {
+    await setLikeWorker(comment.id, isLiked, setIsLiked, setLikes);
   };
 
   const handleIsEdit = () => {
@@ -48,7 +51,6 @@ export default function Comment(props: CommentType) {
 
   const handleAddComment = useCallback(() => {}, [replies]);
 
-  // TODO: Consider using a worker
   const fetchReplies = useCallback(() => {}, [replies, showReplies]);
 
   const handleShowReplies = () => {
@@ -70,7 +72,7 @@ export default function Comment(props: CommentType) {
         <CommentContent content={comment.content} />
         <CommentLeftButtons
           keyId={props.keyId}
-          handleIsLike={{ isState: isLike, setState: handleIsLike }}
+          handleIsLike={{ isState: isLiked, setState: handleLike }}
           handleIsEdit={{ isState: isEdit, setState: handleIsEdit }}
           handleIsComment={{ isState: isComment, setState: handleIsComment }}
           handleShowReplies={{
