@@ -5,12 +5,14 @@ import commentMapper from "./comment-mapper";
 
 export async function getPaginatedComments(
   threadId: string,
-  parentId?: string,
-  next_id?: string
+  parentId: string | undefined,
+  depth: number,
+  next_id: string | undefined
 ) {
   let queryString = `?thread=${threadId}`;
-  queryString += !parentId ? "" : `&?parent=${parentId}`;
-  queryString += !next_id ? "" : `&?next=${next_id}`;
+  queryString += !parentId ? "" : `&parent=${parentId}`;
+  queryString += `&depth=${depth}`;
+  queryString += !next_id ? "" : `&next=${next_id}`;
 
   return await axiosInst
     .get(`forum/comment/${queryString}`)

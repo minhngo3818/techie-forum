@@ -14,5 +14,6 @@ export default function commentMapper(data: any): IComment {
     isLiked: data.is_liked,
     isActive: data.is_active,
     isEdited: data.is_edited,
+    replyCount: data.reply_count,
   };
 }

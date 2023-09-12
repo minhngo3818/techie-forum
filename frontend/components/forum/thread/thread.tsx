@@ -40,10 +40,7 @@ export default function Thread(props: ThreadType) {
   const [showComments, setShowComments] = useState(false);
 
   const fetchComments = useCallback(async () => {
-    if (showComments) {
-      setCommentList([]);
-      setNextQueryId(undefined);
-    } else {
+    if (!showComments) {
       const results = await getPaginatedComments(
         props.thread.id,
         undefined,

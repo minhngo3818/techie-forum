@@ -5,7 +5,7 @@ type Category = { category: string };
 type Title = { title: string };
 type PostDate = { date: Date };
 type Content = { content: string };
-type Depth = { depth?: number };
+type Depth = { depth: number };
 type Tags = { tags?: string[] };
 type Marked = { isMarked: boolean };
 type Images = { images?: string[] | FileList };
@@ -13,6 +13,7 @@ type Likes = { likes: number };
 type IsLiked = { isLiked: boolean };
 type IsActive = { isActive: boolean };
 type IsEdited = { isEdited: boolean };
+type ReplyCount = { replyCount: number };
 
 export interface IAuthor {
   author: {
@@ -34,7 +35,8 @@ export interface IComment
     Likes,
     IsLiked,
     IsActive,
-    IsEdited {
+    IsEdited,
+    ReplyCount {
   comments?: IComment[];
 }
 

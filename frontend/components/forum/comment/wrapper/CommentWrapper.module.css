@@ -1,5 +1,5 @@
 .CmtOuterWrapper {
-  @apply w-full min-h-[160px] h-auto pl-5
+  @apply w-full h-auto pl-5
     flex flex-col justify-start items-start;
 }
 

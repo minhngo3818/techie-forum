@@ -84,16 +84,18 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = PaginationHelper
 
     def filter_queryset(self, queryset):
-        thread_id = self.request.query_params.get("thread", None)
-        parent_id = self.request.query_params.get("parent", None)
+        thread_id = self.request.query_params.get("thread")
+        parent_id = self.request.query_params.get("parent")
+        depth = self.request.query_params.get("depth", 0)
 
         if thread_id and parent_id:
             child_comment_ids = ParentChildComment.objects.filter(
                 parent=parent_id
             ).values("child")
-            return queryset.filter(post_thread=thread_id, id__in=child_comment_ids)
-
-        if thread_id:
+            return queryset.filter(
+                post_thread=thread_id, id__in=child_comment_ids, depth=depth
+            )
+        elif thread_id:
             return queryset.filter(post_thread=thread_id, depth=0)
 
         return queryset

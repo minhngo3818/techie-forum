@@ -10,6 +10,7 @@ import CommentContent from "./content/comment-content";
 import CommentLeftButtons from "./buttons/cmt-left-buttons";
 import CommentList from "./list/comment-list";
 import { setLikeWorker } from "@services/forum/like/like-worker";
+import { getPaginatedComments } from "@services/forum/comment/comment-service";
 
 interface CommentType {
   keyId: string;
@@ -26,9 +27,7 @@ export default function Comment(props: CommentType) {
   const [isComment, setIsComment] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState<IComment[]>([]);
-  const [numOfReplies, setNumOfReplies] = useState(10);
-
-  console.log(props.comment.author.profile_name === user?.profile_name);
+  const [nextQueryId, setNextQueryId] = useState<string | undefined>();
 
   const handleLike = async () => {
     await setLikeWorker(comment.id, isLiked, setIsLiked, setLikes);
@@ -51,10 +50,25 @@ export default function Comment(props: CommentType) {
 
   const handleAddComment = useCallback(() => {}, [replies]);
 
-  const fetchReplies = useCallback(() => {}, [replies, showReplies]);
+  const fetchReplies = useCallback(async () => {
+    if (!showReplies) {
+      const results = await getPaginatedComments(
+        comment.threadId,
+        comment.id,
+        comment.depth + 1,
+        nextQueryId
+      );
+      if (results) {
+        console.log(results.comments);
+        setReplies(results.comments);
+        setNextQueryId(results.nextId);
+      }
+    }
+  }, [replies, showReplies]);
 
   const handleShowReplies = () => {
     setShowReplies((showReplies) => !showReplies);
+    fetchReplies();
   };
 
   const handlePostComment = () => {
@@ -79,7 +93,9 @@ export default function Comment(props: CommentType) {
             isState: showReplies,
             setState: handleShowReplies,
           }}
-          numOfReplies={numOfReplies}
+          numOfReplies={
+            replies.length > 0 ? replies.length : comment.replyCount
+          }
           numOfLikes={likes}
           isSameUser={props.comment.author.profile_name === user?.profile_name}
         />

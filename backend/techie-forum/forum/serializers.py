@@ -194,6 +194,7 @@ class CommentSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
     is_liked = serializers.SerializerMethodField("get_is_liked")
+    reply_count = serializers.SerializerMethodField("get_reply_count")
 
     class Meta:
         model = Comment
@@ -211,8 +212,17 @@ class CommentSerializer(serializers.ModelSerializer):
             "is_liked",
             "is_active",
             "is_edited",
+            "reply_count",
         ]
-        read_only_fields = ("id", "is_active", "author", "depth", "created_at", "updated_at", "likes")
+        read_only_fields = (
+            "id",
+            "is_active",
+            "author",
+            "depth",
+            "created_at",
+            "updated_at",
+            "likes",
+        )
 
     def get_is_liked(self, instance):
         request = self.context.get("request")
@@ -221,6 +231,9 @@ class CommentSerializer(serializers.ModelSerializer):
             return False
 
         return instance.liked.filter(id=request.user.profile.id).exists()
+
+    def get_reply_count(self, instance):
+        return ParentChildComment.objects.filter(parent=instance.id).count()
 
     def to_representation(self, instance):
 
