@@ -338,7 +338,7 @@ class ThreadSerializer(serializers.ModelSerializer):
         request = self.context["request"]
 
         if request.method != "POST":
-            return Comment.objects.filter(post_thread=instance.id).count()
+            return Comment.objects.filter(post_thread=instance.id, depth=0).count()
 
         return 0
 

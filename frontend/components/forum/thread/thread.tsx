@@ -47,6 +47,7 @@ export default function Thread(props: ThreadType) {
       const results = await getPaginatedComments(
         props.thread.id,
         undefined,
+        0,
         nextQueryId
       );
       if (results) {
