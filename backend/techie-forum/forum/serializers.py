@@ -193,6 +193,7 @@ class CommentSerializer(serializers.ModelSerializer):
     parent = serializers.CharField(required=False, default=None)
     images = ImageSerializer(many=True, required=False)
     likes = serializers.IntegerField(source="get_likes", required=False)
+    is_liked = serializers.SerializerMethodField("get_is_liked")
 
     class Meta:
         model = Comment
@@ -207,11 +208,19 @@ class CommentSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "likes",
+            "is_liked",
             "is_active",
             "is_edited",
         ]
         read_only_fields = ("id", "is_active", "author", "depth", "created_at", "updated_at", "likes")
 
+    def get_is_liked(self, instance):
+        request = self.context.get("request")
+
+        if type(request.user) is AnonymousUser:
+            return False
+
+        return instance.liked.filter(id=request.user.profile.id).exists()
 
     def to_representation(self, instance):
 

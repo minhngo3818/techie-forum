@@ -11,6 +11,7 @@ export default function commentMapper(data: any): IComment {
     depth: data.depth,
     images: data.images,
     likes: data.likes,
+    isLiked: data.is_liked,
     isActive: data.is_active,
     isEdited: data.is_edited,
   };

@@ -20,7 +20,7 @@ export default function Comment(props: CommentType) {
   const { user } = useAuth();
 
   const [comment, setComment] = useState<IComment>(props.comment);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(props.comment.isLiked);
   const [likes, setLikes] = useState(props.comment.likes);
   const [isEdit, setIsEdit] = useState(false);
   const [isComment, setIsComment] = useState(false);

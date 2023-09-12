@@ -10,7 +10,7 @@ type Tags = { tags?: string[] };
 type Marked = { isMarked: boolean };
 type Images = { images?: string[] | FileList };
 type Likes = { likes: number };
-type Liked = { isLiked: boolean };
+type IsLiked = { isLiked: boolean };
 type IsActive = { isActive: boolean };
 type IsEdited = { isEdited: boolean };
 
@@ -32,6 +32,7 @@ export interface IComment
     Depth,
     Images,
     Likes,
+    IsLiked,
     IsActive,
     IsEdited {
   comments?: IComment[];
@@ -51,7 +52,7 @@ export interface IThread
     IAuthor,
     PostDate,
     Likes,
-    Liked,
+    IsLiked,
     Marked,
     IsEdited,
     IsActive,
