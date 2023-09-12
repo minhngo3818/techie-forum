@@ -1,20 +1,20 @@
-.commentHeader {
+.CmtHeader {
   @apply relative w-full h-10 flex justify-start items-center text-lg;
 }
 
-.commentAvatar {
+.CmtAvatar {
   @apply relative w-10 h-10 border border-gray;
 }
 
-.commentAuthor {
+.CmtAuthor {
   @apply ml-6 text-white
   hover:underline underline-offset-2;
 }
 
-.commentDate {
+.CmtDate {
   @apply relative text-gray w-auto h-full flex items-center;
 }
 
-.commentDate::before {
+.CmtDate::before {
   @apply mx-2 h-[6px] w-[6px] rounded-full bg-gray content-[""];
 }

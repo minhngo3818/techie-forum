@@ -1,0 +1,4 @@
+.CmtLeftButtonsWrapper {
+  @apply min-w-[192px] w-auto min-h-[36px] h-auto my-4
+    flex justify-start items-center;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import Comment from "../comment/comment";
+import Comment from "../comment";
 import { IComment } from "@interfaces/forum/post/post";
 import styles from "./CommentList.module.css";
 
@@ -13,7 +13,7 @@ export default function CommentList(props: CommentListType) {
   return (
     <>
       {props.showComments && (
-        <div className={styles.commentList}>
+        <div className={styles.CmtList}>
           {props.comments.map((comment, index) => {
             return (
               <Comment

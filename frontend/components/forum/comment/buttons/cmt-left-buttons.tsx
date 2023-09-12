@@ -1,6 +1,7 @@
 import React from "react";
 import ForumButton from "@components/utils/buttons/forum-button/forum-button";
 import { StateDuo } from "@interfaces/utils/button";
+import styles from "./CommentLeftButtons.module.css";
 
 export interface CmtLeftButtonsType {
   keyId: string;
@@ -13,9 +14,9 @@ export interface CmtLeftButtonsType {
   numOfLikes: number;
 }
 
-export default function CmtLeftButtons(props: CmtLeftButtonsType) {
+export default function CommentLeftButtons(props: CmtLeftButtonsType) {
   return (
-    <>
+    <div className={styles.CmtLeftButtonsWrapper}>
       <ForumButton
         keyId={props.keyId}
         name="thumbsup"
@@ -50,6 +51,6 @@ export default function CmtLeftButtons(props: CmtLeftButtonsType) {
           setState={props.handleShowReplies.setState}
         />
       )}
-    </>
+    </div>
   );
 }

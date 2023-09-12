@@ -1,21 +1,19 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { IThread, IThreadBody, IComment } from "@interfaces/forum/post/post";
+import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
+import CommentForm from "@components/form/form-comment/comment-form";
+import { getPaginatedComments } from "@services/forum/comment/comment-service";
+import useAuth from "@services/auth/auth-provider";
+import { likePost, unlikePost } from "@services/forum/like/like-service";
+import { markThread, unmarkThread } from "@services/forum/mark/mark-service";
 import ThreadHeader from "./header/thread-header";
 import ThreadContent from "./content/content";
 import ThreadButtons from "./buttons/thread-buttons";
 import ThreadTags from "./tags/thread-tag";
 import ThreadImages from "./images/images";
-const CommentList = dynamic(
-  () => import("../comment/comment-list/comment-list")
-);
-import CommentForm from "../../form/form-comment/comment-form";
-import { getPaginatedComments } from "@services/forum/comment/comment-service";
-import { IThread, IThreadBody, IComment } from "@interfaces/forum/post/post";
-import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
+const CommentList = dynamic(() => import("../comment/list/comment-list"));
 import styles from "./Thread.module.css";
-import useAuth from "@services/auth/auth-provider";
-import { likePost, unlikePost } from "@services/forum/like/like-service";
-import { markThread, unmarkThread } from "@services/forum/mark/mark-service";
 
 interface ThreadType {
   keyId: number;
@@ -162,7 +160,7 @@ export default function Thread(props: ThreadType) {
       />
       <CommentForm
         isComment={isCommentForm}
-        threadId={`thr-${props.keyId}`}
+        threadId={`thr-${props.thread.id}`}
         addNewComment={addNewComment}
       />
       <CommentList

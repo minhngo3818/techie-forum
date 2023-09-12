@@ -6,8 +6,8 @@ import styles from "./CommentHeader.module.css";
 
 export default function CommentHeader(props: IPostHeader) {
   return (
-    <div className={styles.commentHeader}>
-      <div className={styles.commentAvatar}>
+    <div className={styles.CmtHeader}>
+      <div className={styles.CmtAvatar}>
         <Image
           src={props.author.avatar}
           alt="cmt-avatar"
@@ -16,12 +16,12 @@ export default function CommentHeader(props: IPostHeader) {
         />
       </div>
       <Link
-        className={styles.commentAuthor}
+        className={styles.CmtAuthor}
         href={`/user/profile/${props.author.id}`}
       >
         {props.author.profile_name}
       </Link>
-      <p className={styles.commentDate}>
+      <p className={styles.CmtDate}>
         {!props.isEdited ? "" : "(Edited) "}
         {new Date(props.date).toDateString()}
       </p>

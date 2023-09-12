@@ -17,7 +17,9 @@ export default function ShowCommentsBtn(props: ShowCommentsBtnType) {
       }`}
       onClick={props.setState}
     >
-      {`Comment: ${props.numOfComments}`}
+      {`${props.numOfComments > 1 ? "Comments" : "Comment"}:  ${
+        props.numOfComments
+      }`}
       <Tooltip
         anchorId={`comment-list-btn-${props.keyId}`}
         content={props.content}
