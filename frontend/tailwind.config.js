@@ -7,6 +7,10 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screen: {
+      "sm": "375px",
+      "md": "640px"
+    },
     extend: {
       colors: {
         smoke: "#CCCCCC",
