@@ -1,0 +1,4 @@
+.forumTitle {
+  @apply max-w-[720px] w-full min-h-[48px] h-auto border-b-2 border-gray
+    text-4xl text-white font-bold;
+}
