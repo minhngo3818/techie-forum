@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import styles from "./CommentWrapper.module.css";
 
 export default function CommentWrapper({
