@@ -1,5 +1,5 @@
 .FTBtn {
-  @apply max-w-[120px] w-full h-full mr-4 md:my-1
+  @apply max-w-[120px] w-full h-8 mr-4 my-2 md:my-1
     text-black font-semibold bg-white
     hover:text-white hover:bg-gray
     duration-200;
