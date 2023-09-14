@@ -2,11 +2,15 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import ThreadForm from "@components/form/form-thread/thread-form";
 import { IThread } from "@interfaces/forum/post/post";
 import { getPaginatedThreads } from "@services/forum/thread/thread-service";
+import ThreadForm from "@components/form/form-thread/thread-form";
+import ForumTitle from "@components/forum/title/forum-title";
+import ForumToolbar from "@components/forum/toolbar/forum-toolbar";
+import ForumToolbarBtn from "@components/forum/toolbar/button/forum-toolbar-btn";
+import ForumSearchBar from "@components/forum/toolbar/search/forum-search-bar";
+import ForumContainer from "@components/forum/container/forum-container";
 import searchFilterThread from "@utils/searchFilterThread";
-import styles from "@styles/Forum.module.css";
 import forumLinks from "../../page-paths/forum";
 const Thread = dynamic(() => import("@components/forum/thread/thread"));
 
@@ -48,45 +52,34 @@ export default function Category(
   };
 
   return (
-    <div className={styles.forumContainer}>
-      <h2 className={styles.forumHeader}>&gt;_ {forumName}</h2>
-      <div className={styles.forumToolBar}>
-        <button
-          type="button"
-          className={`${styles.forumTool} ${
-            isThreadForm && styles.forumToolActive
-          }`}
+    <ForumContainer>
+      <ForumTitle>{forumName}</ForumTitle>
+      <ForumToolbar>
+        <ForumToolbarBtn
+          label="Post Thread"
+          name="post-thread"
+          isActive={isThreadForm}
           onClick={handleOpenThreadForm}
-        >
-          Post Thread
-        </button>
-        <button
-          type="button"
-          className={`${styles.forumTool} ${marked && styles.forumToolActive}`}
+        />
+        <ForumToolbarBtn
+          label="Marked"
+          name="marked-list"
+          isActive={marked}
           onClick={handleFilterMarkedThreads}
-        >
-          Marked
-        </button>
-        <div className={styles.forumSearchBar}>
-          <p className={styles.forumSearchLabel}>Search</p>
-          <input
-            className={styles.forumSearchInput}
-            ref={searchRef}
-            name="search"
-            type="text"
-            placeholder="Input keywords ..."
-            value={search}
-            onChange={handleSearchData}
-          />
-        </div>
-      </div>
+        />
+        <ForumSearchBar
+          ref={searchRef}
+          searchValue={search}
+          onSearch={handleSearchData}
+        />
+      </ForumToolbar>
       <ThreadForm isShow={isThreadForm} category={category} />
       {threadList
         .filter((thread) => searchFilterThread(thread, marked, search))
         .map((thread, index) => {
           return <Thread key={index} keyId={index} thread={thread} />;
         })}
-    </div>
+    </ForumContainer>
   );
 }
 
