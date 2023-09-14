@@ -1,5 +1,5 @@
 import React from "react";
-import ForumButton from "@components/utils/buttons/forum-button/forum-button";
+import IconButton from "@components/utils/buttons/icon-button/icon-button";
 import { StateDuo } from "@interfaces/utils/button";
 import styles from "./CommentLeftButtons.module.css";
 
@@ -17,7 +17,7 @@ export interface CmtLeftButtonsType {
 export default function CommentLeftButtons(props: CmtLeftButtonsType) {
   return (
     <div className={styles.CmtLeftButtonsWrapper}>
-      <ForumButton
+      <IconButton
         keyId={props.keyId}
         name="thumbsup"
         content="Thumbs Up"
@@ -26,7 +26,7 @@ export default function CommentLeftButtons(props: CmtLeftButtonsType) {
         setState={props.handleIsLike.setState}
       />
       {props.isSameUser && (
-        <ForumButton
+        <IconButton
           keyId={props.keyId}
           name="edit"
           content="Edit"
@@ -34,7 +34,7 @@ export default function CommentLeftButtons(props: CmtLeftButtonsType) {
           setState={props.handleIsEdit.setState}
         />
       )}
-      <ForumButton
+      <IconButton
         keyId={props.keyId}
         name="comment"
         content="Comment"
@@ -42,7 +42,7 @@ export default function CommentLeftButtons(props: CmtLeftButtonsType) {
         setState={props.handleIsComment.setState}
       />
       {props.numOfReplies !== 0 && (
-        <ForumButton
+        <IconButton
           keyId={props.keyId}
           name="reply"
           content="Reply"

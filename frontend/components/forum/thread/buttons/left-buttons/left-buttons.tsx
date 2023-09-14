@@ -1,6 +1,6 @@
 import React from "react";
-import ForumButton from "../../../../utils/buttons/forum-button/forum-button";
-import { StateDuo } from "../../../../../interfaces/utils/button";
+import IconButton from "@components/utils/buttons/icon-button/icon-button";
+import { StateDuo } from "@interfaces/utils/button";
 
 export interface ThreadLeftButtonsType {
   keyId: string;
@@ -15,7 +15,7 @@ export interface ThreadLeftButtonsType {
 export default function ThreadLeftButtons(props: ThreadLeftButtonsType) {
   return (
     <>
-      <ForumButton
+      <IconButton
         keyId={props.keyId}
         name="thumbsup"
         content="Thumbs Up"
@@ -23,7 +23,7 @@ export default function ThreadLeftButtons(props: ThreadLeftButtonsType) {
         isState={props.handleIsLike.isState}
         setState={props.handleIsLike.setState}
       />
-      <ForumButton
+      <IconButton
         keyId={props.keyId}
         name="marked"
         content="Marked"
@@ -33,7 +33,7 @@ export default function ThreadLeftButtons(props: ThreadLeftButtonsType) {
       {!props.isSameUser ? (
         <></>
       ) : (
-        <ForumButton
+        <IconButton
           keyId={props.keyId}
           name="edit"
           content="Edit"
@@ -41,7 +41,7 @@ export default function ThreadLeftButtons(props: ThreadLeftButtonsType) {
           setState={props.handleIsEdit.setState}
         />
       )}
-      <ForumButton
+      <IconButton
         keyId={props.keyId}
         name="comment"
         content="Comment"
