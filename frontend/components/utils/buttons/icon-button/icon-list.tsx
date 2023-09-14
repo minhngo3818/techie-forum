@@ -9,6 +9,12 @@ import {
   Comment,
   Reply,
   ReplyOutline,
+  PostThread,
+  PostThreadOutline,
+  MarkedList,
+  MarkedListOutline,
+  Search,
+  SearchOutline,
 } from "@components/icons/icons";
 import styles from "./IconButton.module.css";
 
@@ -43,5 +49,20 @@ export const iconList: IconType[] = [
     name: "reply",
     fill: <Reply className={styles.forumIcon} />,
     outline: <ReplyOutline className={styles.forumIcon} />,
+  },
+  {
+    name: "post-thread",
+    fill: <PostThread className={styles.forumIcon} />,
+    outline: <PostThreadOutline className={styles.forumIcon} />,
+  },
+  {
+    name: "marked-list",
+    fill: <MarkedList className={styles.forumIcon} />,
+    outline: <MarkedListOutline className={styles.forumIcon} />,
+  },
+  {
+    name: "search",
+    fill: <Search className={styles.forumIcon} />,
+    outline: <SearchOutline className={styles.forumIcon} />,
   },
 ];
