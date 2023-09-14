@@ -1,0 +1,17 @@
+.forumSearchBar {
+  @apply flex justify-start flex-grow h-8;
+}
+
+.forumSearchLabel {
+  @apply max-w-[80px] w-full 
+    border-2 border-white flex items-center justify-center
+    text-black font-semibold bg-white
+    duration-200;
+}
+
+.forumSearchInput {
+  @apply flex-grow outline-none px-4
+    bg-black border border-gray
+    focus:text-white focus:border-white
+    text-smoke duration-200;
+}
