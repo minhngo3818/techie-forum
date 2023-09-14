@@ -17,8 +17,8 @@ export default function ThreadHeader(props: IPostHeader) {
       </div>
       <Link
         className={styles.threadAuthor}
-        as="a"
-        href={`/user/profile/[${props.author.id}]`}
+        href={`/profile/${props.author.profile_name.replace(" ", "%20")}`}
+        replace={true}
       >
         {props.author.profile_name}
       </Link>
