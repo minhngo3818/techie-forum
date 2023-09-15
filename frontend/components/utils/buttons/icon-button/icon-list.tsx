@@ -14,7 +14,6 @@ import {
   MarkedList,
   MarkedListOutline,
   Search,
-  SearchOutline,
 } from "@components/icons/icons";
 import styles from "./IconButton.module.css";
 
@@ -63,6 +62,6 @@ export const iconList: IconType[] = [
   {
     name: "search",
     fill: <Search className={styles.forumIcon} />,
-    outline: <SearchOutline className={styles.forumIcon} />,
+    outline: <Search className={styles.forumIcon} />,
   },
 ];
