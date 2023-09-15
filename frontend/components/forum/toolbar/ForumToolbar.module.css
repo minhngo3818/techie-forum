@@ -1,3 +1,6 @@
 .forumToolbar {
-  @apply overflow-hidden max-w-[720px] w-full min-h-[28px] h-auto flex flex-row flex-wrap justify-start items-center my-4 py-1;
+  @apply overflow-hidden max-w-[720px] 
+  w-full min-h-[24px] md:min-h-[28px] mt-2 md:my-4 py-1
+  flex flex-row flex-wrap 
+  justify-start items-center;
 }

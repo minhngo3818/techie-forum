@@ -1,9 +1,9 @@
 .CmtOuterWrapper {
-  @apply w-full h-auto pl-5
+  @apply w-full h-auto pl-3 sm:pl-5
     flex flex-col justify-start items-start;
 }
 
 .CmtInnerWrapper {
-  @apply w-full h-full border-white border-l-2
-    pl-10 py-4;
+  @apply w-full h-full border-gray border-l-2
+  pl-5 sm:pl-10 py-4;
 }

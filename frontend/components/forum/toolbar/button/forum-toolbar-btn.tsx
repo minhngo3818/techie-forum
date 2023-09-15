@@ -30,7 +30,7 @@ export default function ForumToolbarBtn(props: ForumToolbarBtn) {
 
   if (isMobile) {
     return (
-      <div className="my-2">
+      <div className={styles.FTBtnMobileWrapper}>
         <IconButton
           keyId="forum-btn"
           name={props.name}

@@ -3,7 +3,7 @@
 }
 
 .sidebarWrapper {
-  @apply flex flex-col items-center mt-16 border-t-2;
+  @apply flex flex-col items-center mt-12 border-t-2;
 }
 
 .sidebarTitle {

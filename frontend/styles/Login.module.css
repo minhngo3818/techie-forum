@@ -1,14 +1,15 @@
 .loginWrapper {
-  @apply relative m-auto flex flex-col justify-center items-center max-w-[500px] w-full h-auto;
+  @apply relative m-auto max-w-[400px] w-[360px] md:w-full
+  flex flex-col justify-center items-center;
 }
 
 .loginButtonWrapper {
-  @apply relative flex w-full h-9 my-4;
+  @apply relative flex flex-wrap w-full h-7 md:h-8 my-4;
 }
 
 .loginButton {
   @apply w-24 mr-5
-  flex justify-center items-center font-semibold
+  flex justify-center items-center font-medium
   text-black hover:text-white bg-white
   hover:bg-gray duration-200;
 }

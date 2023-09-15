@@ -3,8 +3,8 @@
 }
 
 .threadTitle {
-  @apply flex items-center w-full min-h-[48px] h-auto
-  text-3xl font-semibold text-white mb-4;
+  @apply flex items-center w-full min-h-[48px] h-auto truncate
+  text-2xl md:text-3xl font-semibold text-white mb-2 md:mb-4;
 }
 
 .threadContent {

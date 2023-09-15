@@ -1,18 +1,19 @@
 .CmtHeader {
-  @apply relative w-full h-10 flex justify-start items-center text-lg;
+  @apply relative w-full h-7 sm:h-10 flex justify-start items-center text-lg;
 }
 
 .CmtAvatar {
-  @apply relative w-10 h-10 border border-gray;
+  @apply relative w-7 h-7 sm:w-10 sm:h-10 border border-gray;
 }
 
 .CmtAuthor {
-  @apply ml-6 text-white
+  @apply ml-4 sm:ml-6 text-sm md:text-base text-white
   hover:underline underline-offset-2;
 }
 
 .CmtDate {
-  @apply relative text-gray w-auto h-full flex items-center;
+  @apply relative w-auto h-full flex items-center
+  text-gray text-sm md:text-base;
 }
 
 .CmtDate::before {

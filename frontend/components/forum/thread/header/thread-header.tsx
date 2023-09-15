@@ -5,20 +5,23 @@ import IPostHeader from "@interfaces/forum/post/post";
 import styles from "./ThreadHeader.module.css";
 
 export default function ThreadHeader(props: IPostHeader) {
+  const formattedName = props.author.profile_name.replace(" ", "%20");
   return (
     <div className={styles.threadHeader}>
-      <div className={styles.threadHeaderAvatar}>
+      <Link
+        className={styles.threadHeaderAvatar}
+        href={`/profile/${formattedName}`}
+      >
         <Image
           src={props.author.avatar}
           alt="avatar"
           fill
           sizes="(max-width: 40px)"
         />
-      </div>
+      </Link>
       <Link
-        className={styles.threadAuthor}
-        href={`/profile/${props.author.profile_name.replace(" ", "%20")}`}
-        replace={true}
+        className={styles.threadAuthorName}
+        href={`/profile/${formattedName}`}
       >
         {props.author.profile_name}
       </Link>

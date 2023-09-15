@@ -1,18 +1,19 @@
 .threadHeader {
-  @apply w-full h-14 flex justify-start items-start
+  @apply w-full h-10 sm:h-14 flex justify-start items-center
   border-b border-gray;
 }
 
 .threadHeaderAvatar {
-  @apply relative block w-10 h-10 border border-gray;
+  @apply relative block w-7 h-7 sm:w-10 sm:h-10 border border-gray;
 }
 
-.threadAuthor {
-  @apply flex items-center h-10 no-underline font-bold text-white text-lg
+.threadAuthorName {
+  @apply flex items-center h-7 md:h-10 no-underline 
+  font-bold text-white text-sm md:text-base
   mx-3 hover:underline;
 }
 
 .threadHeaderDate {
-  @apply mr-0 ml-auto h-10 min-w-[80px] w-auto
+  @apply mr-0 ml-auto h-10 min-w-[80px] w-auto text-sm sm:text-base
   flex justify-center items-center text-smoke;
 }

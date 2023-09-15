@@ -25,19 +25,13 @@ export default function Navbar(props: NavbarProps) {
         >
           Login
         </Link>
-        <Link
-          href="/register"
-          className={`${styles.navLoginBtn} + ${styles.navLoginLink}`}
-        >
-          Register
-        </Link>
       </>
     );
   }
 
   function AuthNav(): JSX.Element {
     return (
-      <div className="relative w-36 h-8 mr-4">
+      <div className={styles.navDropdownContainer}>
         <button
           id="user-dropdowns"
           type="button"
@@ -90,17 +84,18 @@ export default function Navbar(props: NavbarProps) {
       <div className={styles.navWrapper}>
         <div aria-label="brand" className={styles.navBrandWrapper}>
           <Link href={user ? "/forum" : "/"} className={styles.navBrand}>
-            Techies Forum
+            Techie Forum
           </Link>
         </div>
         {!user ? <UnAuthNav /> : <AuthNav />}
         <button
           id="sidebar-toggle"
-          className={
-            !props.isToggled
-              ? styles.navSidebarToggler
-              : styles.navTogglerActive
-          }
+          className={`${styles.navSidebarToggler}
+            ${
+              !props.isToggled
+                ? styles.navTogglerInactive
+                : styles.navTogglerActive
+            }`}
           role="button"
           onClick={props.onClick}
         >

@@ -1,4 +1,4 @@
 .forumContainer {
   @apply flex flex-col justify-start items-center 
-    max-w-[960px] w-full h-auto mt-20 px-5 md:px-20;
+    max-w-[960px] w-full h-auto mt-10 md:mt-20 px-5 md:px-20;
 }

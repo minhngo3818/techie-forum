@@ -1,5 +1,5 @@
 .tagFieldContainer {
-  @apply flex-wrap flex flex-col items-start w-full min-h-[44px] h-auto my-2;
+  @apply flex-wrap flex flex-col items-start w-full min-h-[44px] h-auto mt-2 sm:my-2;
 }
 
 .tagFieldLabel {
@@ -7,7 +7,7 @@
 }
 
 .tagFieldWrapper {
-  @apply w-full min-h-[44px] h-auto px-2 py-1 mt-2 border-2 border-gray hover:border-white
+  @apply w-full min-h-[44px] h-auto px-3 py-1 mt-2 border-2 border-gray hover:border-white
   duration-200 flex-wrap flex justify-start items-center;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .tagFieldInput {
-  @apply w-full h-8 outline-none px-1 py-2 text-gray focus:text-white
+  @apply w-full h-8 outline-none text-gray focus:text-white
   bg-black;
 }
 

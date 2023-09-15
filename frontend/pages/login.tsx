@@ -69,7 +69,7 @@ function Login() {
       />
       <div className={styles.loginButtonWrapper}>
         <button type="submit" className={styles.loginButton}>
-          Sign-In
+          Login
         </button>
         <Link href="/register" className={styles.loginButton}>
           Register
