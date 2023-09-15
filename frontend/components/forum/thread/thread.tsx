@@ -23,7 +23,7 @@ interface ThreadType {
 
 export default function Thread(props: ThreadType) {
   const { user } = useAuth();
-  const router = useRouter()
+  const router = useRouter();
 
   const [thread, setThread] = useState<IThreadBody>({
     category: props.thread.category,
@@ -44,8 +44,8 @@ export default function Thread(props: ThreadType) {
   useEffect(() => {
     let paramCategory = router.query.category;
     if (paramCategory != props.thread.category) {
-      setCommentList([])
-      setShowComments(false)
+      setCommentList([]);
+      setShowComments(false);
     }
   }, [router.query, props.thread.category]);
 
@@ -86,12 +86,10 @@ export default function Thread(props: ThreadType) {
     }
   };
 
-
   const addNewComment = (newComment: IComment) => {
     let newCommentList = [...commentList, newComment];
     setCommentList(newCommentList);
   };
-
 
   const handleThreadChange = useCallback(
     ({ target: { name, value } }: EventTargetNameValue) => {
@@ -130,7 +128,10 @@ export default function Thread(props: ThreadType) {
           isState: isMarked,
           setState: handleIsMarked,
         }}
-        handleIsEdit={{ isState: isEdit, setState: () => setIsEdit((isEdit) => !isEdit)}}
+        handleIsEdit={{
+          isState: isEdit,
+          setState: () => setIsEdit((isEdit) => !isEdit),
+        }}
         handleIsComment={{
           isState: isCommentForm,
           setState: () => setIsCommentForm((isComment) => !isComment),
