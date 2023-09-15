@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import { IThread, IThreadBody, IComment } from "@interfaces/forum/post/post";
 import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import CommentForm from "@components/form/form-comment/comment-form";
@@ -22,6 +23,7 @@ interface ThreadType {
 
 export default function Thread(props: ThreadType) {
   const { user } = useAuth();
+  const router = useRouter()
 
   const [thread, setThread] = useState<IThreadBody>({
     category: props.thread.category,
@@ -38,6 +40,14 @@ export default function Thread(props: ThreadType) {
   const [isEdit, setIsEdit] = useState(false);
   const [isCommentForm, setIsCommentForm] = useState(false);
   const [showComments, setShowComments] = useState(false);
+
+  useEffect(() => {
+    let paramCategory = router.query.category;
+    if (paramCategory != props.thread.category) {
+      setCommentList([])
+      setShowComments(false)
+    }
+  }, [router.query, props.thread.category]);
 
   const fetchComments = useCallback(async () => {
     if (!showComments) {
@@ -76,22 +86,13 @@ export default function Thread(props: ThreadType) {
     }
   };
 
-  const handleIsEdit = () => {
-    // Call api to update data
-    setIsEdit((isEdit) => !isEdit);
-  };
 
   const addNewComment = (newComment: IComment) => {
     let newCommentList = [...commentList, newComment];
     setCommentList(newCommentList);
   };
 
-  const handleIsCommentForm = () => {
-    // Call api to update data
-    setIsCommentForm((isComment) => !isComment);
-  };
 
-  // Thread
   const handleThreadChange = useCallback(
     ({ target: { name, value } }: EventTargetNameValue) => {
       setThread((thread) => ({ ...thread, [name]: value }));
@@ -129,10 +130,10 @@ export default function Thread(props: ThreadType) {
           isState: isMarked,
           setState: handleIsMarked,
         }}
-        handleIsEdit={{ isState: isEdit, setState: handleIsEdit }}
+        handleIsEdit={{ isState: isEdit, setState: () => setIsEdit((isEdit) => !isEdit)}}
         handleIsComment={{
           isState: isCommentForm,
-          setState: handleIsCommentForm,
+          setState: () => setIsCommentForm((isComment) => !isComment),
         }}
         handleShowComments={{
           isState: showComments,
