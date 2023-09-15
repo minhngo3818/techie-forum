@@ -1,5 +1,5 @@
 .sidebar {
-  @apply fixed inset-y-0 right-0 w-[200px] h-screen bg-white z-10;
+  @apply fixed inset-y-0 right-0 w-[200px] h-screen bg-white z-20;
 }
 
 .sidebarWrapper {

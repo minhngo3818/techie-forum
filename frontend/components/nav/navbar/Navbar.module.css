@@ -1,6 +1,6 @@
 .navbar {
   @apply sticky top-0 flex justify-center 
-  items-center w-full h-12 bg-white z-20;
+  items-center w-full h-12 bg-white z-30;
 }
 
 .navWrapper {
