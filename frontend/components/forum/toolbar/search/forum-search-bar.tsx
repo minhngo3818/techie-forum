@@ -12,7 +12,7 @@ interface ForumSearchBar {
 }
 
 export default function ForumSearchBar(props: ForumSearchBar) {
-  const [ isMobile, setIsMobile ] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { isShow, setIsShow } = useShowComponent(false);
 
   const handleIsMobile = () => {
