@@ -1,17 +1,52 @@
-.forumSearchBar {
-  @apply flex justify-start flex-grow h-8;
+.FSearchBar {
+  @apply flex justify-start flex-grow h-7;
 }
 
-.forumSearchLabel {
+.FSearchLabel {
   @apply max-w-[80px] w-full 
     border-2 border-white flex items-center justify-center
     text-black font-semibold bg-white
     duration-200;
 }
 
-.forumSearchInput {
-  @apply flex-grow outline-none px-4
+.FSearchInput {
+  @apply flex-grow outline-none px-4 text-sm
     bg-black border border-gray
     focus:text-white focus:border-white
     text-smoke duration-200;
+}
+
+.FResSearchContainer {
+  @apply flex flex-grow justify-end items-center;
+}
+
+.FResSearchOpenBtn {
+  @apply w-24 h-7 font-medium text-black bg-white 
+  focus:bg-gray focus:text-white;
+}
+
+.FResSearchFormContainer {
+  @apply fixed top-0 left-0 w-screen h-screen z-30;
+}
+
+.FResSearchFormOverlay {
+  @apply absolute w-screen h-screen bg-white opacity-50;
+}
+
+.FResSearchFormModal {
+  @apply absolute flex flex-col top-1/4 m-auto left-0 right-0 
+  w-[360px] min-h-[80px] bg-black z-40 text-white px-4 py-3;
+}
+
+.FResSearchFormInput {
+  @apply flex flex-grow px-2 py-1 my-1 text-white bg-black outline-none 
+  border-2 border-gray focus:border-white duration-200;
+}
+
+.FResSearchFormBtn {
+  @apply flex justify-center items-center p-1 bg-white border-2 border-white hover:bg-gray;
+}
+
+.FResSearchFormBtnIcon {
+  @apply w-6 h-6 text-black hover:text-white;
 }
