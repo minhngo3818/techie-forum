@@ -1,0 +1,32 @@
+.imgListContainer {
+  @apply relative w-full min-h-[300px] mb-3;
+}
+
+.imgListOverlay {
+  @apply absolute w-full h-full pattern-dots pattern-white
+   pattern-bg-black pattern-size-4 pattern-opacity-20;
+}
+
+.imgListWrapper {
+  @apply absolute w-full h-full z-10;
+}
+
+.imgListManyContainer {
+  @apply w-full h-full grid grid-cols-2 md:grid-cols-4 grid-flow-row gap-3 md:gap-4;
+}
+
+.imgListSingleItem {
+  @apply col-span-full;
+}
+
+.imgListItem {
+  @apply relative flex items-center w-full col-span-2;
+}
+
+.imgListItemNoSpan {
+  @apply relative flex items-center w-full;
+}
+
+.imgListFirstItem {
+  @apply relative w-full col-span-1 md:col-span-2 row-span-2;
+}

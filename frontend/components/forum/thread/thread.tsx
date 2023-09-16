@@ -12,9 +12,9 @@ import ThreadHeader from "./header/thread-header";
 import ThreadContent from "./content/content";
 import ThreadButtons from "./buttons/thread-buttons";
 import ThreadTags from "./tags/thread-tag";
-import ThreadImages from "./images/images";
 const CommentList = dynamic(() => import("../comment/list/comment-list"));
 import styles from "./Thread.module.css";
+import ImageList from "../images/image-list/image-list";
 
 interface ThreadType {
   keyId: number;
@@ -113,7 +113,7 @@ export default function Thread(props: ThreadType) {
         content={props.thread.content}
         onChange={handleThreadChange}
       />
-      <ThreadImages images={props.thread.images} />
+      <ImageList images={props.thread.images} />
       <ThreadTags
         isEdit={isEdit}
         tags={props.thread.tags}
