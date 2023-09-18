@@ -1,6 +1,6 @@
 .navbar {
   @apply sticky top-0 flex justify-center 
-  items-center w-full h-12 bg-white z-30;
+  items-center w-full h-14 bg-white z-50;
 }
 
 .navWrapper {
@@ -17,7 +17,9 @@
 
 .navLoginBtn {
   @apply flex justify-center items-center 
-  w-24 md:w-32 h-6 mr-4 text-sm font-medium border-2 border-gray duration-300;
+  w-24 md:w-32 h-7 mr-4 font-medium 
+  border-2 border-gray duration-300
+  overflow-hidden;
 }
 
 .navLoginLink {
@@ -38,7 +40,7 @@
 
 .navSidebarToggler {
   @apply flex justify-center items-center 
-  w-6 h-6 text-2xl border-2 duration-300;
+  w-7 h-7 text-2xl border-2 duration-300;
 }
 
 .navTogglerActive {
@@ -51,13 +53,13 @@
 }
 
 .navDropdownContainer {
-  @apply relative w-24 md:w-32 h-6 mr-2 md:mr-4;
+  @apply relative w-24 md:w-32 h-7 mr-2 md:mr-4;
 }
 
 .navDropdownWrapper {
   @apply absolute flex flex-col 
   justify-center items-center 
-  top-6 left-0 w-full h-auto
+  top-7 left-0 w-full h-auto
   bg-white p-1;
 }
 
