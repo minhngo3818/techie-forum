@@ -1,0 +1,52 @@
+.imgGalrContainer {
+  @apply overflow-hidden fixed flex flex-col w-screen h-screen
+    top-1/4 left-1/2 md:left-1/2
+    -translate-x-1/2 -translate-y-1/4 bg-black 
+    z-50 border border-white;
+}
+
+.imgGalrHeader {
+  @apply w-full h-16 md:h-20 py-3 md:py-6 px-2 md:px-5 lg:px-14
+  flex justify-end items-center bg-black;
+}
+
+.imgGalrHeader button {
+  @apply flex justify-center items-center w-16 h-full md:mx-5 
+    text-lg text-black bg-white hover:bg-gray 
+    hover:text-white duration-200;
+}
+
+.imgGalrView {
+  @apply relative flex-grow flex w-full 
+    min-h-[300px] border-t-gray border-b-gray border;
+}
+
+.imgGalrView span {
+  @apply absolute w-full h-full pattern-dots 
+    pattern-white pattern-bg-black pattern-size-6 pattern-opacity-20;
+}
+
+.imgGalrView button {
+  @apply relative max-w-[72px] lg:max-w-[160px] hidden md:block md:w-full h-full 
+    text-lg text-white active:bg-white 
+    hover:bg-gray duration-200;
+}
+
+.imgGalrThumbnails {
+  @apply relative flex justify-between w-full h-32 lg:h-28 px-5 md:px-20;
+}
+
+.imgGalrThumbnails button {
+  @apply min-w-[40px] w-20 h-full flex justify-center items-center 
+  text-2xl text-white hover:bg-gray active:bg-white duration-200;
+}
+
+.imgGalrThumbnails ul {
+  @apply m-auto w-auto h-full py-3 overflow-x-scroll 
+  whitespace-nowrap scroll-smooth scrollbar-hide;
+}
+
+.imgGalrThumbnails ul li {
+  @apply relative w-24 h-full md:w-32 lg:h-20 mx-2 border-2 
+  hover:border-gray duration-200 cursor-pointer inline-block;
+}

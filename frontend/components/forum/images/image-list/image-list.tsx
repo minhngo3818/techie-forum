@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import ImageGallery from "../image-gallery/image-gallery";
 import styles from "./ImageList.module.css";
 
-function SingleImage(props: {
-  image: String;
+interface SingleImage {
+  image: string;
   isLast?: boolean;
   remains?: number;
-}) {
+  onOpenGallery: () => void;
+}
+
+function SingleImage(props: SingleImage) {
   /**
    * Styling
    *
@@ -39,13 +43,13 @@ function SingleImage(props: {
   let imgListBtnRemains = imgListBtnLabel + " text-white group-hover:hidden";
 
   return (
-    <button className={imgListBtn}>
+    <button className={imgListBtn} onClick={props.onOpenGallery}>
       <span className={imgListBtnOverlay}></span>
       <p className={imgListBtnView}>View</p>
       {props.isLast && <p className={imgListBtnRemains}>+{props.remains}</p>}
       <Image
         className="object-contain z-0"
-        src={props.image as string}
+        src={props.image.valueOf()}
         alt="content-image"
         fill
         sizes="(max-width: 720px;) 100vw"
@@ -54,7 +58,12 @@ function SingleImage(props: {
   );
 }
 
-function Images(props: { images: String[]; onClick: () => void }) {
+interface Images {
+  images: string[];
+  handleOpenGallery: (index: number) => void;
+}
+
+function Images(props: Images) {
   let itemStyle = styles.imgListItem;
   let quantity = props.images.length;
   if (quantity === 1) itemStyle = styles.imgListSingleItem;
@@ -66,7 +75,10 @@ function Images(props: { images: String[]; onClick: () => void }) {
         if (index === 0 && (quantity === 3 || quantity >= 5)) {
           return (
             <li key={index} className={styles.imgListFirstItem}>
-              <SingleImage image={image} />
+              <SingleImage
+                image={image}
+                onOpenGallery={() => props.handleOpenGallery(index)}
+              />
             </li>
           );
         }
@@ -74,13 +86,21 @@ function Images(props: { images: String[]; onClick: () => void }) {
         if (index === 4 && quantity > 5)
           return (
             <li key={index}>
-              <SingleImage image={image} isLast={true} remains={quantity - 5} />
+              <SingleImage
+                image={image}
+                onOpenGallery={() => props.handleOpenGallery(index)}
+                isLast={true}
+                remains={quantity - 5}
+              />
             </li>
           );
 
         return (
           <li key={index} className={itemStyle}>
-            <SingleImage image={image} />
+            <SingleImage
+              image={image}
+              onOpenGallery={() => props.handleOpenGallery(index)}
+            />
           </li>
         );
       })}
@@ -88,24 +108,32 @@ function Images(props: { images: String[]; onClick: () => void }) {
   );
 }
 
-export default function ImageList(props: { images?: String[] | FileList }) {
+export default function ImageList(props: { images?: string[] | FileList }) {
   if (props.images?.length == 0) return null;
-  let images = props.images as String[];
+  let images = props.images as string[];
 
   const [openGallery, setOpenGallery] = useState(false);
+  const [index, setIndex] = useState(0);
 
-  const handleGallery = () => {
+  const handleOpenGallery = (curIndex: number) => {
     setOpenGallery((openGallery) => !openGallery);
+    setIndex(curIndex);
   };
 
   return (
     <div className={styles.imgListContainer}>
       <div className={styles.imgListWrapper}>
         <ul className={styles.imgListManyContainer}>
-          <Images images={images} onClick={handleGallery} />
+          <Images images={images} handleOpenGallery={handleOpenGallery} />
         </ul>
       </div>
       <span className={styles.imgListOverlay}></span>
+      <ImageGallery
+        isOpen={openGallery}
+        onClose={() => setOpenGallery(false)}
+        index={index}
+        images={images}
+      />
     </div>
   );
 }

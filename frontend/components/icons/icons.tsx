@@ -456,3 +456,37 @@ export function AboutAdmin(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function ArrowForward(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
+      ></path>
+    </svg>
+  );
+}
+
+export function ArrowBack(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M10 22L0 12L10 2l1.775 1.775L3.55 12l8.225 8.225L10 22Z"
+      ></path>
+    </svg>
+  );
+}
