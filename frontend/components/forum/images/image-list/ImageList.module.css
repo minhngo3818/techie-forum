@@ -1,5 +1,5 @@
 .imgListContainer {
-  @apply relative w-full min-h-[300px] mb-3;
+  @apply relative w-full min-h-[200px] md:min-h-[300px] mb-3;
 }
 
 .imgListOverlay {
@@ -11,7 +11,7 @@
   @apply absolute w-full h-full z-10;
 }
 
-.imgListManyContainer {
+.imgListWrapper ul {
   @apply w-full h-full grid grid-cols-2 md:grid-cols-4 grid-flow-row gap-3 md:gap-4;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .imgListItem {
-  @apply relative flex items-center w-full col-span-2;
+  @apply relative flex items-center w-full md:col-span-2;
 }
 
 .imgListItemNoSpan {

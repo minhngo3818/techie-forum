@@ -21,7 +21,7 @@ function SingleImage(props: SingleImage) {
    */
   let imgListBtn = `
     group relative flex justify-center 
-    items-center min-h-[120px]
+    items-center min-h-[60px] md:min-h-[120px]
     border border-gray hover:border-white
     duration-200
     w-full h-full `;
