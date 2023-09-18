@@ -102,6 +102,7 @@ export default function Comment(props: CommentType) {
         <CommentForm
           threadId={props.comment.threadId}
           isComment={isComment}
+          depth={props.comment.depth}
           addNewComment={handleAddComment}
         />
         <CommentList

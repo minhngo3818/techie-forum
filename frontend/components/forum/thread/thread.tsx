@@ -150,6 +150,7 @@ export default function Thread(props: ThreadType) {
       <CommentForm
         isComment={isCommentForm}
         threadId={`thr-${props.thread.id}`}
+        depth={0}
         addNewComment={addNewComment}
       />
       <CommentList

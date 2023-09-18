@@ -12,6 +12,7 @@ interface CommentForm {
   threadId: string;
   parentId?: string;
   isComment: boolean;
+  depth: number;
   addNewComment: (newComment: IComment) => void;
 }
 
@@ -21,6 +22,7 @@ export default function CommentForm(props: CommentForm) {
     parentId: props.parentId,
     content: "",
     images: [],
+    depth: props.depth + 1,
   });
   const [imageCmt, setImage] = useState("");
   const commentRef = useRef<HTMLTextAreaElement>(null);
