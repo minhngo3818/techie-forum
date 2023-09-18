@@ -13,16 +13,10 @@ interface SideBarProps {
 }
 
 function Sidebar(props: SideBarProps) {
-  const router = useRouter();
-  const context = useContext(AuthContext);
   const [currentPage, setPage] = useState("");
 
   const handleSwitchPage = (name: string) => {
-    if (!context?.user) {
-      router.push("/login");
-    } else {
-      setPage(name);
-    }
+    setPage(name);
   };
 
   return (

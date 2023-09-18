@@ -88,19 +88,21 @@ export default function Navbar(props: NavbarProps) {
           </Link>
         </div>
         {!user ? <UnAuthNav /> : <AuthNav />}
-        <button
-          id="sidebar-toggle"
-          className={`${styles.navSidebarToggler}
+        {user && (
+          <button
+            id="sidebar-toggle"
+            className={`${styles.navSidebarToggler}
             ${
               !props.isToggled
                 ? styles.navTogglerInactive
                 : styles.navTogglerActive
             }`}
-          role="button"
-          onClick={props.onClick}
-        >
-          <Menu />
-        </button>
+            role="button"
+            onClick={props.onClick}
+          >
+            <Menu />
+          </button>
+        )}
         <Tooltip
           anchorId="sidebar-toggle"
           content="Explore terminals"

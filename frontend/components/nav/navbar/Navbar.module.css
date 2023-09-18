@@ -17,13 +17,13 @@
 
 .navLoginBtn {
   @apply flex justify-center items-center 
-  w-24 md:w-32 h-7 mr-4 font-medium 
+  w-24 md:w-32 h-8 mr-4 font-medium 
   border-2 border-gray duration-300
   overflow-hidden;
 }
 
 .navLoginLink {
-  @apply text-gray 
+  @apply text-gray
   hover:text-white 
   bg-white
   hover:bg-gray;
@@ -40,7 +40,7 @@
 
 .navSidebarToggler {
   @apply flex justify-center items-center 
-  w-7 h-7 text-2xl border-2 duration-300;
+  w-8 h-8 text-2xl border-2 duration-300;
 }
 
 .navTogglerActive {
@@ -59,7 +59,7 @@
 .navDropdownWrapper {
   @apply absolute flex flex-col 
   justify-center items-center 
-  top-7 left-0 w-full h-auto
+  top-8 left-0 w-full h-auto
   bg-white p-1;
 }
 
