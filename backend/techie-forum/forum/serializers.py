@@ -218,7 +218,6 @@ class CommentSerializer(serializers.ModelSerializer):
             "id",
             "is_active",
             "author",
-            "depth",
             "created_at",
             "updated_at",
             "likes",
@@ -268,14 +267,14 @@ class CommentSerializer(serializers.ModelSerializer):
 
         if parent and not Comment.objects.filter(id=parent).exists():
             errors["parent"] = "parent comment does not exist"
-        # else:
-        #     attrs["parent"] = Comment.objects.get(id=parent)
+        else:
+            attrs["parent"] = Comment.objects.get(id=parent)
 
         if depth > 0 and (parent == "" or parent is None):
-            errors["parent"] = "depth is provided but missing parent comment"
+            errors["parent"] = "depth is provided but missing parent id"
 
         if depth == 0 and parent:
-            errors["depth"] = "parent comment is provided but missing depth"
+            errors["depth"] = "parent id is provided but missing depth"
 
         if errors:
             raise serializers.ValidationError(errors)
