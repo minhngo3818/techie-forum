@@ -40,12 +40,10 @@ export interface IComment
   comments?: IComment[];
 }
 
-export interface ICommentPost
-  extends ThreadId,
-    ParentId,
-    Content,
-    Depth,
-    Images {}
+export interface ICommentPost extends Content, Depth, Images {
+  post_thread: string;
+  parent?: string;
+}
 
 export interface IThreadBody extends Category, Title, Content, Images, Tags {}
 

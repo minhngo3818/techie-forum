@@ -41,15 +41,6 @@ export default function Comment(props: CommentType) {
     setIsComment((isComment) => !isComment);
   };
 
-  const handleChangeComment = useCallback(
-    ({ target: { name, value } }: EventTargetNameValue) => {
-      setComment((comment) => ({ ...comment, [name]: value }));
-    },
-    []
-  );
-
-  const handleAddComment = useCallback(() => {}, [replies]);
-
   const fetchReplies = useCallback(async () => {
     if (!showReplies) {
       const results = await getPaginatedComments(
@@ -71,9 +62,14 @@ export default function Comment(props: CommentType) {
     fetchReplies();
   };
 
-  const handlePostComment = () => {
-    console.log("Send change content request");
-  };
+  const handleAddReply = useCallback(
+    (newComment: IComment) => {
+      let newReplies = replies;
+      newReplies.unshift(newComment);
+      setReplies(newReplies);
+    },
+    [replies]
+  );
 
   return (
     <div className={styles.comment} data-depth={1}>
@@ -101,9 +97,10 @@ export default function Comment(props: CommentType) {
         />
         <CommentForm
           threadId={props.comment.threadId}
+          parentId={props.comment.id}
           isComment={isComment}
           depth={props.comment.depth}
-          addNewComment={handleAddComment}
+          addNewComment={handleAddReply}
         />
         <CommentList
           threadKey={props.comment.threadId}

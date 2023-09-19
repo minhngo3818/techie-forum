@@ -2,6 +2,7 @@ import { IComment, ICommentPost } from "@interfaces/forum/post/post";
 import axiosInst from "@services/axios/axios-instance";
 import { toastResponse } from "@utils/toast-helper";
 import commentMapper from "./comment-mapper";
+import { isUndefined } from "util";
 
 export async function getPaginatedComments(
   threadId: string,
@@ -30,8 +31,24 @@ export async function getPaginatedComments(
 }
 
 export async function postComment(data: ICommentPost) {
+  const formData = new FormData();
+
+  for (var key in data) {
+    let value = data[key as keyof ICommentPost];
+
+    if (key === "images" && value instanceof FileList) {
+      for (let i = 0; i < value.length; i += 1) {
+        formData.append(`images[${i}]`, value[i], value[i].name);
+      }
+    }
+
+    if (value !== undefined) {
+      formData.append(key, `${value}`);
+    }
+  }
+
   return await axiosInst
-    .post(`forum/comment/`, data)
+    .post(`forum/comment/`, formData)
     .then((res) => {
       toastResponse("success", "Your comment was posted successfully");
       return commentMapper(res.data);

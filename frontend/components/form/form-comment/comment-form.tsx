@@ -18,8 +18,8 @@ interface CommentForm {
 
 export default function CommentForm(props: CommentForm) {
   const [comment, setComment] = useState<ICommentPost>({
-    threadId: props.threadId,
-    parentId: props.parentId,
+    post_thread: props.threadId,
+    parent: props.parentId,
     content: "",
     images: [],
     depth: props.depth + 1,
@@ -43,6 +43,7 @@ export default function CommentForm(props: CommentForm) {
 
   const handleSubmitComment = async () => {
     try {
+      console.log(comment);
       if (comment.content || (comment.images && comment.images.length > 0)) {
         let newComment = await postComment(comment);
         if (newComment) props.addNewComment(newComment);
