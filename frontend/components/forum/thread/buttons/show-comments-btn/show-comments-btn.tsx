@@ -9,12 +9,15 @@ export interface ShowCommentsBtnType extends ButtonInterface {
 }
 
 export default function ShowCommentsBtn(props: ShowCommentsBtnType) {
+  let isDisabled = props.numOfComments === 0;
+
   return (
     <button
       id={`${props.name}-${props.keyId}`}
       className={`${styles.showCommentsButton} ${
         props.isState && styles.showCommentsButtonActive
       }`}
+      disabled={isDisabled}
       onClick={props.setState}
     >
       {`${props.numOfComments > 1 ? "Comments" : "Comment"}:  ${

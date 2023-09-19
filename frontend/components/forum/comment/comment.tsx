@@ -67,6 +67,7 @@ export default function Comment(props: CommentType) {
       let newReplies = replies;
       newReplies.unshift(newComment);
       setReplies(newReplies);
+      setIsComment(false);
     },
     [replies]
   );

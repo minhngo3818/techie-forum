@@ -22,7 +22,7 @@ export default function CommentForm(props: CommentForm) {
     parent: props.parentId,
     content: "",
     images: [],
-    depth: props.depth + 1,
+    depth: props.parentId ? props.depth + 1 : props.depth,
   });
   const [imageCmt, setImage] = useState("");
   const commentRef = useRef<HTMLTextAreaElement>(null);
@@ -42,14 +42,12 @@ export default function CommentForm(props: CommentForm) {
   };
 
   const handleSubmitComment = async () => {
-    try {
-      console.log(comment);
-      if (comment.content || (comment.images && comment.images.length > 0)) {
-        let newComment = await postComment(comment);
-        if (newComment) props.addNewComment(newComment);
+    if (comment.content || (comment.images && comment.images.length > 0)) {
+      let newComment = await postComment(comment);
+      if (newComment) {
+        props.addNewComment(newComment);
+        setComment({ ...comment, content: "", images: [] });
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 

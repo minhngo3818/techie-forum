@@ -86,10 +86,14 @@ export default function Thread(props: ThreadType) {
     }
   };
 
-  const addNewComment = (newComment: IComment) => {
-    let newCommentList = [...commentList, newComment];
-    setCommentList(newCommentList);
-  };
+  const addNewComment = useCallback(
+    (newComment: IComment) => {
+      let newCommentList = [...commentList, newComment];
+      setCommentList(newCommentList);
+      setIsCommentForm(false);
+    },
+    [commentList]
+  );
 
   const handleThreadChange = useCallback(
     ({ target: { name, value } }: EventTargetNameValue) => {

@@ -10,6 +10,8 @@ interface CommentListType {
 }
 
 export default function CommentList(props: CommentListType) {
+  if (props.comments.length === 0) return null;
+
   return (
     <>
       {props.showComments && (
