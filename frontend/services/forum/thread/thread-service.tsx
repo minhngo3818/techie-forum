@@ -54,7 +54,8 @@ export async function postThread(data: IThreadBody) {
   return await axiosInst
     .post("forum/thread/", formData)
     .then((res) => {
-      toastResponse("success", "Your thread was posted successfully!");
+      toastResponse("success", "Your thread was posted successfully!")
+      return (threadMapper(res.data));
     })
     .catch((error) => {
       toastResponse("error", error.message);

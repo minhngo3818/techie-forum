@@ -47,6 +47,13 @@ export default function Category(
     [threadList]
   );
 
+  const handleAddNewThread = useCallback(async (newThread: IThread) => {
+    let newThreadList = threadList
+    newThreadList.unshift(newThread)
+    setThreadList(newThreadList)
+    setThreadForm(isThreadForm => !isThreadForm)
+  }, [threadList])
+
   const handleOpenThreadForm = () => {
     setThreadForm(!isThreadForm);
   };
@@ -73,7 +80,7 @@ export default function Category(
           onSearch={handleSearchData}
         />
       </ForumToolbar>
-      <ThreadForm isShow={isThreadForm} category={category} />
+      <ThreadForm isShow={isThreadForm} category={category} handleAddNewThread={handleAddNewThread} />
       {threadList
         .filter((thread) => searchFilterThread(thread, marked, search))
         .map((thread, index) => {

@@ -8,15 +8,15 @@ import React, {
 } from "react";
 import Router from "next/router";
 import Image from "next/image";
-import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
-import { IThreadBody } from "../../../interfaces/forum/post/post";
-import { postThread } from "../../../services/forum/thread/thread-service";
+import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
+import { IThreadBody, IThread } from "@interfaces/forum/post/post";
+import { postThread } from "@services/forum/thread/thread-service";
 import BaseField from "../field-base/base-field";
 import TagField from "../field-tag/tag-field";
 import { useAddTag, useRemoveTag } from "../field-tag/function/handleTag";
-import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea";
+import useAutosizeTextArea from "@hooks/useAutosizeTextArea";
 import { Transition } from "@headlessui/react";
-import { Emoji, Image as ImageIcon } from "../../icons/icons";
+import { Emoji, Image as ImageIcon } from "@components/icons/icons";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./ThreadForm.module.css";
@@ -24,6 +24,7 @@ import styles from "./ThreadForm.module.css";
 interface ThreadFormType {
   isShow: boolean;
   category: string;
+  handleAddNewThread: (newThread: IThread) => void
 }
 
 export default function ThreadForm(props: ThreadFormType) {
@@ -82,14 +83,10 @@ export default function ThreadForm(props: ThreadFormType) {
 
   const handleOnSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    try {
-      await postThread(thread);
+    const newThread = await postThread(thread);
+    if (newThread) {
       setThread(initialState);
-      setTimeout(() => {
-        Router.reload();
-      }, 1200);
-    } catch (error) {
-      console.log(error);
+      props.handleAddNewThread(newThread)
     }
   };
 
