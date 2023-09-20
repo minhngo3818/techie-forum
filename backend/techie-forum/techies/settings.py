@@ -28,11 +28,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
-
-# ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(", ")
 
 
 # Application definition
@@ -51,13 +49,11 @@ INSTALLED_APPS = [
     "drf_yasg",
     "corsheaders",
     "django_celery_results",
-    # dev apps
     "user",
     "forum",
 ]
 
 MIDDLEWARE = [
-    # dependencies
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -158,13 +154,13 @@ REST_USE_JWT = True
 REST_AUTH_TOKEN_MODEL = None
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),  # increase time before deploying
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
     "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,  # Move to env before deploying
+    "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
     "AUDIENCE": None,
     "ISSUER": None,
@@ -209,14 +205,11 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "NON_FIELD_ERRORS_KEY": "error",
     "EXCEPTION_HANDLER": "utils.exception_handler.custom_exception_handler",
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.AnonRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle'
-    # ],
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'anon': '100/day',
-    #     'user': '1000/day'
-    # }
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {"anon": "100/day", "user": "1000/day"},
 }
 
 # SMTP SERVICE
@@ -231,7 +224,7 @@ EMAIL_PORT = os.getenv("EMAIL_PORT")
 
 # AUTOMATIC JOBS SCHEDULER
 CELERY_RESULT_BACKEND = "django-db"
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER")  # "redis://localhost:6379/0"
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER")
 CELERY_TIMEZONE = "UTC"
 
 CELERY_BEAT_SCHEDULE = {

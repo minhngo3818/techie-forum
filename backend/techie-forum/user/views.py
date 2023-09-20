@@ -11,7 +11,12 @@ from .authenticate import enforce_csrf
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
-from rest_framework.generics import GenericAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import (
+    GenericAPIView,
+    CreateAPIView,
+    UpdateAPIView,
+    RetrieveAPIView,
+)
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser,
@@ -270,38 +275,62 @@ class LogoutView(CreateAPIView):
 
 
 class CookieTokenRefreshView(TokenRefreshView):
-    serializer_class = CookieTokenRefreshSerializer
+    """
+    Generate new token pair and set them in cookies
+    """
 
-    def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get("refresh"):
-            response.set_cookie(
-                value=response.data.get("refresh"),
-                expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
-                key=settings.COOKIES["AUTH_COOKIE_REFRESH"],
-                secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
-                path=settings.COOKIES["AUTH_COOKIE_PATH"],
-                httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
-                samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
+    serializer_class = CookieTokenRefreshSerializer
+    permission_class = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        refresh = request.COOKIES.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])
+        serializer = self.serializer_class(data={"refresh": refresh})
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as error:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, data={"error": error.args[0]}
             )
 
-            del response.data["refresh"]
-        # response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
-        return super().finalize_response(request, response, *args, **kwargs)
+        response = Response(
+            status=status.HTTP_200_OK,
+            data={"message": "token was refreshed successfully!"},
+        )
+        response.set_cookie(
+            value=serializer.data.get("refresh"),
+            expires=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
+            key=settings.COOKIES["AUTH_COOKIE_REFRESH"],
+            secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+            path=settings.COOKIES["AUTH_COOKIE_PATH"],
+            httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
+            samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
+        )
+
+        response.set_cookie(
+            value=serializer.data.get("access"),
+            expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+            key=settings.COOKIES["AUTH_COOKIE"],
+            secure=settings.COOKIES["AUTH_COOKIE_SECURE"],
+            path=settings.COOKIES["AUTH_COOKIE_PATH"],
+            httponly=settings.COOKIES["AUTH_COOKIE_HTTP_ONLY"],
+            samesite=settings.COOKIES["AUTH_COOKIE_SAMESITE"],
+        )
+
+        return response
 
 
 class CookieTokenVerifyView(TokenVerifyView):
+    """
+    Verify access token
+    """
+
     serializer_class = CookieTokenVerifySerializer
+    permission_class = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        access_token = request.COOKIES.get(settings.COOKIES["AUTH_COOKIE"])
-
-        if not access_token:
-            return Response(
-                status=status.HTTP_404_NOT_FOUND,
-                data={"error": "Cookie contains no access token"},
-            )
-
-        serializer = self.serializer_class(data=access_token)
+        token = request.COOKIES.get(settings.COOKIES["AUTH_COOKIE"])
+        serializer = self.serializer_class(data={"token": token})
 
         try:
             serializer.is_valid(raise_exception=True)
@@ -311,7 +340,8 @@ class CookieTokenVerifyView(TokenVerifyView):
             )
 
         return Response(
-            status=status.HTTP_200_OK, data={"message": "Access verified successfully"}
+            status=status.HTTP_200_OK,
+            data={"message": "Access was verified successfully"},
         )
 
 

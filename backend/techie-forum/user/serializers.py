@@ -327,26 +327,19 @@ class ChangeEmailSerializer(serializers.ModelSerializer):
 
 
 class CookieTokenRefreshSerializer(TokenRefreshSerializer):
-    refresh = serializers.CharField()
-
     def validate(self, attrs):
-        attrs["refresh"] = self.context["request"].COOKIES.get("refresh_token")
         if attrs["refresh"]:
             return super().validate(attrs)
         else:
-            raise InvalidToken("No valid refresh token found in cookie")
+            raise InvalidToken("No valid refresh token found in cookies")
 
 
 class CookieTokenVerifySerializer(TokenVerifySerializer):
-    def to_internal_value(self, data):
-        return {"token": data}
-
     def validate(self, attrs):
-
         if attrs["token"]:
             return super().validate(attrs)
         else:
-            raise InvalidToken("No valid access token token found in cookie")
+            raise InvalidToken("No valid  token found in cookies")
 
 
 class ChangePasswordSerializer(serializers.Serializer):
