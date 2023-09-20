@@ -24,7 +24,7 @@ import styles from "./ThreadForm.module.css";
 interface ThreadFormType {
   isShow: boolean;
   category: string;
-  handleAddNewThread: (newThread: IThread) => void
+  handleAddNewThread: (newThread: IThread) => void;
 }
 
 export default function ThreadForm(props: ThreadFormType) {
@@ -86,7 +86,7 @@ export default function ThreadForm(props: ThreadFormType) {
     const newThread = await postThread(thread);
     if (newThread) {
       setThread(initialState);
-      props.handleAddNewThread(newThread)
+      props.handleAddNewThread(newThread);
     }
   };
 
