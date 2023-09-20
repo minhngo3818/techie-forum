@@ -376,6 +376,7 @@ class ThreadSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         title = attrs.get("title", None)
         content = attrs.get("content", None)
+        images = attrs.get("images", None)
 
         errors = {}
 
@@ -385,8 +386,8 @@ class ThreadSerializer(serializers.ModelSerializer):
         if Thread.objects.filter(title=title).exists():
             errors["title"] = "title is already existed"
 
-        if content is None or content == "":
-            errors["content"] = "content is required"
+        if (content is None or content == "") and (len(images) == 0 or images is None):
+            errors["content"] = "content or images are required"
 
         if errors:
             raise serializers.ValidationError(errors)
