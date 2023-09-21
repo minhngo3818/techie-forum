@@ -16,7 +16,8 @@ export const AuthContext = createContext<AuthContextInterface>({
   login: async () => {},
   logout: async () => {},
   register: async () => false,
-  verifyUser: async () => false,
+  verifyAuth: async () => false,
+  refreshAuth: async () => false,
   changePassword: async () => {},
   loading: false,
 });
@@ -127,19 +128,30 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   /**
    * Verify authorized user
    */
-  async function verifyUser() {
-    let isVerified = false;
-    setLoading(true);
+  async function verifyAuth() {
+    let isSuccess = false;
     await axiosInst
       .post(`/user/auth/verify`, null)
       .then((res) => {
-        isVerified = true;
+        isSuccess = true;
       })
       .catch((error) => {
         toastResponse("error", error.message);
+      });
+    return isSuccess;
+  }
+
+  async function refreshAuth() {
+    let isSuccess = false;
+    await axiosInst
+      .post("/user/auth/refresh", null)
+      .then((res) => {
+        isSuccess = true;
       })
-      .finally(() => setLoading(false));
-    return isVerified;
+      .catch((error) => {
+        toastResponse("error", error.message);
+      });
+    return isSuccess;
   }
 
   /**
@@ -154,7 +166,8 @@ export function AuthProvider({ children }: { children: ReactElement }) {
       login: login,
       logout: logout,
       register: register,
-      verifyUser: verifyUser,
+      verifyAuth: verifyAuth,
+      refreshAuth: refreshAuth,
       changePassword: changePassword,
       loading: loading,
     }),

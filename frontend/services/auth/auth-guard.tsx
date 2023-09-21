@@ -2,38 +2,50 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import useAuth from "./auth-provider";
 
-const authGuard = (Component: () => JSX.Element) => {
+const REFRESH_INTERVAL = 14 * 60 * 1000;
+
+function authGuard(Component: () => JSX.Element) {
   return () => {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const { verifyUser, logout } = useAuth();
-    const verifyUserAuth = async () => {
-      let user = sessionStorage.getItem("techie:traits");
-      if (!user && !isAuthenticated) {
-        router.replace("/login");
-      } else {
-        let isVerified = await verifyUser();
+    const { verifyAuth, refreshAuth, logout } = useAuth();
 
-        if (isVerified) {
-          setIsAuthenticated(true);
-        } else {
-          await logout();
-          setIsAuthenticated(false);
-          sessionStorage.removeItem("techie:traits");
-          router.replace("/login");
-        }
+    /**
+     * A wrap around function to persist auth state
+     * that accept Promise base async function
+     * @param persistAgent Promise base async function
+     * @returns void
+     */
+    const persistAuthHandler = async (persistAgent: () => Promise<boolean>) => {
+      let isVerified = await persistAgent();
+
+      if (isVerified) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        router.replace("/login");
+        logout();
       }
     };
+
+    const verifyAuthhHandler = async () => persistAuthHandler(verifyAuth);
+    const refreshAuthHandler = async () => persistAuthHandler(refreshAuth);
+
     useEffect(() => {
-      verifyUserAuth();
+      verifyAuthhHandler();
+      const intervalRefresh = setInterval(refreshAuthHandler, REFRESH_INTERVAL);
+
+      return () => {
+        clearInterval(intervalRefresh);
+      };
     }, []);
 
     if (isAuthenticated) {
       return <Component />;
-    } else {
-      return <></>;
     }
+
+    return <>401 Unauthorized</>;
   };
-};
+}
 
 export default authGuard;
