@@ -259,12 +259,13 @@ class LogoutView(CreateAPIView):
     serializer_class = LogoutSerializer
 
     def post(self, request, *args, **kwargs):
-        refresh_token = {
-            "refresh": request.COOKIES.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])
-        }
-        serializer = self.serializer_class(data=refresh_token)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        enforce_csrf(request)
+        refresh = request.COOKIES.get(settings.COOKIES["AUTH_COOKIE_REFRESH"])
+        if refresh:
+            serializer = self.serializer_class(data={"refresh": refresh})
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
         response = Response(
             status=status.HTTP_200_OK, data={"success": "You have logged out!"}
         )
