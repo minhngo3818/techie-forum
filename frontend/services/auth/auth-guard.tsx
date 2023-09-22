@@ -1,18 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import useAuth from "./auth-provider";
+import { toastResponse } from "@utils/toast-helper";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 
 const REFRESH_INTERVAL = 14 * 60 * 1000;
 
-function authGuard(Component: () => JSX.Element) {
+/**
+ * Generic type for server component
+ * Temporarily use for querying a list
+ */
+type ServerProps<T> = {
+  list: T[];
+  nextId: string;
+};
+
+/**
+ * Auth guard
+ * A wrap around component for a specific page component
+ * that need an authorized layer
+ * @param Component a client or server component
+ * @returns Component if it is authorized, a message otherwise
+ */
+function authGuard<T>(
+  Component: (
+    props: InferGetServerSidePropsType<GetServerSideProps<ServerProps<T>>>
+  ) => JSX.Element
+) {
   return () => {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const { verifyAuth, refreshAuth, logout } = useAuth();
 
     /**
-     * A wrap around function to persist auth state
-     * that accept Promise base async function
+     * A wrap around function set auth state
+     * depending on the result of a persist agent.
+     * A persist agent are Promise base async functions
+     * that manage auth tokens.
      * @param persistAgent Promise base async function
      * @returns void
      */
@@ -24,6 +48,7 @@ function authGuard(Component: () => JSX.Element) {
       } else {
         setIsAuthenticated(false);
         router.replace("/login");
+        toastResponse("error", "Unauthorized Access");
         logout();
       }
     };
@@ -41,7 +66,7 @@ function authGuard(Component: () => JSX.Element) {
     }, []);
 
     if (isAuthenticated) {
-      return <Component />;
+      return <Component list={[]} nextId={""} />;
     }
 
     return <>401 Unauthorized</>;

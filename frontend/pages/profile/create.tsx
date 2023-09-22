@@ -1,47 +1,32 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import dynamic from "next/dynamic";
 import Router from "next/router";
-import PageTitle from "../../components/utils/page-title/page-title";
-import { IProfileForm } from "../../interfaces/profile/profile";
-import IProject from "../../interfaces/project/project";
+import { IProfileForm } from "@interfaces/profile/profile";
+import IProject from "@interfaces/project/project";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../../interfaces/forum/form/form-field";
+} from "@interfaces/forum/form/form-field";
 import { useMutation } from "react-query";
-import { createProfile } from "../../services/user/profile/profile-services";
+import PageTitle from "@components/utils/page-title/page-title";
+import BasicInfo from "@components/form/form-profile-creation/basic-info/basic-info";
+import Reference from "@components/form/form-profile-creation/reference/reference";
+import Project from "@components/form/form-profile-creation/project/project";
+import Submission from "@components/form/form-profile-creation/submission/submission";
+import { createProfile } from "@services/user/profile/profile-services";
 import { AxiosError } from "axios";
-import useAuth from "../../services/auth/auth-provider";
-import useMultistepForm from "../../hooks/useMultistepForm";
-import { Tab } from "@headlessui/react";
+import useAuth from "@services/auth/auth-provider";
+import useMultistepForm from "@hooks/useMultistepForm";
 import { FadeLoader } from "react-spinners";
-import styles from "../../styles/ProfileCreation.module.css";
-const BasicInfo = dynamic(
-  () =>
-    import("../../components/form/form-profile-creation/basic-info/basic-info"),
-  { ssr: false }
-);
-const Reference = dynamic(
-  () =>
-    import("../../components/form/form-profile-creation/reference/reference"),
-  { ssr: false }
-);
-const Project = dynamic(
-  () => import("../../components/form/form-profile-creation/project/project"),
-  { ssr: false }
-);
-const Submission = dynamic(
-  () =>
-    import("../../components/form/form-profile-creation/submission/submission"),
-  { ssr: false }
-);
+import styles from "@styles/ProfileCreation.module.css";
+import { Tab } from "@headlessui/react";
+import authGuard from "@services/auth/auth-guard";
 
-//  Empty data objects
+//  Initial project
 const emptyProject: IProject = {
   title: "",
 };
 
-export default function ProfileCreation() {
+function ProfileCreation() {
   const { user } = useAuth();
 
   // Tabs
@@ -200,3 +185,5 @@ export default function ProfileCreation() {
     </div>
   );
 }
+
+export default authGuard(ProfileCreation);

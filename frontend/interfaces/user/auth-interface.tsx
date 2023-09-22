@@ -22,6 +22,5 @@ export default interface AuthContextInterface {
   register: (data: IRegisterForm) => Promise<boolean>;
   verifyAuth: () => Promise<boolean>;
   refreshAuth: () => Promise<boolean>;
-  changePassword: (data: IChangePasswordForm) => Promise<void>;
   loading: boolean;
 }

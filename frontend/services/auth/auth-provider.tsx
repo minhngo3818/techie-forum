@@ -2,11 +2,7 @@ import { useRouter } from "next/router";
 import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { ReactElement } from "react";
 import AuthContextInterface from "@interfaces/user/auth-interface";
-import {
-  ILoginForm,
-  IChangePasswordForm,
-  IRegisterForm,
-} from "@interfaces/user/auth-interface";
+import { ILoginForm, IRegisterForm } from "@interfaces/user/auth-interface";
 import axiosInst from "@services/axios/axios-instance";
 import IUser from "@interfaces/user/user";
 import { toastResponse } from "@utils/toast-helper";
@@ -18,7 +14,6 @@ export const AuthContext = createContext<AuthContextInterface>({
   register: async () => false,
   verifyAuth: async () => false,
   refreshAuth: async () => false,
-  changePassword: async () => {},
   loading: false,
 });
 
@@ -27,7 +22,9 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  // Persist user information if page refreshs
+  /**
+   * Persist user information if refresh a page
+   */
   useEffect(() => {
     if (!router.isReady) return;
     let userTraits = sessionStorage.getItem("techie:traits");
@@ -39,7 +36,8 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   }, [router, router.isReady]);
 
   /**
-   * Resolve login response and set auth states, notify an error if happens
+   * Login request handler
+   * Resolve login response and set auth states, notify an error if happen
    * Perform subsequence request if user account has not beend verified or inactive
    * @param data {username: string, password: string}
    * @returns void
@@ -83,8 +81,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   }
 
   /**
-   * Handle logout procedure
-   * Pre-request a token before post request
+   * Logout request handler
    * Remove all user credentials on success
    */
   async function logout() {
@@ -105,6 +102,7 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   }
 
   /**
+   * Register account request handler
    * Register a new user account
    * @param data registration inputs
    * @return boolean
@@ -126,7 +124,8 @@ export function AuthProvider({ children }: { children: ReactElement }) {
   }
 
   /**
-   * Verify authorized user
+   * Verify auth token
+   * @returns Promise<boolean>
    */
   async function verifyAuth() {
     let isSuccess = false;
@@ -141,6 +140,10 @@ export function AuthProvider({ children }: { children: ReactElement }) {
     return isSuccess;
   }
 
+  /**
+   * Generate new auth token
+   * @returns Promise<boolean>
+   */
   async function refreshAuth() {
     let isSuccess = false;
     await axiosInst
@@ -158,7 +161,6 @@ export function AuthProvider({ children }: { children: ReactElement }) {
    * Change user password with authentication
    * @param data password inputs
    */
-  async function changePassword(data: IChangePasswordForm) {}
 
   const context = useMemo(
     () => ({
@@ -168,7 +170,6 @@ export function AuthProvider({ children }: { children: ReactElement }) {
       register: register,
       verifyAuth: verifyAuth,
       refreshAuth: refreshAuth,
-      changePassword: changePassword,
       loading: loading,
     }),
     [user, loading]

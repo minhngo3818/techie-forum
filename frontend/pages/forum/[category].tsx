@@ -12,13 +12,14 @@ import ForumSearchBar from "@components/forum/toolbar/search/forum-search-bar";
 import ForumContainer from "@components/forum/container/forum-container";
 import searchFilterThread from "@utils/searchFilterThread";
 import forumLinks from "../../page-paths/forum";
+import authGuard from "@services/auth/auth-guard";
 const Thread = dynamic(() => import("@components/forum/thread/thread"));
 
-export default function Category(
+function Category(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const router = useRouter();
-  const [threadList, setThreadList] = useState<IThread[]>(props.threads);
+  const [threadList, setThreadList] = useState<IThread[]>(props.list);
   const [forumName, setForumName] = useState("");
   const [category, setCategory] = useState("");
   const [isThreadForm, setThreadForm] = useState(false);
@@ -32,7 +33,7 @@ export default function Category(
       let pathObj = forumLinks.find((link) => link.path === paramCategory);
       setForumName(pathObj?.name as string);
       setCategory(paramCategory as string);
-      setThreadList(props.threads);
+      setThreadList(props.list);
     }
   }, [router.query, category]);
 
@@ -98,7 +99,7 @@ export default function Category(
 }
 
 export const getServerSideProps: GetServerSideProps<{
-  threads: IThread[];
+  list: IThread[];
   nextId: string;
 }> = async (context) => {
   const { query } = context;
@@ -106,8 +107,10 @@ export const getServerSideProps: GetServerSideProps<{
   const results = await getPaginatedThreads(context.req, category);
   return {
     props: {
-      threads: results?.threads || [],
+      list: results?.threads || [],
       nextId: results?.nextId || null,
     },
   };
 };
+
+export default authGuard<IThread>(Category);

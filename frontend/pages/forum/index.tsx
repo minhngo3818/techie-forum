@@ -3,6 +3,7 @@ import Link from "next/link";
 import PageTitle from "../../components/utils/page-title/page-title";
 import forumLinks from "../../page-paths/forum";
 import styles from "../../styles/Forum.module.css";
+import authGuard from "@services/auth/auth-guard";
 
 function Forum() {
   return (
@@ -27,4 +28,4 @@ function Forum() {
   );
 }
 
-export default Forum;
+export default authGuard(Forum);
