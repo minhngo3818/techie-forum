@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Router from "next/router";
-import { changePassword } from "../../../services/auth/auth-services";
-import BaseField from "../../form/field-base/base-field";
-import styles from "../../../styles/Account.module.css";
-import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
+import { changePassword } from "@services/auth/auth-services";
+import BaseField from "@components/form/field-base/base-field";
+import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import { BarLoader } from "react-spinners";
-import { IChangePasswordForm } from "../../../interfaces/user/auth-interface";
+import { IChangePasswordForm } from "@interfaces/user/auth-interface";
+import styles from "@styles/Account.module.css";
 
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,30}$/;

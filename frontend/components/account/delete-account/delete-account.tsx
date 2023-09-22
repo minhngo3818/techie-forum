@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Router from "next/router";
-import { deleteAccount } from "../../../services/auth/auth-services";
-import PopupLayout from "../../utils/popup-layout/popup-layout";
-import styles from "../../../styles/Account.module.css";
+import { deleteAccount } from "@services/auth/auth-services";
+import PopupLayout from "@components/utils/popup-layout/popup-layout";
+import styles from "@styles/Account.module.css";
 import uniqueStyles from "./DeleteAccount.module.css";
 
 export default function DeleteAccount() {

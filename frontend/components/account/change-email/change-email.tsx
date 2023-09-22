@@ -1,8 +1,8 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import Router from "next/router";
-import { changeEmail } from "../../../services/auth/auth-services";
-import BaseField from "../../form/field-base/base-field";
-import styles from "../../../styles/Account.module.css";
+import { changeEmail } from "@services/auth/auth-services";
+import BaseField from "@components/form/field-base/base-field";
+import styles from "@styles/Account.module.css";
 import { BarLoader } from "react-spinners";
 
 interface ChangeEmailType {
