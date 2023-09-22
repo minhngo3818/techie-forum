@@ -9,7 +9,10 @@ type Password2 = { password2: string };
 
 export interface ILoginForm extends UserName, Password {}
 
-export interface IResetPasswordForm extends Password, Password2 {}
+export interface IResetPasswordForm extends Password, Password2 {
+  token: string;
+  id: string;
+}
 
 export interface IChangePasswordForm extends OldPassword, IResetPasswordForm {}
 

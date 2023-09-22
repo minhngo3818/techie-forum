@@ -1,12 +1,11 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import LockOnWrapper from "../components/utils/lock-on/lock-on";
-import Footer from "../components/footer/footer";
+import LockOnWrapper from "@components/utils/lock-on/lock-on";
 const ParticleBackground = dynamic(
-  () => import("../components/utils/particles/particle-background")
+  () => import("@components/utils/particles/particle-background")
 );
-import styles from "../styles/Home.module.css";
+import styles from "@styles/Home.module.css";
 
 export default function Home() {
   return (

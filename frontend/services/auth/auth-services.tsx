@@ -1,11 +1,14 @@
 import axiosInst from "@services/axios/axios-instance";
 import { toastResponse } from "@utils/toast-helper";
-import { IChangePasswordForm } from "@interfaces/user/auth-interface";
+import {
+  IChangePasswordForm,
+  IResetPasswordForm,
+} from "@interfaces/user/auth-interface";
 
 /**
  * Request an verification email if user don't receive an email
  * @param email an email verification token
- * @returns axios GET promise
+ * @returns Promise<void>
  */
 export async function requestVerifyEmail() {
   let udsf = sessionStorage.getItem("udsf"); // Use a substitution in later update
@@ -23,7 +26,7 @@ export async function requestVerifyEmail() {
  * Perform GET request to verify user email
  * Use wrap function in order to be consumed by useQuery hook
  * @param token an email verification token
- * @returns axios GET promise
+ * @returns Promise<void>
  */
 export async function verifyEmail(token: string) {
   return axiosInst
@@ -45,7 +48,7 @@ export async function verifyEmail(token: string) {
  * Perform a PUT request for changing user email
  * State unverified email in user object in session Storage
  * @param email
- * @returns axios PUT promise
+ * @returns Promise<void>
  */
 export async function changeEmail(email: string) {
   return axiosInst
@@ -67,7 +70,7 @@ export async function changeEmail(email: string) {
 /**
  * Change user password word with auth
  * @param data: a change password form
- * @returns axios PUT promise
+ * @returns Promise<void>
  */
 export async function changePassword(data: IChangePasswordForm) {
   return axiosInst
@@ -87,4 +90,40 @@ export async function deleteAccount() {
   return axiosInst.post("user/delete-account").catch((error) => {
     toastResponse("error", error.message);
   });
+}
+
+/**
+ * Send a requet to reset password
+ * @param email
+ * @returns Promise<void>
+ */
+export async function requestResetPassword(email: string) {
+  let isSuccess = false;
+  await axiosInst
+    .post("user/password-reset-request", { email: email })
+    .then(() => {
+      isSuccess = true;
+    })
+    .catch((error) => {
+      toastResponse("error", error.message);
+    });
+  return isSuccess;
+}
+
+/**
+ * Send a POST request to reset user password
+ * @param data IResetPasswordForm
+ * @returns Promise<boolean>
+ */
+export async function resetPassword(data: IResetPasswordForm) {
+  let isSuccess = false;
+  await axiosInst
+    .post("user/reset-password", data)
+    .then(() => {
+      isSuccess = true;
+    })
+    .catch((error) => {
+      toastResponse("error", "Reset password failed");
+    });
+  return isSuccess;
 }

@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import PageTitle from "../../components/utils/page-title/page-title";
-import BaseField from "../../components/form/field-base/base-field";
-import styles from "../../styles/ForgotPwd.module.css";
-import { EventTargetNameValue } from "../../interfaces/forum/form/form-field";
+import React, { useState, useEffect, useRef } from "react";
+import PageTitle from "@components/utils/page-title/page-title";
+import BaseField from "@components/form/field-base/base-field";
+import styles from "@styles/ForgotPwd.module.css";
+import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
+import { requestResetPassword } from "@services/auth/auth-services";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const emailRef = useRef<HTMLInputElement>(null);
+  const [isSent, setIsSent] = useState(false);
 
   useEffect(() => {
     if (emailRef.current) {
@@ -14,18 +16,21 @@ function ForgotPassword() {
     }
   });
 
-  const handleChange = useCallback(
-    ({ target: { name, value } }: EventTargetNameValue) => {
-      setEmail((val) => val);
-    },
-    []
-  );
+  const handleChange = ({ target: { name, value } }: EventTargetNameValue) => {
+    setEmail((val) => val);
+  };
 
-  const sent = true;
+  const handleSubmit = async () => {
+    let sent = await requestResetPassword(email);
+    if (sent) {
+      setIsSent(sent);
+    }
+  };
+
   return (
     <div className={styles.forgotPwdWrapper}>
       <PageTitle title="Forgot Password" />
-      {sent ? (
+      {isSent ? (
         <>
           <BaseField
             innerRef={emailRef}
@@ -38,7 +43,9 @@ function ForgotPassword() {
             fieldType="input"
           />
           <div className={styles.forgotPwdBtnWrapper}>
-            <button className={styles.forgotPwdButton}>Send request</button>
+            <button className={styles.forgotPwdButton} onClick={handleSubmit}>
+              Send request
+            </button>
           </div>
         </>
       ) : (
