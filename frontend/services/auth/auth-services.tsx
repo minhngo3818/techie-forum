@@ -40,7 +40,11 @@ export async function verifyEmail(token: string) {
       }
     })
     .catch((error) => {
-      toastResponse("error", error.message);
+      toastResponse("error", error.response.data.error);
+      throw error;
+    })
+    .finally(() => {
+      sessionStorage.removeItem("udsf");
     });
 }
 

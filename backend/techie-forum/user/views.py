@@ -444,12 +444,12 @@ class ConfirmResetPasswordUrlView(GenericAPIView):
     serializer_class = ResetPasswordSerializer
 
     @classmethod
-    def get(cls, request, uidb64, token):
+    def get(cls, request, id, token):
         redirect_url = request.GET.get("redirect_url", "")
 
         try:
             user_id = smart_str(
-                urlsafe_base64_decode(uidb64)
+                urlsafe_base64_decode(id)
             )  # may throw DjangoUnicodeDecodeError
             user = User.objects.get(id=user_id)
 
@@ -465,8 +465,8 @@ class ConfirmResetPasswordUrlView(GenericAPIView):
                 return CustomRedirect(
                     redirect_url
                     + "?token_valid=True"
-                    + "&uidb64="
-                    + uidb64
+                    + "&id="
+                    + id
                     + "&token="
                     + token
                 )

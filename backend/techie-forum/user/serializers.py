@@ -411,21 +411,18 @@ class ResetPasswordSerializer(serializers.Serializer):
         min_length=8, max_length=255, write_only=True, required=True
     )
     token = serializers.CharField(min_length=8, max_length=255)
-    uidb64 = serializers.CharField(min_length=8)
+    id = serializers.CharField(min_length=8)
 
     class Meta:
-        fields = ["password", "password2", "token", "uidb64"]
+        fields = ["password", "password2", "token", "id"]
 
     def validate(self, attrs):
-        # Validate two password fields and
-        # decode reset password url uidb64 into id to verify user
-
         password = attrs["password"]
         password2 = attrs["password2"]
         token = attrs["token"]
-        uidb64 = attrs["uidb64"]
+        id = attrs["id"]
 
-        user_id = force_str(urlsafe_base64_decode(uidb64))
+        user_id = force_str(urlsafe_base64_decode(id))
         user = User.objects.get(id=user_id)
 
         if password != password2:

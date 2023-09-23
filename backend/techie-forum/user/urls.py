@@ -81,9 +81,9 @@ urlpatterns = [
         name="password-reset-confirm",
     ),
     path(
-        "user/password-reset-complete",
+        "user/reset-password",
         ResetPasswordView.as_view(),
-        name="password-reset-complete",
+        name="reset-password",
     ),
     # drf swagger ui
     re_path(

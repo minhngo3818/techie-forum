@@ -53,8 +53,8 @@ export function AuthProvider({ children }: { children: ReactElement }) {
             "Your account is inactive. Redirect to account recovery url."
           );
         } else if (res.data.is_verified === false) {
-          toastResponse("info", "Email has not been verified!");
-          // sessionStorage.setItem("udsf", JSON.stringify(res.data.udsf));
+          toastResponse("info", "Email is not verified!");
+          sessionStorage.setItem("udsf", JSON.stringify(res.data.udsf));
           router.replace("/verify-email/not-verify");
         } else {
           let userObj = {

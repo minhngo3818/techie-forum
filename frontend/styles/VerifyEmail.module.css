@@ -1,5 +1,9 @@
-.veNonSuccessWrapper {
+.veNoneSuccessWrapper {
   @apply flex w-full items-center justify-center;
+}
+
+.veNoneSuccessWrapper h2 {
+  @apply text-xl font-medium text-smoke;
 }
 
 .veMessageWrapper {
