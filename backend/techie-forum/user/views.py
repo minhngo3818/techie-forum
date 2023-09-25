@@ -48,7 +48,25 @@ import os
 
 
 class CustomRedirect(HttpResponsePermanentRedirect):
-    allowed_schemes = [os.environ.get("APP_SCHEMES")]
+    def __init__(
+        self, target_url, verify_domain=True, verify_scheme=True, *args, **kwargs
+    ):
+        super().__init__(target_url, *args, **kwargs)
+        self.verify_domains = verify_domain
+        self.verify_schemes = verify_scheme
+
+    def handle_redirect(self, request):
+        if self.verify_domain:
+            valid_domains = settings.ALLOWED_HOSTS
+            if request.get_host() not in valid_domains:
+                raise ValueError("Invalid domain")
+
+        if self.verify_schemes:
+            valid_schemes = "https" if not settings.DEBUG else "http"
+            if request.scheme not in valid_schemes:
+                raise ValueError("Invalid scheme")
+
+        return super().handle_redirect(request)
 
 
 class UserViewSet(ReadOnlyModelViewSet):
@@ -78,7 +96,7 @@ class UserRegisterView(GenericAPIView):
         serializer.save()
         user = User.objects.get(email=serializer.data["email"])
         token = RefreshToken.for_user(user)
-        frontend_url = os.environ.get("FRONTEND_URL_DEV")
+        frontend_url = settings.MAIN_CLIENT_ORIGIN
         data = EmailSender.compose_verification_email(frontend_url, user, token)
         EmailSender.send_email(data)
 
@@ -101,7 +119,7 @@ class RequestEmailVerificationView(GenericAPIView):
         user = User.objects.get(username=username)
         tokens = user.get_tokens
         data = EmailSender.compose_verification_email(
-            os.environ.get("FRONTEND_URL_DEV"),
+            settings.MAIN_CLIENT_ORIGIN,
             user,
             tokens["access"],
         )
@@ -167,7 +185,7 @@ class ChangeEmailView(UpdateAPIView):
         serializer.save()
         tokens = user.get_tokens
         data = EmailSender.compose_verification_email(
-            os.environ.get("FRONTEND_URL_DEV"),
+            settings.MAIN_CLIENT_ORIGIN,
             user,
             tokens["access"],
         )
@@ -209,7 +227,7 @@ class LoginView(GenericAPIView):
 
         if not serializer.data["is_verified"]:
             data = EmailSender.compose_verification_email(
-                os.environ.get("FRONTEND_URL_DEV"),
+                settings.MAIN_CLIENT_ORIGIN,
                 serializer.instance,
                 serializer.data["tokens"]["access"],
             )
@@ -397,42 +415,29 @@ class RequestResetPasswordView(GenericAPIView):
 
     serializer_class = RequestResetPasswordSerializer
 
-    @classmethod
-    def post(cls, request):
-        email = request.data.get("email")
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = User.objects.get(email=serializer.data["email"])
 
-        if User.objects.filter(email=email).exists():
-            user = User.objects.get(email=email)
+        # Encoded credentials
+        uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
+        token = PasswordResetTokenGenerator().make_token(user)
 
-            # Encoded path
-            uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
-            token = PasswordResetTokenGenerator().make_token(user)
-
-            # Server domain
-            current_site = get_current_site(request=request).domain
-
-            # Path to reset
-            path = reverse(
-                "password-reset-confirm", kwargs={"uidb64": uidb64, "token": token}
-            )
-
-            # Reset password url
-            redirect_url = "?redirect_url=" + request.data.get("redirect_url", "")
-            server_url = "http://" + current_site + path
-            reset_password_url = server_url + redirect_url
-            data = EmailSender.compose_reset_password_notice(user, reset_password_url)
-            EmailSender.send_email(data)
-
-            return Response(
-                {
-                    "success": True,
-                    "message": "A reset password link was sent your email.",
-                },
-                status=status.HTTP_200_OK,
-            )
+        scheme = request.scheme
+        domain = get_current_site(request=request).domain
+        path = reverse("password-reset-confirm", kwargs={"id": uidb64, "token": token})
+        redirect_url = "?redirect_url=" + request.data.get("redirect_url", "")
+        reset_password_url = scheme + "://" + domain + path + redirect_url
+        data = EmailSender.compose_reset_password_notice(user, reset_password_url)
+        EmailSender.send_email(data)
 
         return Response(
-            {"error": "Account does not exist"}, status=status.HTTP_404_NOT_FOUND
+            data={
+                "message": "A reset password link was sent your email.",
+                "url": reset_password_url,
+            },
+            status=status.HTTP_200_OK,
         )
 
 
@@ -441,37 +446,18 @@ class ConfirmResetPasswordUrlView(GenericAPIView):
     Fetch to verify uidb64 and token before redirect to reset password page
     """
 
-    serializer_class = ResetPasswordSerializer
-
     @classmethod
     def get(cls, request, id, token):
-        redirect_url = request.GET.get("redirect_url", "")
+        redirect_url = request.GET.get("redirect_url")
 
         try:
-            user_id = smart_str(
-                urlsafe_base64_decode(id)
-            )  # may throw DjangoUnicodeDecodeError
+            user_id = smart_str(urlsafe_base64_decode(id))
             user = User.objects.get(id=user_id)
 
             if not PasswordResetTokenGenerator().check_token(user, token):
-                if len(redirect_url) > 40:
-                    return CustomRedirect(redirect_url + "?token_valid=False")
-                else:
-                    return CustomRedirect(
-                        os.environ.get("FRONTEND_URL") + "?token_valid=False"
-                    )
+                return CustomRedirect(redirect_url + "?token_valid=False")
 
-            if len(redirect_url) > 40:
-                return CustomRedirect(
-                    redirect_url
-                    + "?token_valid=True"
-                    + "&id="
-                    + id
-                    + "&token="
-                    + token
-                )
-            else:
-                return CustomRedirect(os.environ.get("FRONTEND_URL"))
+            return CustomRedirect(redirect_url + "/" + id + "/" + token)
 
         except DjangoUnicodeDecodeError:
             return CustomRedirect(redirect_url + "?token_valid=False")
@@ -491,10 +477,15 @@ class ResetPasswordView(UpdateAPIView):
     serializer_class = ResetPasswordSerializer
 
     def patch(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        enforce_csrf(request)
+        user_id = smart_str(urlsafe_base64_decode(request.data.get("id")))
+        data = request.data.copy()
+        data["id"] = user_id
+        serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(
-            data={"success": True, "message": "Password was reset successfully!"},
+            data={"message": "Password was reset successfully!"},
             status=status.HTTP_200_OK,
         )
 

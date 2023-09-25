@@ -384,19 +384,24 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class RequestResetPasswordSerializer(serializers.Serializer):
     """
-    Serializer to send reset password request to user email
+    Serializer to validate data from reset password request
     """
 
     email = serializers.EmailField(min_length=8, required=True)
 
     # Frontend send user email along with reset password route
-    redirect_url = serializers.CharField(max_length=500, required=False)
+    redirect_url = serializers.CharField(max_length=200, required=False)
 
     def validate(self, attrs):
-        if not User.objects.filter(email=attrs["email"]).exists():
-            raise serializers.ValidationError({"email": "email does not exist"})
+        errors = {}
 
-        return attrs
+        if not User.objects.filter(email=attrs["email"]).exists():
+            errors["email"] = "email does not exist"
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return super().validate(attrs)
 
 
 class ResetPasswordSerializer(serializers.Serializer):
@@ -410,30 +415,36 @@ class ResetPasswordSerializer(serializers.Serializer):
     password2 = serializers.CharField(
         min_length=8, max_length=255, write_only=True, required=True
     )
-    token = serializers.CharField(min_length=8, max_length=255)
-    id = serializers.CharField(min_length=8)
+    token = serializers.CharField(min_length=8, max_length=255, required=True)
+    id = serializers.CharField(min_length=8, required=True)
 
     class Meta:
         fields = ["password", "password2", "token", "id"]
 
     def validate(self, attrs):
-        password = attrs["password"]
-        password2 = attrs["password2"]
-        token = attrs["token"]
-        id = attrs["id"]
+        errors = {}
 
-        user_id = force_str(urlsafe_base64_decode(id))
-        user = User.objects.get(id=user_id)
+        user = None
+        if not User.objects.filter(id=attrs["id"]).exists():
+            errors["id"] = "User with provided id does not exist"
+        else:
+            user = User.objects.get(id=attrs["id"])
 
-        if password != password2:
-            raise serializers.ValidationError(
-                {"password": "new password did not match"}
-            )
+        if user.check_password(attrs["password"]):
+            errors["password"] = "Password is used"
 
-        if not PasswordResetTokenGenerator().check_token(user, token):
-            raise AuthenticationFailed("Reset password url is invalid", 401)
+        if attrs["password"] != attrs["password2"]:
+            errors["password"] = "Passwords do not match"
 
-        user.set_password(password)
-        user.save()
+        if not PasswordResetTokenGenerator().check_token(user, attrs["token"]):
+            errors["token"] = "Reset password token is invalid"
+
+        if errors:
+            raise serializers.ValidationError(errors)
 
         return super().validate(attrs)
+
+    def save(self):
+        user = User.objects.get(id=self.validated_data["id"])
+        user.set_password(self.validated_data["password"])
+        user.save()
