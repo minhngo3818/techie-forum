@@ -33,7 +33,7 @@ class EmailSender:
 
     @staticmethod
     def compose_verification_email(route, user, token):
-        verify_url = route + "verify-email/" + user.username + "?token=" + str(token)
+        verify_url = route + "/verify-email/" + user.username + "?token=" + str(token)
 
         email_subject = "Email Verification"
         email_body = render_to_string(
