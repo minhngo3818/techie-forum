@@ -1,5 +1,7 @@
 from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from premailer import transform
 import threading
 
 
@@ -19,11 +21,13 @@ class EmailSender:
 
     @staticmethod
     def send_email(data) -> None:
-        email = EmailMessage(
-            subject=data["email_subject"],
-            body=data["email_body"],
+
+        email = EmailMultiAlternatives(
+            subject=f"[Techie Forum] {data['email_subject']}",
+            body="Verification",
             to=[data["to_email"]],
         )
+        email.attach_alternative(data["email_body"], "text/html")
 
         EmailThread(email).start()
 
@@ -36,10 +40,11 @@ class EmailSender:
             "../templates/emails/email-verification.html",
             {"username": user.username, "verify_url": verify_url},
         )
+        inline_email_body = transform(email_body)
 
         return {
             "email_subject": email_subject,
-            "email_body": email_body,
+            "email_body": inline_email_body,
             "to_email": user.email,
         }
 
@@ -61,7 +66,7 @@ class EmailSender:
         email_subject = "Reset Password"
         email_body = render_to_string(
             "../templates/emails/reset-password-notice.html",
-            {"username": user.username, "reset_url": reset_url},
+            {"username": user.username, "reset_password_url": reset_url},
         )
 
         return {

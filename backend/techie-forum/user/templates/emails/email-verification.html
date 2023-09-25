@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <body>
-<p>Welcome {{ username }} to our lair</p>
-<br/>
-<p>Just one more step. Access the link below to verify your email: <a>{{ verify_url }}</a></p>
-<br/>
-<p>Best,<br>The Techies Forum Team</p>
+<p>Welcome {{ username }} to our lair!</p>
+<br>
+<p>Just one more step, please click to the link to verify your email: <a href="{{ verify_url }}">Click Here</a></p>
+<br>
+<p>Best,<br>The Techie Forum team</p>
 </body>
 </html>
