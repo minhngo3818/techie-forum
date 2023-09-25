@@ -27,7 +27,7 @@ function authGuard<T>(
     props: InferGetServerSidePropsType<GetServerSideProps<ServerProps<T>>>
   ) => JSX.Element
 ) {
-  return () => {
+  return (props: InferGetServerSidePropsType<GetServerSideProps<ServerProps<T>>>) => {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const { verifyAuth, refreshAuth, logout } = useAuth();
@@ -66,7 +66,7 @@ function authGuard<T>(
     }, []);
 
     if (isAuthenticated) {
-      return <Component list={[]} nextId={""} />;
+      return <Component {...props} />;
     }
 
     return <>401 Unauthorized</>;
