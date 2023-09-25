@@ -79,7 +79,6 @@ function Category(
           onClick={handleFilterMarkedThreads}
         />
         <ForumSearchBar
-          ref={searchRef}
           searchValue={search}
           onSearch={handleSearchData}
         />

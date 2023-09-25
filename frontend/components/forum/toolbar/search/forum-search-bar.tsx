@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import useShowComponent from "@hooks/useShowComponent";
 import styles from "./ForumSearchBar.module.css";
@@ -6,7 +6,6 @@ import { Search } from "@components/icons/icons";
 import { Transition, Dialog } from "@headlessui/react";
 
 interface ForumSearchBar {
-  ref: React.RefObject<HTMLInputElement>;
   searchValue: string;
   onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -14,6 +13,7 @@ interface ForumSearchBar {
 export default function ForumSearchBar(props: ForumSearchBar) {
   const [isMobile, setIsMobile] = useState(false);
   const { isShow, setIsShow } = useShowComponent(false);
+  const searchRef = useRef<HTMLInputElement>(null)
 
   const handleIsMobile = () => {
     if (window.innerWidth < 640) {
@@ -80,7 +80,7 @@ export default function ForumSearchBar(props: ForumSearchBar) {
       <div className={styles.FSearchLabel}>Search</div>
       <input
         className={styles.FSearchInput}
-        ref={props.ref}
+        ref={searchRef}
         name="search"
         type="text"
         placeholder="Input keywords ..."

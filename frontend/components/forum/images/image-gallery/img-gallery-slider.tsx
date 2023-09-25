@@ -33,6 +33,7 @@ export default function ImgGallerySlider(props: ImgGallerySlider) {
         {props.images.map((image, index) => {
           return (
             <li
+              key={index}
               data-key={index}
               className={`${
                 props.curIndex === index ? "border-white" : "border-black"
