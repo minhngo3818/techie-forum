@@ -1,5 +1,5 @@
 import React from "react";
-import { Diamond } from "../../../icons/icons";
+import { Diamond } from "@components/icons/icons";
 import styles from "./ProfileHeader.module.css";
 
 export default function ProfileHeader() {

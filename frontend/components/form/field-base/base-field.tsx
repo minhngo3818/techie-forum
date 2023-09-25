@@ -1,9 +1,6 @@
 import React, { FC } from "react";
-import {
-  InputProps,
-  TextareaProps,
-} from "../../../interfaces/forum/form/form-field";
-import { CheckCircle, CloseCircle } from "../../icons/icons";
+import { InputProps, TextareaProps } from "@interfaces/forum/form/form-field";
+import { CheckCircle, CloseCircle } from "@components/icons/icons";
 import styles from "./BaseField.module.css";
 
 const BaseField: FC<InputProps | TextareaProps> = (props) => {

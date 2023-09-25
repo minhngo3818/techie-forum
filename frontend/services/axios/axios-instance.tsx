@@ -2,10 +2,10 @@ import axios, { AxiosRequestConfig } from "axios";
 import { toastResponse } from "@utils/toast-helper";
 
 // API CONFIGS
-const DEV_API = "http://127.0.0.1:8000/api/";
-const HOST_API = "";
+const API = process.env.API;
+
 const axiosConfigs = {
-  baseURL: DEV_API,
+  baseURL: API,
   headers: {
     "Content-Type": "application/json",
   },

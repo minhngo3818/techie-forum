@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import PopupLayout from "../../../utils/popup-layout/popup-layout";
-import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
+import PopupLayout from "@components/utils/popup-layout/popup-layout";
+import AvatarEditor from "@components/utils/avatar-editor/avatar-editor";
 import { Point } from "react-easy-crop";
-import getCroppedImg from "../../../utils/avatar-editor/crop-image-helper";
-import { ImageArea } from "../../../utils/avatar-editor/crop-image-helper";
-import { updateProfile } from "../../../../services/user/profile/profile-services";
+import getCroppedImg from "@components/utils/avatar-editor/crop-image-helper";
+import { ImageArea } from "@components/utils/avatar-editor/crop-image-helper";
+import { updateProfile } from "@services/user/profile/profile-services";
 import styles from "./ProfileIdentity.module.css";
 import { useRouter } from "next/router";
 

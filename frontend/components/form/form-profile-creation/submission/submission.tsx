@@ -2,7 +2,7 @@ import React from "react";
 import { Tab, Transition } from "@headlessui/react";
 import generalStyles from "../ProfileCreationForm.module.css";
 import styles from "./Submission.module.css";
-import { Diamond } from "../../../icons/icons";
+import { Diamond } from "@components/icons/icons";
 
 interface SubmissionType {
   isShow: boolean;

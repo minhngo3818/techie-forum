@@ -2,7 +2,6 @@ import { IComment, ICommentPost } from "@interfaces/forum/post/post";
 import axiosInst from "@services/axios/axios-instance";
 import { toastResponse } from "@utils/toast-helper";
 import commentMapper from "./comment-mapper";
-import { isUndefined } from "util";
 
 export async function getPaginatedComments(
   threadId: string,

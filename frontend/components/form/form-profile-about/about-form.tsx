@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
 import Router from "next/router";
-import { StateDuo } from "../../../interfaces/utils/button";
+import { StateDuo } from "@interfaces/utils/button";
 import BaseField from "../field-base/base-field";
-import PopupLayout from "../../utils/popup-layout/popup-layout";
-import { updateProfile } from "../../../services/user/profile/profile-services";
-import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea";
+import PopupLayout from "@components/utils/popup-layout/popup-layout";
+import { updateProfile } from "@services/user/profile/profile-services";
+import useAutosizeTextArea from "@hooks/useAutosizeTextArea";
 
 interface AboutFormType {
   headerTitle?: string;

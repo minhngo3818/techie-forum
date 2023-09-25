@@ -1,15 +1,14 @@
 import React, { useState, useCallback, useRef } from "react";
 import Router from "next/router";
-import { useRouter } from "next/router";
-import { StateDuo } from "../../../interfaces/utils/button";
+import { StateDuo } from "@interfaces/utils/button";
+import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
+import IProject from "@interfaces/project/project";
+import PopupLayout from "@components/utils/popup-layout/popup-layout";
 import BaseField from "../field-base/base-field";
-import IProject from "../../../interfaces/project/project";
 import {
   createProjectService,
   updateProjectService,
-} from "../../../services/user/project/project-service";
-import { EventTargetNameValue } from "../../../interfaces/forum/form/form-field";
-import PopupLayout from "../../utils/popup-layout/popup-layout";
+} from "@services/user/project/project-service";
 
 interface ProjectFormType {
   headerTitle?: string;

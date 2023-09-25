@@ -1,5 +1,5 @@
 import { SetStateAction, Dispatch, useCallback } from "react";
-import { IThreadBody } from "../../../../interfaces/forum/post/post";
+import { IThreadBody } from "@interfaces/forum/post/post";
 
 export function useAddTag(
   tags: string[] | undefined,

@@ -1,16 +1,15 @@
 import React from "react";
 import Link from "next/link";
-import Box from "../../../utils/box/box";
+import Box from "@components/utils/box/box";
 import {
   Twitter,
   Linkedin,
-  Indeed,
   Github,
   Reddit,
   Stackoverflow,
-} from "../../../icons/icons";
+} from "@components/icons/icons";
 import styles from "./ProfileRefLinks.module.css";
-import RefLinksInterface from "../../../../interfaces/profile/ref-links";
+import RefLinksInterface from "@interfaces/profile/ref-links";
 
 //TYPES
 interface LinkType {

@@ -1,9 +1,12 @@
 import React, { useState, ChangeEvent } from "react";
-import IProject from "../../../../interfaces/project/project";
+import IProject from "@interfaces/project/project";
 import ProjectInner from "./project-inner";
 import { Tab, Transition } from "@headlessui/react";
-import { Delete } from "../../../icons/icons";
-import { CaretLeftFilled, CaretRightFilled } from "../../../icons/icons";
+import {
+  Delete,
+  CaretLeftFilled,
+  CaretRightFilled,
+} from "@components/icons/icons";
 import generalStyles from "../ProfileCreationForm.module.css";
 import styles from "./Project.module.css";
 

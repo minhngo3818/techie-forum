@@ -1,8 +1,8 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { requestVerifyEmail } from "../../services/auth/auth-services";
-import styles from "../../styles/VerifyEmail.module.css";
+import { requestVerifyEmail } from "@services/auth/auth-services";
+import styles from "@styles/VerifyEmail.module.css";
 
 function NotVerifiedEmail() {
   const router = useRouter();

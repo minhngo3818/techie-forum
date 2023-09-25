@@ -1,14 +1,14 @@
 import React from "react";
-import { useState, useCallback, useRef, useEffect, useContext } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
-import PageTitle from "../components/utils/page-title/page-title";
-import BaseField from "../components/form/field-base/base-field";
+import PageTitle from "@components/utils/page-title/page-title";
+import BaseField from "@components/form/field-base/base-field";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../interfaces/forum/form/form-field";
-import styles from "../styles/Login.module.css";
-import useAuth from "../services/auth/auth-provider";
+} from "@interfaces/forum/form/form-field";
+import styles from "@styles/Login.module.css";
+import useAuth from "@services/auth/auth-provider";
 
 const initialState = {
   username: "",

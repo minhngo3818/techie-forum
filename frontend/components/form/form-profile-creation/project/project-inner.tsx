@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useRef } from "react";
-import IProject from "../../../../interfaces/project/project";
-import HorzField from "../../field-horizontal/horizontal-field";
+import IProject from "@interfaces/project/project";
+import HorzField from "@components/form/field-horizontal/horizontal-field";
 import styles from "./Project.module.css";
 
 interface ProjectInnerType extends IProject {

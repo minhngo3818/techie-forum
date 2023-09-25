@@ -1,14 +1,12 @@
 import React, {
   useState,
   useRef,
-  useEffect,
   useCallback,
   KeyboardEvent,
   ChangeEvent,
 } from "react";
 import styles from "./TagField.module.css";
-import { ClosePixel } from "../../icons/icons";
-// import { string } from "../../../interfaces/forum/post/post";
+import { ClosePixel } from "@components/icons/icons";
 
 interface TagFieldType {
   tags: string[] | undefined;

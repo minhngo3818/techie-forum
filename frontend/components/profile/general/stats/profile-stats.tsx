@@ -1,5 +1,5 @@
 import React from "react";
-import Box from "../../../utils/box/box";
+import Box from "@components/utils/box/box";
 import styles from "./ProfileStats.module.css";
 
 interface ProfileStatsType {

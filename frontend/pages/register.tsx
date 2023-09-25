@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import useAuth from "../services/auth/auth-provider";
-import PageTitle from "../components/utils/page-title/page-title";
-import BaseField from "../components/form/field-base/base-field";
+import useAuth from "@services/auth/auth-provider";
+import PageTitle from "@components/utils/page-title/page-title";
+import BaseField from "@components/form/field-base/base-field";
 import { FadeLoader } from "react-spinners";
 import {
   EventTargetNameValue,
   FormEvent,
-} from "../interfaces/forum/form/form-field";
-import styles from "../styles/Register.module.css";
+} from "@interfaces/forum/form/form-field";
+import styles from "@styles/Register.module.css";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PASSWORD_REGEX =

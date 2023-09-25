@@ -78,10 +78,7 @@ function Category(
           isActive={marked}
           onClick={handleFilterMarkedThreads}
         />
-        <ForumSearchBar
-          searchValue={search}
-          onSearch={handleSearchData}
-        />
+        <ForumSearchBar searchValue={search} onSearch={handleSearchData} />
       </ForumToolbar>
       <ThreadForm
         isShow={isThreadForm}

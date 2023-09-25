@@ -9,7 +9,7 @@ import React, {
 import Image from "next/image";
 import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import { IThreadBody, IThread } from "@interfaces/forum/post/post";
-import { postThread } from "@services/forum/thread/thread-service";
+
 import BaseField from "../field-base/base-field";
 import TagField from "../field-tag/tag-field";
 import { useAddTag, useRemoveTag } from "../field-tag/function/handleTag";
@@ -17,6 +17,7 @@ import useAutosizeTextArea from "@hooks/useAutosizeTextArea";
 import { Transition } from "@headlessui/react";
 import { Emoji, ClosePixel, Image as ImageIcon } from "@components/icons/icons";
 import { Tooltip } from "react-tooltip";
+import { postThread } from "@services/forum/thread/thread-service";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./ThreadForm.module.css";
 

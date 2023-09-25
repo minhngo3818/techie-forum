@@ -1,4 +1,4 @@
-import { IThread } from "../interfaces/forum/post/post";
+import { IThread } from "@interfaces/forum/post/post";
 
 export default function searchFilterThread(
   data: IThread,

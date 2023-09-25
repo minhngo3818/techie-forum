@@ -6,14 +6,14 @@ import React, {
   useCallback,
 } from "react";
 import { Tab, Transition } from "@headlessui/react";
-import AvatarEditor from "../../../utils/avatar-editor/avatar-editor";
+import AvatarEditor from "@components/utils/avatar-editor/avatar-editor";
 import { Point } from "react-easy-crop";
-import { ImageArea } from "../../../utils/avatar-editor/crop-image-helper";
-import getCroppedImg from "../../../utils/avatar-editor/crop-image-helper";
+import { ImageArea } from "@components/utils/avatar-editor/crop-image-helper";
+import getCroppedImg from "@components/utils/avatar-editor/crop-image-helper";
 import HorzField from "../../field-horizontal/horizontal-field";
 import generalStyles from "../ProfileCreationForm.module.css";
-import { CaretRightFilled } from "../../../icons/icons";
-import { EventTargetNameValue } from "../../../../interfaces/forum/form/form-field";
+import { CaretRightFilled } from "@components/icons/icons";
+import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 
 interface BasicInfoType {
   isShow: boolean;

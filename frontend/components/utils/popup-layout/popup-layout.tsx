@@ -1,7 +1,7 @@
-import React, { ReactElement, SVGProps } from "react";
-import { StateDuo } from "../../../interfaces/utils/button";
+import React, { ReactElement } from "react";
+import { StateDuo } from "@interfaces/utils/button";
 import { Dialog, Transition } from "@headlessui/react";
-import useCurrentScollY from "../../../hooks/useCurrentScrollY";
+import useCurrentScollY from "@hooks/useCurrentScrollY";
 import PopupButtons from "./popup-buttons";
 import {
   Delete,
@@ -10,7 +10,7 @@ import {
   Warning,
   AboutAdmin,
   FramePerson,
-} from "../../icons/icons";
+} from "@components/icons/icons";
 import styles from "./PopupLayout.module.css";
 
 interface PopupLayoutType {

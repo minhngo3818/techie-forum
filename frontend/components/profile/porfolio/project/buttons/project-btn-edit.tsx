@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import IProject from "../../../../../interfaces/project/project";
-import { Edit } from "../../../../icons/icons";
+import IProject from "@interfaces/project/project";
+import { Edit } from "@components/icons/icons";
 import { Tooltip } from "react-tooltip";
 const ProjectForm = dynamic(
-  () => import("../../../../form/form-project/project-form")
+  () => import("@components/form/form-project/project-form")
 );
 import "node_modules/react-tooltip/dist/react-tooltip.css";
 import styles from "./ProjectButton.module.css";

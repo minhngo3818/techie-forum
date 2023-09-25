@@ -1,11 +1,11 @@
 import React from "react";
-import ProfileAbout from "../../components/profile/about/profile-about";
-import ProfileGeneral from "../../components/profile/general/profile-general-info";
-import ProfilePorfolio from "../../components/profile/porfolio/profile-porfolio";
-import { IProfile } from "../../interfaces/profile/profile";
-import { getProfile } from "../../services/user/profile/profile-services";
+import ProfileAbout from "@components/profile/about/profile-about";
+import ProfileGeneral from "@components/profile/general/profile-general-info";
+import ProfilePorfolio from "@components/profile/porfolio/profile-porfolio";
+import { IProfile } from "@interfaces/profile/profile";
+import { getProfile } from "@services/user/profile/profile-services";
 import { GetServerSidePropsContext } from "next";
-import useAuth from "../../services/auth/auth-provider";
+import useAuth from "@services/auth/auth-provider";
 
 function Profile(data: IProfile) {
   const { user } = useAuth();

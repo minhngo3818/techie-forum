@@ -1,6 +1,6 @@
 import React, { useState, useRef, ChangeEvent } from "react";
 import { postComment } from "@services/forum/comment/comment-service";
-import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea";
+import useAutosizeTextArea from "@hooks/useAutosizeTextArea";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import { Emoji, Image as ImageIcon } from "@components/icons/icons";

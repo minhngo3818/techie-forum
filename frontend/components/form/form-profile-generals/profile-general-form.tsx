@@ -1,11 +1,11 @@
 import React, { useState, useRef, ChangeEvent } from "react";
 import { useRouter } from "next/router";
-import { StateDuo } from "../../../interfaces/utils/button";
+import { StateDuo } from "@interfaces/utils/button";
+import { IProfileForm } from "@interfaces/profile/profile";
+import RefLinksInterface from "@interfaces/profile/ref-links";
 import BaseField from "../field-base/base-field";
-import PopupLayout from "../../utils/popup-layout/popup-layout";
-import { updateProfile } from "../../../services/user/profile/profile-services";
-import { IProfileForm } from "../../../interfaces/profile/profile";
-import RefLinksInterface from "../../../interfaces/profile/ref-links";
+import PopupLayout from "@components/utils/popup-layout/popup-layout";
+import { updateProfile } from "@services/user/profile/profile-services";
 
 interface ProfileGeneralsFormType extends RefLinksInterface {
   headerTitle?: string;

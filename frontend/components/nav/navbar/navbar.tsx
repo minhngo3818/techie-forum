@@ -1,8 +1,8 @@
 import React from "react";
-import { Menu } from "../../icons/icons";
+import { Menu } from "@components/icons/icons";
 import Link from "next/link";
-import useShowComponent from "../../../hooks/useShowComponent";
-import useAuth from "../../../services/auth/auth-provider";
+import useShowComponent from "@hooks/useShowComponent";
+import useAuth from "@services/auth/auth-provider";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./Navbar.module.css";

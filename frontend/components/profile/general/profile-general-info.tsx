@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
-import React, { useState, useRef, useEffect } from "react";
-import Box from "../../utils/box/box";
+import React, { useState } from "react";
+import Box from "@components/utils/box/box";
 import ProfileHeader from "./header/profile-header";
 import ProfileIdentity from "./identity/profile-identity";
 import ProfileStats from "./stats/profile-stats";
-import { IProfile } from "../../../interfaces/profile/profile";
+import { IProfile } from "@interfaces/profile/profile";
 const ProfileGeneralsForm = dynamic(
-  () => import("../../form/form-profile-generals/profile-general-form")
+  () => import("@components/form/form-profile-generals/profile-general-form")
 );
 import styles from "./ProfileGeneralInfo.module.css";
 import ProfileRefLinks from "./ref-links/profile-reflinks";
