@@ -386,7 +386,7 @@ class ThreadSerializer(serializers.ModelSerializer):
         if Thread.objects.filter(title=title).exists():
             errors["title"] = "title is already existed"
 
-        if (content is None or content == "") and (len(images) == 0 or images is None):
+        if (content is None or content == "") and (images is None):
             errors["content"] = "content or images are required"
 
         if errors:

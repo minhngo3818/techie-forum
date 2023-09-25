@@ -27,7 +27,9 @@ function authGuard<T>(
     props: InferGetServerSidePropsType<GetServerSideProps<ServerProps<T>>>
   ) => JSX.Element
 ) {
-  return (props: InferGetServerSidePropsType<GetServerSideProps<ServerProps<T>>>) => {
+  return (
+    props: InferGetServerSidePropsType<GetServerSideProps<ServerProps<T>>>
+  ) => {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const { verifyAuth, refreshAuth, logout } = useAuth();

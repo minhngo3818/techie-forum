@@ -90,15 +90,17 @@ export function AuthProvider({ children }: { children: ReactElement }) {
       .post("user/logout", null)
       .then((res) => {
         setUser(null);
-        sessionStorage.removeItem("techie:traits");
         toastResponse("success", "You have logged out!");
-        router.replace("/");
       })
       .catch((error) => {
         toastResponse("error", error.message);
         setLoading(false);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        sessionStorage.removeItem("techie:traits");
+        setLoading(false);
+        router.replace("/");
+      });
   }
 
   /**

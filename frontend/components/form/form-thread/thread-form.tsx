@@ -6,7 +6,6 @@ import React, {
   MouseEvent,
   useEffect,
 } from "react";
-import Router from "next/router";
 import Image from "next/image";
 import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import { IThreadBody, IThread } from "@interfaces/forum/post/post";
@@ -16,7 +15,7 @@ import TagField from "../field-tag/tag-field";
 import { useAddTag, useRemoveTag } from "../field-tag/function/handleTag";
 import useAutosizeTextArea from "@hooks/useAutosizeTextArea";
 import { Transition } from "@headlessui/react";
-import { Emoji, Image as ImageIcon } from "@components/icons/icons";
+import { Emoji, ClosePixel, Image as ImageIcon } from "@components/icons/icons";
 import { Tooltip } from "react-tooltip";
 import "node_modules/react-tooltip/dist/react-tooltip.min.css";
 import styles from "./ThreadForm.module.css";
@@ -80,6 +79,22 @@ export default function ThreadForm(props: ThreadFormType) {
   const handleAddTag = useAddTag(thread.tags, setThread);
 
   const handleRemoveTag = useRemoveTag(thread.tags, setThread);
+
+  const handleRemoveImage = (index: number) => {
+    let newReviewedImages = reviewedImages;
+    newReviewedImages.splice(index, 1);
+    setReviewedImages(newReviewedImages);
+
+    if (thread.images && thread.images instanceof FileList) {
+      let newImageObjects = new DataTransfer();
+      for (let i = 0; i < thread.images.length; i += 1) {
+        if (i !== index) {
+          newImageObjects.items.add(thread.images[i]);
+        }
+      }
+      setThread({ ...thread, images: newImageObjects.files });
+    }
+  };
 
   const handleOnSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -162,17 +177,26 @@ export default function ThreadForm(props: ThreadFormType) {
           fieldType="textarea"
           rows={4}
         />
-        {thread.images && thread.images.length > 0 && (
-          <div className={styles.threadFormImages}>
-            {reviewedImages.map((image, index) => {
-              return (
-                <div key={index} className={styles.threadFormImage}>
-                  <Image src={image as string} alt={`image-${index}`} fill />
-                </div>
-              );
-            })}
-          </div>
-        )}
+        {thread.images &&
+          thread.images.length > 0 &&
+          reviewedImages.length > 0 && (
+            <div className={styles.threadFormImages}>
+              {reviewedImages.map((image, index) => {
+                return (
+                  <div key={index} className={styles.threadFormImage}>
+                    <button
+                      type="button"
+                      className={styles.threadFormImageRemoveBtn}
+                      onClick={() => handleRemoveImage(index)}
+                    >
+                      <ClosePixel />
+                    </button>
+                    <Image src={image as string} alt={`image-${index}`} fill />
+                  </div>
+                );
+              })}
+            </div>
+          )}
         <TagField
           tags={thread.tags}
           isLabel={true}

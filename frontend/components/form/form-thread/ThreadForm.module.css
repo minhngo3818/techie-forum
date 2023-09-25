@@ -1,5 +1,5 @@
 .threadFormWrapper {
-  @apply max-w-[720px] w-full max-h-[640px] h-auto border-2 border-smoke
+  @apply max-w-[720px] w-full min-h-[400px] h-auto border-2 border-smoke
   flex flex-col justify-start items-center
   py-4 px-4 md:px-8 my-4 origin-top;
 }
@@ -25,10 +25,16 @@
 }
 
 .threadFormImages {
-  @apply w-full min-h-[100px] h-auto flex justify-start items-center flex-wrap
+  @apply w-full min-h-[8rem] h-auto grid grid-flow-row grid-cols-2 sm:grid-cols-3 md:grid-cols-4 
   border-2 border-gray hover:border-white px-2 duration-200;
 }
 
 .threadFormImage {
-  @apply relative block w-32 h-20 mx-1;
+  @apply relative flex justify-center w-32 h-32 mx-1 my-1;
+}
+
+.threadFormImageRemoveBtn {
+  @apply absolute w-5 h-5 right-0 bg-white 
+  hover:text-white hover:bg-black text-xl 
+  duration-200 active:bg-gray z-20;
 }
