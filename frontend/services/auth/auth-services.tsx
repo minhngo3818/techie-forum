@@ -101,10 +101,16 @@ export async function deleteAccount() {
  * @param email
  * @returns Promise<void>
  */
-export async function requestResetPassword(email: string) {
+export async function requestResetPassword(
+  email: string,
+  redirect_url: string
+) {
   let isSuccess = false;
   await axiosInst
-    .post("user/password-reset-request", { email: email })
+    .post("user/password-reset-request", {
+      email: email,
+      redirect_url: redirect_url,
+    })
     .then(() => {
       isSuccess = true;
     })
@@ -122,7 +128,7 @@ export async function requestResetPassword(email: string) {
 export async function resetPassword(data: IResetPasswordForm) {
   let isSuccess = false;
   await axiosInst
-    .post("user/reset-password", data)
+    .patch("user/reset-password", data)
     .then(() => {
       isSuccess = true;
     })

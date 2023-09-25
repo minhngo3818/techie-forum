@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import PageTitle from "@components/utils/page-title/page-title";
 import BaseField from "@components/form/field-base/base-field";
 import styles from "@styles/ForgotPwd.module.css";
-import { EventTargetNameValue } from "@interfaces/forum/form/form-field";
 import { requestResetPassword } from "@services/auth/auth-services";
 
 function ForgotPassword() {
@@ -16,12 +15,14 @@ function ForgotPassword() {
     }
   });
 
-  const handleChange = ({ target: { name, value } }: EventTargetNameValue) => {
-    setEmail((val) => val);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
-  const handleSubmit = async () => {
-    let sent = await requestResetPassword(email);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let redirect_url = window.location.href;
+    let sent = await requestResetPassword(email, redirect_url);
     if (sent) {
       setIsSent(sent);
     }
@@ -30,8 +31,8 @@ function ForgotPassword() {
   return (
     <div className={styles.forgotPwdWrapper}>
       <PageTitle title="Forgot Password" />
-      {isSent ? (
-        <>
+      {!isSent ? (
+        <form className="w-full" onSubmit={handleSubmit}>
           <BaseField
             innerRef={emailRef}
             label="Enter your email"
@@ -43,11 +44,11 @@ function ForgotPassword() {
             fieldType="input"
           />
           <div className={styles.forgotPwdBtnWrapper}>
-            <button className={styles.forgotPwdButton} onClick={handleSubmit}>
+            <button type="submit" className={styles.forgotPwdButton}>
               Send request
             </button>
           </div>
-        </>
+        </form>
       ) : (
         <>
           <h3 className="my-4 w-full text-center text-light-gray text-xl">

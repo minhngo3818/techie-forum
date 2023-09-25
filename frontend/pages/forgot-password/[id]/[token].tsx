@@ -19,13 +19,8 @@ function PasswordRecover() {
   const router = useRouter();
   const [isChanged, setIsChanged] = useState(false);
   const [pwdValues, setPwdValues] = useState(initialState);
-  const pwdRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (pwdRef.current) {
-      pwdRef.current.focus();
-    }
-  });
+  const passwordRef = useRef(null);
+  const password2Ref = useRef(null);
 
   const handleChange = ({ target: { name, value } }: EventTargetNameValue) => {
     setPwdValues((val) => ({ ...val, [name]: value }));
@@ -35,6 +30,7 @@ function PasswordRecover() {
     e.preventDefault();
     let id = router.query.id as string;
     let token = router.query.token as string;
+    console.log(id, token);
     let isSuccess = await resetPassword({
       password: pwdValues.password,
       password2: pwdValues.password2,
@@ -61,7 +57,7 @@ function PasswordRecover() {
     <form className={styles.forgotPwdWrapper} onSubmit={handleSubmit}>
       <PageTitle title="Password Recovery" />
       <BaseField
-        innerRef={pwdRef}
+        innerRef={passwordRef}
         label="New Password"
         name="password"
         type="password"
@@ -71,9 +67,9 @@ function PasswordRecover() {
         fieldType="input"
       />
       <BaseField
-        innerRef={pwdRef}
+        innerRef={password2Ref}
         label="Confirm Password"
-        name="password"
+        name="password2"
         type="password"
         placeholder="Re-enter password"
         value={pwdValues.password2}
