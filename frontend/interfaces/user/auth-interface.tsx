@@ -14,7 +14,7 @@ export interface IResetPasswordForm extends Password, Password2 {
   id: string;
 }
 
-export interface IChangePasswordForm extends OldPassword, IResetPasswordForm {}
+export interface IChangePasswordForm extends OldPassword, Password, Password2 {}
 
 export interface IRegisterForm extends UserName, Email, Password, Password2 {}
 
