@@ -28,11 +28,21 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(", ")
+ALLOWED_HOSTS = (
+    os.getenv("ALLOWED_HOSTS").split(", ")
+    if not DEBUG
+    else os.getenv("ALLOWED_HOSTS_DEV").split(", ")
+)
 
+CLIENT_ORIGINS = (
+    os.getenv("CLIENT_ORIGINS").split(", ")
+    if not DEBUG
+    else os.getenv("CLIENT_ORIGINS_DEV").split(", ")
+)
 
+MAIN_CLIENT_ORIGIN = CLIENT_ORIGINS[0]  # The first origin is main page
 # Application definition
 
 INSTALLED_APPS = [
@@ -119,11 +129,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-# CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",
-    "https://techies-forum.vercel.app",
-]
+CORS_ALLOWED_ORIGINS = CLIENT_ORIGINS
 CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -181,19 +187,16 @@ SIMPLE_JWT = {
 }
 
 CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SAMESITE = "LAX"
 CSRF_COOKIE_PATH = "/"
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:3000",
-    "https://techies-forum.vercel.app",
-]
+CSRF_TRUSTED_ORIGINS = CLIENT_ORIGINS
 
 COOKIES = {
     "AUTH_COOKIE": "access_token",  # Cookie name. Enables cookies if value is set.
     "AUTH_COOKIE_REFRESH": "refresh_token",
     "AUTH_COOKIE_DOMAIN": None,  # None for standard domain cookie, or specify a domain
-    "AUTH_COOKIE_SECURE": False,  # Whether the auth cookies should be secure (https:// only).
+    "AUTH_COOKIE_SECURE": not DEBUG,  # Whether the auth cookies should be secure (https:// only).
     "AUTH_COOKIE_HTTP_ONLY": True,
     "AUTH_COOKIE_PATH": "/",
     "AUTH_COOKIE_SAMESITE": "LAX",
