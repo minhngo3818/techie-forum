@@ -36,7 +36,7 @@ export default function UserVerifyEmail() {
       let username = router.query.username?.toString();
       router.replace(`/verify-email/${username}`);
     }
-  }, [router.query, router.isReady]);
+  }, [router, router.query, router.isReady]);
 
   if (verifyEmail.isLoading) {
     return (

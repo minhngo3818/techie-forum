@@ -41,16 +41,14 @@ export default function ProfileIdentity(props: ProfileIdentityType) {
     setCroppedArea(null);
   };
 
-  const handleSelectedAvatar = useCallback(
+  const handleSelectedAvatar = 
     (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files.length > 0) {
         const file = e.target.files[0];
         let avatarUrl = URL.createObjectURL(file);
         setAvatar(avatarUrl);
       }
-    },
-    [props.avatar]
-  );
+    }
 
   const handleSubmit = async () => {
     try {

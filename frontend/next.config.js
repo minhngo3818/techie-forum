@@ -3,15 +3,8 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   images: {
-    domains: ["127.0.0.1"],
-    // remotePatterns: [
-    //   {
-    //     protocol: "http",
-    //     port: "8000",
-    //     pathname: "/media/avatar/**",
-    //   },
-    // ],
-  },
+    domains: process.env.NEXT_PUBLIC_STATIC_DOMAINS.split(", "),
+  }
 };
 
 module.exports = nextConfig;

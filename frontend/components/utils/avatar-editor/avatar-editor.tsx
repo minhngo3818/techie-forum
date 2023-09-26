@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, ChangeEvent } from "react";
+import React, { useCallback, ChangeEvent } from "react";
 import Cropper from "react-easy-crop";
 import { Point, Area } from "react-easy-crop";
 import { ImageArea } from "./crop-image-helper";
@@ -30,7 +30,7 @@ export default function AvatarEditor(props: AvatarEditorType) {
     (croppedArea: Area, croppedAreaPixels: Area) => {
       props.setCroppedArea(croppedAreaPixels);
     },
-    []
+    [props]
   );
 
   return (

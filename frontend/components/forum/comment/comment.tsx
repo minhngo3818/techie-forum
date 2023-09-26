@@ -50,12 +50,11 @@ export default function Comment(props: CommentType) {
         nextQueryId
       );
       if (results) {
-        console.log(results.comments);
         setReplies(results.comments);
         setNextQueryId(results.nextId);
       }
     }
-  }, [replies, showReplies]);
+  }, [showReplies, comment, nextQueryId]);
 
   const handleShowReplies = () => {
     setShowReplies((showReplies) => !showReplies);

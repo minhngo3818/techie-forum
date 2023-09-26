@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { toastResponse } from "@utils/toast-helper";
 
 // API CONFIGS
-const API = process.env.API;
+const API = process.env.NEXT_PUBLIC_API_BASE;
 
 const axiosConfigs = {
   baseURL: API,

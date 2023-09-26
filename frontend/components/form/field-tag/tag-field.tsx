@@ -19,30 +19,24 @@ export default function TagField(props: TagFieldType) {
   const [tag, setTag] = useState("");
   const tagRef = useRef<HTMLInputElement>(null);
 
-  const handleChangeTag = useCallback(
+  const handleChangeTag =
     (event: ChangeEvent<HTMLInputElement>) => {
       setTag(event.target?.value);
-    },
-    [tag]
-  );
+    }
 
-  const handleRemoveTag = useCallback(
+  const handleRemoveTag = 
     (tag: string) => {
       console.log("Remove was clicked");
       props.onRemove(tag);
-    },
-    [props.tags]
-  );
+    }
 
-  const handleKeyDown = useCallback(
+  const handleKeyDown = 
     (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         props.onAdd(tag);
         setTag("");
       }
-    },
-    [tag, props.tags]
-  );
+    }
 
   // Render a list of tags
   const Tags = (): JSX.Element => {

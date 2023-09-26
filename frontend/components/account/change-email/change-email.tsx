@@ -52,7 +52,7 @@ export default function ChangeEmail(props: ChangeEmailType) {
             <>
               <p className={styles.accountText}>Email has been sent.</p>
               <p className={styles.accountText}>
-                If there is no verification email, click "Send email"
+                If there is no verification email, click &ldquo; Send email &rdquo;
               </p>
             </>
           )}

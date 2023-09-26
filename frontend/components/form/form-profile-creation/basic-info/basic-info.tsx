@@ -46,7 +46,7 @@ function BasicInfo(props: BasicInfoType) {
         }
       });
     }
-  }, [crop, zoom, rotation, croppedArea, avatar, props.avatar]);
+  }, [crop, zoom, rotation, croppedArea, avatar, props]);
 
   const handleChangeImage = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +59,7 @@ function BasicInfo(props: BasicInfoType) {
         props.onChange(avatarData);
       }
     },
-    [props.avatar]
+    [props]
   );
 
   return (

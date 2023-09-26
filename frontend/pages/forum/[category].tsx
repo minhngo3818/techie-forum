@@ -35,18 +35,16 @@ function Category(
       setCategory(paramCategory as string);
       setThreadList(props.list);
     }
-  }, [router.query, category]);
+  }, [router, router.query, props.list]);
 
-  const handleFilterMarkedThreads = useCallback(() => {
+  const handleFilterMarkedThreads = () => {
     setMarked((marked) => !marked);
-  }, [threadList]);
+  };
 
-  const handleSearchData = useCallback(
+  const handleSearchData =
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearch(event.target?.value);
-    },
-    [threadList]
-  );
+    };
 
   const handleAddNewThread = useCallback(
     async (newThread: IThread) => {

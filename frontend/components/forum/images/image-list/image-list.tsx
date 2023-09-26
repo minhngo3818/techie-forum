@@ -109,7 +109,6 @@ function Images(props: Images) {
 }
 
 export default function ImageList(props: { images?: string[] | FileList }) {
-  if (props.images?.length == 0) return null;
   let images = props.images as string[];
 
   const [openGallery, setOpenGallery] = useState(false);
@@ -119,6 +118,8 @@ export default function ImageList(props: { images?: string[] | FileList }) {
     setOpenGallery((openGallery) => !openGallery);
     setIndex(curIndex);
   };
+
+  if (props.images?.length == 0) return null;
 
   return (
     <div className={styles.imgListContainer}>

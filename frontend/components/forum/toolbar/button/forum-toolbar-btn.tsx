@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from "@components/utils/buttons/icon-button/icon-button";
 import styles from "./ForumToolbarBtn.module.css";
 

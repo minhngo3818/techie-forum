@@ -53,7 +53,7 @@ function ProfileCreation() {
         profile_name: user.username,
       }));
     }
-  }, [user]);
+  }, [user, profile.profile_name]);
 
   const {
     mutate: performCreateProfile,

@@ -62,7 +62,7 @@ export default function Thread(props: ThreadType) {
         setNextQueryId(results.nextId);
       }
     }
-  }, [commentList, showComments]);
+  }, [showComments, props.thread.id, nextQueryId]);
 
   const handleShowComments = () => {
     setShowComments((showComments) => !showComments);
@@ -95,12 +95,10 @@ export default function Thread(props: ThreadType) {
     [commentList]
   );
 
-  const handleThreadChange = useCallback(
+  const handleThreadChange = 
     ({ target: { name, value } }: EventTargetNameValue) => {
       setThread((thread) => ({ ...thread, [name]: value }));
-    },
-    [thread]
-  );
+    }
 
   const handleUpdateThread = () => {};
 
