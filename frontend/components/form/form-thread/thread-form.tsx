@@ -43,7 +43,7 @@ export default function ThreadForm(props: ThreadFormType) {
   useAutosizeTextArea(contentRef.current, thread.content);
 
   useEffect(() => {
-    setThread(thread => ({ ...thread, category: props.category }));
+    setThread((thread) => ({ ...thread, category: props.category }));
   }, [props.category]);
 
   const preventEnterKey = (event: React.KeyboardEvent<HTMLFormElement>) => {

@@ -41,10 +41,9 @@ function Category(
     setMarked((marked) => !marked);
   };
 
-  const handleSearchData =
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(event.target?.value);
-    };
+  const handleSearchData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target?.value);
+  };
 
   const handleAddNewThread = useCallback(
     async (newThread: IThread) => {

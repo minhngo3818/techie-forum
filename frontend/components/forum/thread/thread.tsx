@@ -95,10 +95,11 @@ export default function Thread(props: ThreadType) {
     [commentList]
   );
 
-  const handleThreadChange = 
-    ({ target: { name, value } }: EventTargetNameValue) => {
-      setThread((thread) => ({ ...thread, [name]: value }));
-    }
+  const handleThreadChange = ({
+    target: { name, value },
+  }: EventTargetNameValue) => {
+    setThread((thread) => ({ ...thread, [name]: value }));
+  };
 
   const handleUpdateThread = () => {};
 

@@ -19,24 +19,21 @@ export default function TagField(props: TagFieldType) {
   const [tag, setTag] = useState("");
   const tagRef = useRef<HTMLInputElement>(null);
 
-  const handleChangeTag =
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setTag(event.target?.value);
-    }
+  const handleChangeTag = (event: ChangeEvent<HTMLInputElement>) => {
+    setTag(event.target?.value);
+  };
 
-  const handleRemoveTag = 
-    (tag: string) => {
-      console.log("Remove was clicked");
-      props.onRemove(tag);
-    }
+  const handleRemoveTag = (tag: string) => {
+    console.log("Remove was clicked");
+    props.onRemove(tag);
+  };
 
-  const handleKeyDown = 
-    (event: KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter") {
-        props.onAdd(tag);
-        setTag("");
-      }
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      props.onAdd(tag);
+      setTag("");
     }
+  };
 
   // Render a list of tags
   const Tags = (): JSX.Element => {
