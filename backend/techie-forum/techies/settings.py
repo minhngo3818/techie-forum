@@ -15,31 +15,30 @@ from datetime import timedelta
 from django.utils import timezone
 from celery.schedules import crontab
 from dotenv import load_dotenv
-import environ  # use django-environ
+import environ
 import os
+
+env = environ.Env(DEBUG=(bool, True))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
-# env = environ.Env(DEBUG=(bool, False))
-
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = (
-    os.getenv("ALLOWED_HOSTS").split(", ")
+    env("ALLOWED_HOSTS").split(", ")
     if not DEBUG
-    else os.getenv("ALLOWED_HOSTS_DEV").split(", ")
+    else env("ALLOWED_HOSTS_DEV").split(", ")
 )
 
 CLIENT_ORIGINS = (
-    os.getenv("CLIENT_ORIGINS").split(", ")
+    env("CLIENT_ORIGINS").split(", ")
     if not DEBUG
-    else os.getenv("CLIENT_ORIGINS_DEV").split(", ")
+    else env("CLIENT_ORIGINS_DEV").split(", ")
 )
 
 MAIN_CLIENT_ORIGIN = CLIENT_ORIGINS[0]  # The first origin is main page
@@ -98,10 +97,10 @@ WSGI_APPLICATION = "techies.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "NAME": os.getenv("DB_NAME"),
-        "HOST": os.getenv("DB_HOST"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "NAME": env("DB_NAME"),
+        "HOST": env("DB_HOST"),
         "PORT": "5432",
     }
 }
@@ -133,8 +132,32 @@ CORS_ALLOWED_ORIGINS = CLIENT_ORIGINS
 CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 CORS_ALLOW_CREDENTIALS = True
 
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": env("AWS_ACCESS_KEY_ID"),
+            "secret_key": env("AWS_SECRET_ACCESS_KEY"),
+            "bucket_name": env("AWS_STORAGE_BUCKET_NAME"),
+            "default_acl": "public-read",
+            "querystring_auth": False,
+            "location": "media/",
+        },
+    },
+    "staticfiles": "storages.backends.s3.S3Storage",
+}
+
+
+STATIC_URL = (
+    f"https://s3.amazonaws.com/{STORAGES['default']['OPTIONS']['bucket_name']}/static/"
+    if not DEBUG
+    else "/static/"
+)
+MEDIA_URL = (
+    f"https://s3.amazonaws.com/{STORAGES['default']['OPTIONS']['bucket_name']}/media/"
+    if not DEBUG
+    else "/media/"
+)
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -216,18 +239,18 @@ REST_FRAMEWORK = {
 }
 
 # SMTP SERVICE
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = True
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = env("EMAIL_PORT")
 
 
 # AUTOMATIC JOBS SCHEDULER
 CELERY_RESULT_BACKEND = "django-db"
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER")
+CELERY_BROKER_URL = env("CELERY_BROKER")
 CELERY_TIMEZONE = "UTC"
 
 CELERY_BEAT_SCHEDULE = {
