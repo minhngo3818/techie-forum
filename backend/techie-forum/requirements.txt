@@ -20,7 +20,7 @@ cron-descriptor==1.4.0
 cssselect==1.2.0
 cssutils==2.7.1
 dj-rest-auth==2.2.5
-Django==4.1.7
+Django==4.2.20
 django-celery-beat==2.5.0
 django-celery-results==2.5.1
 django-cors-headers==3.13.0
